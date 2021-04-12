@@ -220,6 +220,77 @@ Widget mainTitle(String title) {
   );
 }
 
+Widget searchContainernChats(String str, BuildContext context) {
+  return GestureDetector(
+    onTap: () {},
+    child: Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(10.0),
+        color: Colors.white,
+        boxShadow: [
+          BoxShadow(
+            color: Color(0xff60aad2),
+            offset: Offset(0.0, 1.0), //(x,y)
+            blurRadius: 6.0,
+          ),
+        ],
+      ),
+      width: double.infinity,
+      height: MediaQuery.of(context).size.height * .060,
+      margin: EdgeInsets.only(
+        bottom: MediaQuery.of(context).devicePixelRatio * 5,
+        left: MediaQuery.of(context).devicePixelRatio * 5,
+        right: MediaQuery.of(context).devicePixelRatio * 5,
+      ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        //crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Padding(
+                padding: EdgeInsets.only(
+                  left: 10,
+                ),
+                child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    str,
+                    style: TextStyle(
+                      fontFamily: 'Roboto',
+                      fontSize: 17.5,
+                      color: const Color(0xff60aad2),
+                      letterSpacing: 1.05,
+                      //  height: 1.542857142857143,
+                    ),
+
+                    //textAlign: TextAlign.left,
+                  ),
+                ),
+              ),
+              Expanded(
+                child: Padding(
+                    padding: EdgeInsets.only(
+                      right: 10,
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        Icon(
+                          Icons.search,
+                          color: const Color(0xff60aad2),
+                        ),
+                      ],
+                    )),
+              ),
+            ],
+          ),
+        ],
+      ),
+    ),
+  );
+}
+
 Widget customAppBar(BuildContext context) {
   return Container(
     // height: MediaQuery.of(context).size.height *.6,

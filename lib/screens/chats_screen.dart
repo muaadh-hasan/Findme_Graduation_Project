@@ -1,14 +1,11 @@
-
 import 'package:findme_gp_project/widgets/chats_widgets.dart';
+import 'package:findme_gp_project/widgets/profile_widgets.dart';
 import 'package:flutter/material.dart';
-
-
-
 
 class ChatsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return  Scaffold(
+    return Scaffold(
       backgroundColor: const Color(0xff60aad2),
       body: Column(
         children: [
@@ -61,11 +58,11 @@ class ChatsScreen extends StatelessWidget {
                       ],
                     ),
                     Divider(
-                      thickness: 1,
+                      
                       color: const Color.fromARGB(100, 6, 63, 94),
                     ),
-  
-                      recentChats(context),
+                    searchContainernChats("Search someone ... ", context),
+                    recentChats(context),
                   ],
                 ),
               ),
@@ -75,7 +72,4 @@ class ChatsScreen extends StatelessWidget {
       ),
     );
   }
-
-
-
 }

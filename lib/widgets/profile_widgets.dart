@@ -191,7 +191,7 @@ Widget separator(String str, BuildContext context) {
   );
 }
 
-Widget searchContainer(BuildContext context) {
+Widget searchContainer(String str, BuildContext context) {
   return GestureDetector(
     onTap: () {},
     child: Container(
@@ -227,7 +227,7 @@ Widget searchContainer(BuildContext context) {
                 child: Align(
                   alignment: Alignment.centerLeft,
                   child: Text(
-                    'Search people...',
+                    str,
                     style: TextStyle(
                       fontFamily: 'Roboto',
                       fontSize: 17.5,

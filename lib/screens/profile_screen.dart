@@ -45,7 +45,7 @@ class _Profile extends State<Profile> {
                         flex: 9,
                         child: Padding(
                           padding: const EdgeInsets.only(left: 14),
-                          child: searchContainer(context),
+                          child: searchContainer("Search peaople...", context),
                         )),
                     Expanded(
                       flex: 2,
