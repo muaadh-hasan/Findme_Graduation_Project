@@ -24,25 +24,12 @@ class RelativeRequests extends StatelessWidget {
           ),
 
           // width: 300,
-          child: ListView(
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(top: 8.0),
-                child: relativeRequest(context),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(top: 8.0),
-                child: relativeRequest(context),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(top: 8.0),
-                child: relativeRequest(context),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(top: 8.0),
-                child: relativeRequest(context),
-              ),
-            ],
+          child: ListView.builder(
+            padding: EdgeInsets.symmetric(vertical: 10),
+            itemCount: 5,
+            itemBuilder: (context, index) => Container(
+                margin: EdgeInsets.only(bottom: 5),
+                child: relativeRequest(context)),
           ),
         ),
       ],

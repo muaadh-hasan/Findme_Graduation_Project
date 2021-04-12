@@ -192,46 +192,73 @@ Widget separator(String str, BuildContext context) {
 }
 
 Widget searchContainer(BuildContext context) {
-  return Container(
-    decoration: BoxDecoration(
-      borderRadius: BorderRadius.circular(7.0),
-      color: Colors.white,
-      boxShadow: [
-        BoxShadow(
-          color: Color(0xff60aad2),
-          offset: Offset(0.0, 3.0), //(x,y)
-          blurRadius: 6.0,
-        ),
-      ],
-    ),
-    width: MediaQuery.of(context).size.width * .80,
-    height: MediaQuery.of(context).size.height * .060,
-    // margin: EdgeInsets.only(
-    //   top: !isLandScape
-    //       ? MediaQuery.of(context).size.height * .28
-    //       : MediaQuery.of(context).size.height * .55,
-    //   left: MediaQuery.of(context).devicePixelRatio * 10,
-    // ),
-    child: Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Padding(
-          padding: EdgeInsets.only(left: 10),
-          child: Text(
-            'Search people...',
-            style: TextStyle(
-              fontFamily: 'Roboto',
-              fontSize: 17.5,
-              color: const Color(0xff60aad2),
-              letterSpacing: 1.05,
-              //  height: 1.542857142857143,
-            ),
-
-            //textAlign: TextAlign.left,
+  return GestureDetector(
+    onTap: () {},
+    child: Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(7.0),
+        color: Colors.white,
+        boxShadow: [
+          BoxShadow(
+            color: Color(0xff60aad2),
+            offset: Offset(0.0, 3.0), //(x,y)
+            blurRadius: 6.0,
           ),
-        ),
-      ],
+        ],
+      ),
+      width: MediaQuery.of(context).size.width * .80,
+      height: MediaQuery.of(context).size.height * .060,
+      // margin: EdgeInsets.only(
+      //   top: !isLandScape
+      //       ? MediaQuery.of(context).size.height * .28
+      //       : MediaQuery.of(context).size.height * .55,
+      //   left: MediaQuery.of(context).devicePixelRatio * 10,
+      // ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        //crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Padding(
+                padding: EdgeInsets.only(
+                  left: 10,
+                ),
+                child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    'Search people...',
+                    style: TextStyle(
+                      fontFamily: 'Roboto',
+                      fontSize: 17.5,
+                      color: const Color(0xff60aad2),
+                      letterSpacing: 1.05,
+                      //  height: 1.542857142857143,
+                    ),
+
+                    //textAlign: TextAlign.left,
+                  ),
+                ),
+              ),
+              Expanded(
+                child: Padding(
+                    padding: EdgeInsets.only(
+                      right: 10,
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        Icon(
+                          Icons.search,
+                          color: const Color(0xff60aad2),
+                        ),
+                      ],
+                    )),
+              ),
+            ],
+          ),
+        ],
+      ),
     ),
   );
 }
