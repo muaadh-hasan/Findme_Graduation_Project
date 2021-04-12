@@ -1,5 +1,5 @@
-
 import 'package:findme_gp_project/widgets/relative_requests_widget.dart';
+import 'package:findme_gp_project/widgets/your_photos_widget.dart';
 import 'package:findme_gp_project/widgets/your_relatives_widget.dart';
 import 'package:findme_gp_project/widgets/profile_widgets.dart';
 import 'package:flutter/material.dart';
@@ -19,6 +19,12 @@ class _Profile extends State<Profile> {
     isLandScape = MediaQuery.of(context).orientation == Orientation.landscape;
     return Scaffold(
       backgroundColor: Colors.white,
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {},
+        child: const Icon(Icons.add),
+        backgroundColor: const Color(0xff60aad2),
+        tooltip: "Add Photos",
+      ),
       body: Column(
         children: [
           Container(
@@ -62,6 +68,7 @@ class _Profile extends State<Profile> {
                   separator("Your Relatives", context),
                   YourRelatives(),
                   separator("Your Photos", context),
+                  YourPhotos(),
                 ],
               ),
             ),

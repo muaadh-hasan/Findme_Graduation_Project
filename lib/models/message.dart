@@ -17,7 +17,7 @@ class Message {
 }
 
 Account account1 = Account(
-  name: "Yasmeena Badawy",
+  name: "Mariam Nasser",
   images: ['assets/images/pic9.jpg'],
   phone: '+021111137744',
   email: 'mariamnasser979@gmail.com',
