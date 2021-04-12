@@ -4,12 +4,8 @@ import 'package:findme_gp_project/models/user.dart';
 class Chat {
   List<Message> messages;
   final User owner;
-  Chat(
+  Chat({
     this.messages,
     this.owner,
-  );
+  });
 }
-
-
-// + messages[ ]:Message
-// + owner:User

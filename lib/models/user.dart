@@ -11,12 +11,12 @@ class User {
   final List<Chat> chats;
   final List<User> relatives;
   final List<Request> requests;
-  User(
+  User({
     this.account,
     this.posts,
     this.notifications,
     this.chats,
     this.relatives,
     this.requests,
-  );
+  });
 }

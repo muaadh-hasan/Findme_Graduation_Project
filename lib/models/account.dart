@@ -1,5 +1,3 @@
-import 'package:flutter/cupertino.dart';
-
 class Account {
   final String name;
   final String username;
@@ -10,7 +8,7 @@ class Account {
   final String email;
   final List<String> images;
 
-  Account(
+  Account({
     this.name,
     this.username,
     this.password,
@@ -19,5 +17,5 @@ class Account {
     this.type,
     this.email,
     this.images,
-  );
+  });
 }

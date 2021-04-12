@@ -5,5 +5,5 @@ class NotificationUser {
   final String smallDescription;
   final int postId;
 
-  NotificationUser(this.user, this.smallDescription, this.postId);
+  NotificationUser({this.user, this.smallDescription, this.postId});
 }

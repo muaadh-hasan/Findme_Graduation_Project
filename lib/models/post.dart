@@ -6,10 +6,5 @@ class Post {
   final String infoPost;
   final DateTime date;
   final List listImages;
-  Post(
-    this.user,
-    this.infoPost,
-    this.date,
-    this.listImages,
-  );
+  Post({this.user, this.infoPost, this.date, this.listImages});
 }

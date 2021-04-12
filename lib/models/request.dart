@@ -4,5 +4,5 @@ class Request {
   final User sender;
   final User reciver;
 
-  Request(this.sender, this.reciver);
+  Request({this.sender, this.reciver});
 }
