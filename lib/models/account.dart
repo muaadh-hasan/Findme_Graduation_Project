@@ -2,7 +2,7 @@ class Account {
   final String name;
   final String username;
   final String password;
-  final int phone;
+  final String phone;
   final String location;
   final String type;
   final String email;
