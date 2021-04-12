@@ -1,3 +1,4 @@
+import 'package:findme_gp_project/widgets/post_item.dart';
 import 'package:flutter/material.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -12,10 +13,11 @@ class _HomeScreenState extends State<HomeScreen> {
       backgroundColor: Theme.of(context).primaryColor,
       appBar: AppBar(
         backgroundColor: Colors.blue[400],
-        // leading: Image.asset('assets/images/l.jpg', height: 50, width: 50),
+        leading: Image.asset('assets/images/logo.png'),
         // CircleAvatar(
         //   radius: 35,
-        //   backgroundImage: AssetImage('assets/images/logo.png'),
+        //   // backgroundImage: AssetImage('assets/images/logo.png'),
+        //   child: Image.asset('assets/images/logo.png'),
         // ),
         title: Text(
           "Find Me",
@@ -77,12 +79,13 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
           Expanded(
               child: Container(
+            width: double.infinity,
             decoration: BoxDecoration(
                 color: Theme.of(context).accentColor,
                 borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(30),
                     topRight: Radius.circular(30))),
-            child: null,
+            child: PostItem(),
           )),
         ],
       ),
