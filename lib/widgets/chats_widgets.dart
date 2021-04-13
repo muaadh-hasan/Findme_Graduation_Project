@@ -115,10 +115,24 @@ Widget recentChats(BuildContext context) {
   );
 }
 
-Widget profileImage(BuildContext context) {
+Widget largeProfileImage(BuildContext context) {
   return Container(
     width: MediaQuery.of(context).size.height * .060,
     height: MediaQuery.of(context).size.height * .060,
+    decoration: BoxDecoration(
+      borderRadius: BorderRadius.circular(50.0),
+      image: DecorationImage(
+        image: const AssetImage('assets/images/profile_image.jpg'),
+        fit: BoxFit.cover,
+      ),
+    ),
+  );
+}
+
+Widget smallProfileImage(BuildContext context) {
+  return Container(
+    width: MediaQuery.of(context).size.height * .050,
+    height: MediaQuery.of(context).size.height * .050,
     decoration: BoxDecoration(
       borderRadius: BorderRadius.circular(50.0),
       image: DecorationImage(
@@ -319,7 +333,7 @@ Widget customAppBar(BuildContext context) {
           child: Column(
             children: [
               Container(
-                child: profileImage(context),
+                child: largeProfileImage(context),
                 margin: EdgeInsets.only(
                     top: MediaQuery.of(context).size.height * .073,
                     right: MediaQuery.of(context).size.width * .015),

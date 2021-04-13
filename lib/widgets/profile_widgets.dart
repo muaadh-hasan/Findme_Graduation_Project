@@ -192,9 +192,7 @@ Widget separator(String str, BuildContext context) {
 }
 
 Widget searchContainer(String str, BuildContext context) {
-  return GestureDetector(
-    onTap: () {},
-    child: Container(
+  return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(7.0),
         color: Colors.white,
@@ -259,8 +257,7 @@ Widget searchContainer(String str, BuildContext context) {
           ),
         ],
       ),
-    ),
-  );
+    );
 }
 
 Widget relativeRequest(BuildContext context) {
