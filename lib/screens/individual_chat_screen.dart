@@ -3,6 +3,7 @@ import 'package:findme_gp_project/widgets/chats_widgets.dart';
 import 'package:flutter/material.dart';
 
 class IndividualChatScreen extends StatelessWidget {
+  bool opacityOfAppBar = true;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -11,9 +12,14 @@ class IndividualChatScreen extends StatelessWidget {
         children: [
           Expanded(
             flex: 3,
-            child: Container(
-              color: const Color(0xff60aad2),
-              child: customAppBar(context),
+            child: ListView(
+              padding: EdgeInsets.only(top: 0.0),
+              children: [
+                Container(
+                  color: const Color(0xff60aad2),
+                  child: customAppBar(context),
+                ),
+              ],
             ),
           ),
           Expanded(
@@ -62,13 +68,15 @@ class IndividualChatScreen extends StatelessWidget {
                     ),
                     Expanded(
                       child: GestureDetector(
-                          onTap: () => FocusScope.of(context).unfocus(),
+                          onTap: () {
+                            opacityOfAppBar = false;
+
+                            FocusScope.of(context).unfocus();
+                          },
                           child: Column(children: <Widget>[
                             Expanded(
                               child: Container(
-
                                 child: ClipRRect(
-
                                   child: ListView.builder(
                                     reverse: true,
                                     padding: EdgeInsets.only(top: 15.0),
