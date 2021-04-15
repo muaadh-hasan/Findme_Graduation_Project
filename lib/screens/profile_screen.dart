@@ -1,8 +1,13 @@
+import 'dart:io';
+
+import 'package:findme_gp_project/providers/profile_provider.dart';
 import 'package:findme_gp_project/widgets/relative_requests_widget.dart';
 import 'package:findme_gp_project/widgets/your_photos_widget.dart';
 import 'package:findme_gp_project/widgets/your_relatives_widget.dart';
 import 'package:findme_gp_project/widgets/profile_widgets.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:provider/provider.dart';
 
 class Profile extends StatefulWidget {
   Profile({Key key, this.title}) : super(key: key);
@@ -20,7 +25,9 @@ class _Profile extends State<Profile> {
     return Scaffold(
       backgroundColor: Colors.white,
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () {
+          showChooseImageWindow(context);
+        },
         child: const Icon(Icons.add),
         backgroundColor: const Color(0xff60aad2),
         tooltip: "Add Photos",
@@ -65,6 +72,7 @@ class _Profile extends State<Profile> {
             child: Container(
               // height: double.infinity,
               child: ListView(
+                padding: EdgeInsets.only(top: 0.0),
                 children: [
                   separator("Relative Requests", context),
                   RelativeRequests(),
@@ -82,12 +90,42 @@ class _Profile extends State<Profile> {
   }
 }
 
-//  GridView.count(
-// crossAxisCount: 2,
-// padding: EdgeInsets.all(20),
-// crossAxisSpacing: 10,
-// mainAxisSpacing: 20,
-// children: [
-//   relative(context),
-//   relative(context),
-// ]),
+Builder buildDialogItem(
+    BuildContext context, String text, IconData icon, ImageSource src) {
+  return Builder(
+    builder: (innerContext) => Container(
+      decoration: BoxDecoration(
+        color: const Color(0xff60aad2),
+        borderRadius: BorderRadius.circular(15),
+      ),
+      child: ListTile(
+        leading: Icon(icon, color: Colors.white),
+        title: Text(text),
+        onTap: () {
+          context.read<ProfileProvider>().getImage(src);
+          Navigator.of(innerContext).pop();
+        },
+      ),
+    ),
+  );
+}
+
+void showChooseImageWindow(BuildContext context) {
+  var ad = AlertDialog(
+    title: Text("Choose Picture from:"),
+    content: Container(
+      height: 150,
+      child: Column(
+        children: [
+          Divider(color: Colors.black),
+          buildDialogItem(context, "Camera", Icons.add_a_photo_outlined,
+              ImageSource.camera),
+          SizedBox(height: 10),
+          buildDialogItem(
+              context, "Gallery", Icons.image_outlined, ImageSource.gallery),
+        ],
+      ),
+    ),
+  );
+  showDialog(builder: (context) => ad, context: context);
+}

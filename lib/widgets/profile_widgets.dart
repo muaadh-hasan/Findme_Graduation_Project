@@ -1,6 +1,10 @@
 import 'package:findme_gp_project/models/message.dart';
+import 'package:findme_gp_project/providers/profile_provider.dart';
+import 'package:findme_gp_project/screens/profile_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+
 
 Widget customProfileAppBar(BuildContext context) {
   return Container(
@@ -337,3 +341,36 @@ Widget button(Color color, String str, BuildContext context) {
     ),
   );
 }
+
+
+
+Widget getImageButton(BuildContext context) {
+  return Container(
+    width: double.infinity,
+    child: RaisedButton(
+      color: Theme.of(context).primaryColor,
+      textColor: Colors.white,
+      child: Text("Choose Image"),
+      onPressed: () {
+        var ad = AlertDialog(
+          title: Text("Choose Picture from:"),
+          content: Container(
+            height: 150,
+            child: Column(
+              children: [
+                Divider(color: Colors.black),
+                buildDialogItem(context, "Camera", Icons.add_a_photo_outlined,
+                    ImageSource.camera),
+                SizedBox(height: 10),
+                buildDialogItem(context, "Gallery", Icons.image_outlined,
+                    ImageSource.gallery),
+              ],
+            ),
+          ),
+        );
+        showDialog(builder: (context) => ad, context: context);
+      },
+    ),
+  );
+}
+

@@ -1,12 +1,19 @@
+import 'package:findme_gp_project/providers/profile_provider.dart';
 import 'package:findme_gp_project/screens/chats_screen.dart';
 import 'package:findme_gp_project/screens/home_screen.dart';
 import 'package:findme_gp_project/screens/individual_chat_screen.dart';
 import 'package:findme_gp_project/screens/profile_screen.dart';
-import 'package:findme_gp_project/widgets/post_item.dart';
+
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(MultiProvider(
+    providers: [
+      ChangeNotifierProvider(create: (_) => ProfileProvider()),
+    ],
+    child: MyApp(),
+  ));
 }
 
 class MyApp extends StatelessWidget {
@@ -35,8 +42,8 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
-    return IndividualChatScreen();
-    //Profile();
+    return //IndividualChatScreen();
+        Profile();
     //ChatsScreen();
   }
 }
