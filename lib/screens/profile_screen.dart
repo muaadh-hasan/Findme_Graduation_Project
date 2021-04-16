@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:findme_gp_project/models/user.dart';
 import 'package:findme_gp_project/providers/profile_provider.dart';
 import 'package:findme_gp_project/widgets/relative_requests_widget.dart';
 import 'package:findme_gp_project/widgets/your_photos_widget.dart';
@@ -22,6 +23,8 @@ class _Profile extends State<Profile> {
   @override
   Widget build(BuildContext context) {
     isLandScape = MediaQuery.of(context).orientation == Orientation.landscape;
+
+
     return Scaffold(
       backgroundColor: Colors.white,
       floatingActionButton: FloatingActionButton(

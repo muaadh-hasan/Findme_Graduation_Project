@@ -28,28 +28,58 @@ Account account2 = Account(
   phone: '+021111137744',
   email: 'yasmeena@gmail.com',
 );
+Account account3 = Account(
+  name: "Yasmeena3",
+  images: ['assets/images/pic9.jpg'],
+  phone: '+021111137744',
+  email: 'yasmeena3@gmail.com',
+);
+Account account4 = Account(
+  name: "Yasmeena4",
+  images: ['assets/images/pic9.jpg'],
+  phone: '+021111137744',
+  email: 'yasmeena4@gmail.com',
+);
+Account account5 = Account(
+  name: "Yasmeena5",
+  images: ['assets/images/pic9.jpg'],
+  phone: '+021111137744',
+  email: 'yasmeen5@gmail.com',
+);
+Account account6 = Account(
+  name: "Yasmeena6",
+  images: ['assets/images/pic9.jpg'],
+  phone: '+021111137744',
+  email: 'yasmeena6@gmail.com',
+);
+Account account7 = Account(
+  name: "Yasmeena7",
+  images: ['assets/images/pic9.jpg'],
+  phone: '+021111137744',
+  email: 'yasmeena7@gmail.com',
+);
 // YOU - current user
 final User currentUser = User(account: account1);
 
 // USERS
 final User yasmeena = User(account: account2);
 final User mariam = User(account: account1);
-final User john = User(account: account1);
-final User olivia = User(account: account1);
-final User sam = User(account: account1);
-final User sophia = User(account: account1);
-final User steven = User(account: account1);
+final User yasmeena3 = User(account: account3);
+final User yasmeena4 = User(account: account4);
+final User yasmeena5 = User(account: account5);
+final User yasmeena6 = User(account: account6);
+final User yasmeena7 = User(account: account7);
 
 // just static data for UI
 List<User> users = [
   mariam,
   yasmeena,
-  yasmeena,
-  yasmeena,
-  yasmeena,
-  yasmeena,
-  yasmeena,
-  yasmeena
+  yasmeena3,
+  yasmeena4,
+  yasmeena5,
+  yasmeena6,
+  yasmeena7,
+
 ];
 
 // EXAMPLE CHATS ON HOME SCREEN

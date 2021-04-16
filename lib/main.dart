@@ -3,6 +3,7 @@ import 'package:findme_gp_project/screens/chats_screen.dart';
 import 'package:findme_gp_project/screens/home_screen.dart';
 import 'package:findme_gp_project/screens/individual_chat_screen.dart';
 import 'package:findme_gp_project/screens/profile_screen.dart';
+import 'package:findme_gp_project/screens/search.dart';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -42,8 +43,9 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
-    return //IndividualChatScreen();
-        Profile();
+    return Search();
+    //IndividualChatScreen();
+    //Profile();
     //ChatsScreen();
   }
 }
