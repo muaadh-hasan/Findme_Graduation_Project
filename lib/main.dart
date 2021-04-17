@@ -1,6 +1,4 @@
-import 'package:findme_gp_project/screens/add_post_screen.dart';
-
-import './screens/home_screen.dart';
+import 'package:findme_gp_project/screens/tabs_Screen.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -23,8 +21,7 @@ class _MyAppState extends State<MyApp> {
         accentColor: Colors.deepPurple[50],
       ),
       title: 'Find Me',
-      home: HomeScreen(),
-      // AddPostScreen(),
+      home: TabsScreen(),
     );
   }
 }

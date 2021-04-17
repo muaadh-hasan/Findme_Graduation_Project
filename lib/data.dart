@@ -2,6 +2,9 @@ import 'models/account.dart';
 import 'models/notification_user.dart';
 import 'models/post.dart';
 import 'models/user.dart';
+import 'package:intl/intl.dart';
+
+String formatDate(DateTime date) => new DateFormat("MMMM d").format(date);
 
 final User currentUser = User(
     account: Account(
@@ -87,22 +90,92 @@ final User currentUser = User(
     ],
     notifications: [
       NotificationUser(
+          date: formatDate(DateTime.now()),
           smallDescription: 'Wants to be a friend with you',
-          user: User(account: Account(name: "Moaaz"))),
+          user: User(account: Account(name: "Moaaz Hasan"))),
       NotificationUser(
+          date: formatDate(DateTime.now()),
           smallDescription:
               'This person found a lost person from your family, check it out!',
-          user: User(account: Account(name: "Moaaz"))),
+          user: User(account: Account(name: "Moaaz Hasan"))),
       NotificationUser(
+          date: formatDate(DateTime.now()),
           smallDescription:
               'This person found a lost person from your family, check it out!',
-          user: User(account: Account(name: "Moaaz"))),
+          user: User(account: Account(name: "Moaaz Hasan"))),
       NotificationUser(
+          date: formatDate(DateTime.now()),
           smallDescription:
               'This person found a lost person from your family, check it out!',
-          user: User(account: Account(name: "Moaaz"))),
+          user: User(account: Account(name: "Moaaz Hasan"))),
       NotificationUser(
+          date: formatDate(DateTime.now()),
           smallDescription:
               'This person found a lost person from your family, check it out!',
-          user: User(account: Account(name: "Moaaz"))),
+          user: User(account: Account(name: "Moaaz Hasan"))),
+      NotificationUser(
+          date: formatDate(DateTime.now()),
+          smallDescription:
+              'This person found a lost person from your family, check it out!',
+          user: User(account: Account(name: "Moaaz Hasan"))),
+      NotificationUser(
+          date: formatDate(DateTime.now()),
+          smallDescription:
+              'This person found a lost person from your family, check it out!',
+          user: User(account: Account(name: "Moaaz Hasan"))),
+      NotificationUser(
+          date: formatDate(DateTime.now()),
+          smallDescription:
+              'This person found a lost person from your family, check it out!',
+          user: User(account: Account(name: "Moaaz Hasan"))),
+      NotificationUser(
+          date: formatDate(DateTime.now()),
+          smallDescription:
+              'This person found a lost person from your family, check it out!',
+          user: User(account: Account(name: "Moaaz Hasan"))),
+      NotificationUser(
+          date: formatDate(DateTime.now()),
+          smallDescription:
+              'This person found a lost person from your family, check it out!',
+          user: User(account: Account(name: "Moaaz Hasan"))),
+      NotificationUser(
+          date: formatDate(DateTime.now()),
+          smallDescription:
+              'This person found a lost person from your family, check it out!',
+          user: User(account: Account(name: "Moaaz Hasan"))),
+      NotificationUser(
+          date: formatDate(DateTime.now()),
+          smallDescription:
+              'This person found a lost person from your family, check it out!',
+          user: User(account: Account(name: "Moaaz Hasan"))),
+      NotificationUser(
+          date: formatDate(DateTime.now()),
+          smallDescription:
+              'This person found a lost person from your family, check it out!',
+          user: User(account: Account(name: "Moaaz Hasan"))),
+      NotificationUser(
+          date: formatDate(DateTime.now()),
+          smallDescription:
+              'This person found a lost person from your family, check it out!',
+          user: User(account: Account(name: "Moaaz Hasan"))),
+      NotificationUser(
+          date: formatDate(DateTime.now()),
+          smallDescription:
+              'This person found a lost person from your family, check it out!',
+          user: User(account: Account(name: "Moaaz Hasan"))),
+      NotificationUser(
+          date: formatDate(DateTime.now()),
+          smallDescription:
+              'This person found a lost person from your family, check it out!',
+          user: User(account: Account(name: "Moaaz Hasan"))),
+      NotificationUser(
+          date: formatDate(DateTime.now()),
+          smallDescription:
+              'This person found a lost person from your family, check it out!',
+          user: User(account: Account(name: "Moaaz Hasan"))),
+      NotificationUser(
+          date: formatDate(DateTime.now()),
+          smallDescription:
+              'This person found a lost person from your family, check it out!',
+          user: User(account: Account(name: "Moaaz Hasan"))),
     ]);

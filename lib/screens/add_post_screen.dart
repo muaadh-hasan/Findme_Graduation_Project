@@ -15,13 +15,32 @@ class _AddPostScreen extends State<AddPostScreen> {
       backgroundColor: Theme.of(context).primaryColor,
       appBar: AppBar(
         backgroundColor: Colors.blue[400],
-        leading: Image.asset('assets/images/logo.png'),
-        title: Text(
-          "Find Me",
-          style: TextStyle(
-            fontSize: 25,
-            fontWeight: FontWeight.bold,
-            color: Colors.white,
+        leading: Row(
+          children: [
+            IconButton(
+                icon: Icon(
+                  Icons.arrow_back_ios_rounded,
+                  color: Colors.white,
+                  size: 20,
+                ),
+                onPressed: () {
+                  Navigator.pop(context);
+                }),
+            // Padding(
+            //   padding: const EdgeInsets.only(right: 60),
+            //   child: Image.asset('assets/images/logo.png'),
+            // ),
+          ],
+        ),
+        title: Padding(
+          padding: const EdgeInsets.only(left: 0),
+          child: Text(
+            "Find Me",
+            style: TextStyle(
+              fontSize: 25,
+              fontWeight: FontWeight.bold,
+              color: Colors.white,
+            ),
           ),
         ),
         elevation: 0,

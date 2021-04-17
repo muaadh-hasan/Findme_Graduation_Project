@@ -1,8 +1,7 @@
-import 'package:findme_gp_project/models/notification_user.dart';
+import 'package:findme_gp_project/screens/add_post_screen.dart';
 import 'package:findme_gp_project/widgets/post_item.dart';
-import 'package:findme_gp_project/widgets/profile_avatar.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:flutter/widgets.dart';
 
 import '../data.dart';
 
@@ -16,69 +15,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Theme.of(context).primaryColor,
-      appBar: AppBar(
-        backgroundColor: Colors.blue[400],
-        leading: Image.asset('assets/images/logo.png'),
-        title: Text(
-          "Find Me",
-          style: TextStyle(
-            fontSize: 25,
-            fontWeight: FontWeight.bold,
-            color: Colors.white,
-          ),
-        ),
-        elevation: 0,
-        actions: <Widget>[
-          // Expanded(
-          //   child: DropdownButton(
-          //     icon: Icon(
-          //       FontAwesomeIcons.bell,
-          //       color: Colors.white,
-          //     ),
-          //     underline: SizedBox(),
-          //     items: currentUser.notifications
-          //         .map<DropdownMenuItem<NotificationUser>>(
-          //             (notfy) => DropdownMenuItem(
-          //                   value: notfy,
-          //                   child: Row(
-          //                     mainAxisAlignment: MainAxisAlignment.spaceAround,
-          //                     children: <Widget>[
-          //                       Text(notfy.smallDescription,
-          //                           style: TextStyle(
-          //                               fontSize: 20,
-          //                               // fontFamily: "Orbitron",
-          //                               fontFamily: "Caveat")),
-          //                     ],
-          //                   ),
-          //                 ))
-          //         .toList(),
-          //     onTap: () {},
-          //     // onChanged: () {
-          //     // changeLanguage(language);
-          //     // },
-          //   ),
-          // ),
-          IconButton(
-              icon: Icon(FontAwesomeIcons.bell),
-              iconSize: 30,
-              color: Colors.white,
-              onPressed: () {}),
-          IconButton(
-              icon: Icon(FontAwesomeIcons.comment),
-              iconSize: 30,
-              color: Colors.white,
-              onPressed: () {}),
-          Container(
-            padding: EdgeInsets.all(7),
-            child: ProfileAvatar(
-              imageUrl:
-                  'https://avatars.githubusercontent.com/u/36192122?s=400&u=1dfc7f24e3963182b2f70df53209d4d9b086479c&v=4',
-            ),
-          ),
-        ],
-      ),
       body: ListView(
-        // child: Column(
         children: [
           Container(
             width: double.infinity,
@@ -120,7 +57,12 @@ class _HomeScreenState extends State<HomeScreen> {
                           ],
                         ),
                         ElevatedButton.icon(
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.push(context,
+                                MaterialPageRoute(builder: (context) {
+                              return AddPostScreen();
+                            }));
+                          },
                           icon: Icon(Icons.add, size: 18),
                           label: Text("ADD POST"),
                           style: ElevatedButton.styleFrom(

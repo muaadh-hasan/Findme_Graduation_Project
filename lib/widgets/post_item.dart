@@ -82,59 +82,6 @@ class _PostItemState extends State<PostItem> {
                 )
               ],
             ),
-            //  Row(
-            //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            //   children: <Widget>[
-            //     TextButton(
-            //       child: Row(
-            //         children: [
-            //           Icon(
-            //             Icons.call,
-            //             size: 20,
-            //           ),
-            //           Text(
-            //             'Call',
-            //             style: TextStyle(
-            //               fontSize: 15,
-            //             ),
-            //           ),
-            //         ],
-            //       ),
-            //       onPressed: () {},
-            //     ),
-            //     TextButton(
-            //       child: Row(
-            //         children: [
-            //           Icon(
-            //             Icons.message,
-            //             size: 20,
-            //           ),
-            //           Text(
-            //             'Message',
-            //             style: TextStyle(
-            //               fontSize: 15,
-            //             ),
-            //           ),
-            //         ],
-            //       ),
-            //       onPressed: () {},
-            //     ),
-            //     SizedBox(width: 8),
-            //     TextButton(
-            //       child: Row(
-            //         children: [
-            //           Icon(Icons.location_on, size: 20),
-            //           Text('Get Location',
-            //               style: TextStyle(
-            //                 fontSize: 15,
-            //               )),
-            //         ],
-            //       ),
-            //       onPressed: () {},
-            //     ),
-            //     SizedBox(width: 8),
-            //   ],
-            // ),
           ),
         ],
       ),

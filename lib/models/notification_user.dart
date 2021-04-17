@@ -4,6 +4,7 @@ class NotificationUser {
   final User user;
   final String smallDescription;
   final int postId;
+  final String date;
 
-  NotificationUser({this.user, this.smallDescription, this.postId});
+  NotificationUser({this.user, this.smallDescription, this.postId, this.date});
 }
