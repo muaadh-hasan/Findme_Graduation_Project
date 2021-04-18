@@ -1,16 +1,8 @@
-// <<<<<<< HEAD
 import 'package:findme_gp_project/providers/profile_provider.dart';
-// import 'package:findme_gp_project/screens/chats_screen.dart';
-// import 'package:findme_gp_project/screens/home_screen.dart';
-// import 'package:findme_gp_project/screens/individual_chat_screen.dart';
-// import 'package:findme_gp_project/screens/profile_screen.dart';
-// import 'package:findme_gp_project/screens/search.dart';
-
-// =======
 import 'package:findme_gp_project/screens/tabs_Screen.dart';
-// >>>>>>> Moaaz-UI-V1
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'screens/search.dart';
 
 void main() {
   runApp(MultiProvider(
@@ -37,7 +29,11 @@ class _MyAppState extends State<MyApp> {
         accentColor: Colors.deepPurple[50],
       ),
       title: 'Find Me',
-      home: TabsScreen(),
+      home: Search(),
+      // IndividualChatScreen(),
+      // ChatsScreen(),
+      // Profile(),
+      //  TabsScreen(),
     );
   }
 }

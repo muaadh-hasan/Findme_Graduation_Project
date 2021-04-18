@@ -4,6 +4,7 @@ import 'package:findme_gp_project/models/post.dart';
 import 'package:findme_gp_project/models/request.dart';
 import 'package:findme_gp_project/models/account.dart';
 
+// FindMe.GP2021
 class User {
   final Account account;
   final List<Post> posts;

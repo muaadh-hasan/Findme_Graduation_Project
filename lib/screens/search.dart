@@ -89,7 +89,7 @@ class _SearchState extends State<Search> {
                 setState(() {
                   _usersForDisplay = _users.where((user) {
                     var userItem = user.account.email.toLowerCase();
-                    return userItem.contains(text);
+                    return userItem.startsWith(text);
                   }).toList();
                 });
               },

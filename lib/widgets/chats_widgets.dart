@@ -10,6 +10,7 @@ Widget recentChats(BuildContext context) {
         color: Colors.white,
         child: ClipRRect(
           child: ListView.builder(
+            padding: EdgeInsets.only(top: 0),
             itemCount: chats.length,
             itemBuilder: (BuildContext context, int index) {
               final Message chat = chats[index];
@@ -74,7 +75,7 @@ Widget recentChats(BuildContext context) {
                       Column(
                         children: <Widget>[
                           Text(
-                            chat.time,
+                            chat.time.hour.toString(),
                             style: TextStyle(
                               color: Colors.grey,
                               fontSize: 15.0,

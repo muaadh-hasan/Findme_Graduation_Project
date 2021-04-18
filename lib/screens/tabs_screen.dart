@@ -40,7 +40,7 @@ class _TabsScreenState extends State<TabsScreen> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.blue[400],
-        leading: Image.asset('assets/images/logo.png'),
+        leading: Image.asset('assets/images/new_logo.png'),
         title: Text(
           _pages[_selectedPageIndex]['title'],
           style: TextStyle(

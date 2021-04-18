@@ -5,7 +5,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
-
 Widget customProfileAppBar(BuildContext context) {
   return Container(
     // height: MediaQuery.of(context).size.height *.6,
@@ -68,8 +67,8 @@ Widget headerContents(BuildContext context) {
             child: ClipRRect(
               borderRadius: BorderRadius.circular(20.0),
               child: Image(
-                width: MediaQuery.of(context).devicePixelRatio * 70,
-                height: MediaQuery.of(context).devicePixelRatio * 80,
+                width: MediaQuery.of(context).size.width * 0.3,
+                height: MediaQuery.of(context).size.height * 0.2,
                 image: const AssetImage('assets/images/pic11.jpg'),
                 fit: BoxFit.fill,
               ),
@@ -197,71 +196,71 @@ Widget separator(String str, BuildContext context) {
 
 Widget searchContainer(String str, BuildContext context) {
   return Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(7.0),
-        color: Colors.white,
-        boxShadow: [
-          BoxShadow(
-            color: Color(0xff60aad2),
-            offset: Offset(0.0, 3.0), //(x,y)
-            blurRadius: 6.0,
-          ),
-        ],
-      ),
-      width: MediaQuery.of(context).size.width * .80,
-      height: MediaQuery.of(context).size.height * .060,
-      // margin: EdgeInsets.only(
-      //   top: !isLandScape
-      //       ? MediaQuery.of(context).size.height * .28
-      //       : MediaQuery.of(context).size.height * .55,
-      //   left: MediaQuery.of(context).devicePixelRatio * 10,
-      // ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        //crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              Padding(
-                padding: EdgeInsets.only(
-                  left: 10,
-                ),
-                child: Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    str,
-                    style: TextStyle(
-                      fontFamily: 'Roboto',
-                      fontSize: 17.5,
-                      color: const Color(0xff60aad2),
-                      letterSpacing: 1.05,
-                      //  height: 1.542857142857143,
-                    ),
-
-                    //textAlign: TextAlign.left,
+    decoration: BoxDecoration(
+      borderRadius: BorderRadius.circular(7.0),
+      color: Colors.white,
+      boxShadow: [
+        BoxShadow(
+          color: Color(0xff60aad2),
+          offset: Offset(0.0, 3.0), //(x,y)
+          blurRadius: 6.0,
+        ),
+      ],
+    ),
+    width: MediaQuery.of(context).size.width * .80,
+    height: MediaQuery.of(context).size.height * .060,
+    // margin: EdgeInsets.only(
+    //   top: !isLandScape
+    //       ? MediaQuery.of(context).size.height * .28
+    //       : MediaQuery.of(context).size.height * .55,
+    //   left: MediaQuery.of(context).devicePixelRatio * 10,
+    // ),
+    child: Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      //crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          children: [
+            Padding(
+              padding: EdgeInsets.only(
+                left: 10,
+              ),
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  str,
+                  style: TextStyle(
+                    fontFamily: 'Roboto',
+                    fontSize: 17.5,
+                    color: const Color(0xff60aad2),
+                    letterSpacing: 1.05,
+                    //  height: 1.542857142857143,
                   ),
+
+                  //textAlign: TextAlign.left,
                 ),
               ),
-              Expanded(
-                child: Padding(
-                    padding: EdgeInsets.only(
-                      right: 10,
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: [
-                        Icon(
-                          Icons.search,
-                          color: const Color(0xff60aad2),
-                        ),
-                      ],
-                    )),
-              ),
-            ],
-          ),
-        ],
-      ),
-    );
+            ),
+            Expanded(
+              child: Padding(
+                  padding: EdgeInsets.only(
+                    right: 10,
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      Icon(
+                        Icons.search,
+                        color: const Color(0xff60aad2),
+                      ),
+                    ],
+                  )),
+            ),
+          ],
+        ),
+      ],
+    ),
+  );
 }
 
 Widget relativeRequest(BuildContext context) {
@@ -342,8 +341,6 @@ Widget button(Color color, String str, BuildContext context) {
   );
 }
 
-
-
 Widget getImageButton(BuildContext context) {
   return Container(
     width: double.infinity,
@@ -373,4 +370,3 @@ Widget getImageButton(BuildContext context) {
     ),
   );
 }
-

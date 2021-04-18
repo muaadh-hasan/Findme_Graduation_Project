@@ -158,7 +158,7 @@ class IndividualChatScreen extends StatelessWidget {
                   child: Container(
                     margin: EdgeInsets.only(top: 5, right: 30),
                     child: Text(
-                      message.time,
+                      message.time.toString(),
                       style: TextStyle(
                         color: Colors.blueGrey,
                         fontSize: 9.0,
@@ -214,7 +214,7 @@ class IndividualChatScreen extends StatelessWidget {
                   child: Container(
                     margin: EdgeInsets.only(left: 30),
                     child: Text(
-                      message.time,
+                      message.time.toString(),
                       style: TextStyle(
                         color: Colors.blueGrey,
                         fontSize: 9.0,

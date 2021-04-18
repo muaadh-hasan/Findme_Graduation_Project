@@ -1,6 +1,7 @@
 // <<<<<<< HEAD
 import 'package:findme_gp_project/models/account.dart';
 import 'package:findme_gp_project/models/user.dart';
+import 'package:intl/intl.dart';
 
 class Message {
   final User sender;
@@ -15,6 +16,8 @@ class Message {
     this.text,
     this.unread,
   });
+
+  String formatDate(DateTime date) => new DateFormat("Hm").format(date);
 }
 
 Account account1 = Account(

@@ -18,7 +18,8 @@ class _NotificationScreenState extends State<NotificationScreen> {
           Container(
             width: double.infinity,
             decoration: BoxDecoration(
-              color: Theme.of(context).accentColor,
+              // color: Theme.of(context).accentColor,
+
               borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(30),
                 topRight: Radius.circular(30),
@@ -29,6 +30,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
                 Container(
                   decoration: BoxDecoration(
                     color: Colors.white,
+                    // color: Colors.blue[100],
                     borderRadius: BorderRadius.only(
                       topLeft: Radius.circular(30),
                       topRight: Radius.circular(30),

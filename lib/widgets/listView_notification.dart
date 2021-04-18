@@ -21,7 +21,7 @@ class _ListViewNotificationState extends State<ListViewNotification> {
       itemBuilder: (BuildContext context, int position) {
         return Card(
             margin: EdgeInsets.all(5),
-            color: Colors.lightBlueAccent[100],
+            color: Colors.blue[50],
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.only(
                   topLeft: Radius.circular(20),
