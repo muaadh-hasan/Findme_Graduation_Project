@@ -1,10 +1,14 @@
+// <<<<<<< HEAD
 import 'package:findme_gp_project/providers/profile_provider.dart';
-import 'package:findme_gp_project/screens/chats_screen.dart';
-import 'package:findme_gp_project/screens/home_screen.dart';
-import 'package:findme_gp_project/screens/individual_chat_screen.dart';
-import 'package:findme_gp_project/screens/profile_screen.dart';
-import 'package:findme_gp_project/screens/search.dart';
+// import 'package:findme_gp_project/screens/chats_screen.dart';
+// import 'package:findme_gp_project/screens/home_screen.dart';
+// import 'package:findme_gp_project/screens/individual_chat_screen.dart';
+// import 'package:findme_gp_project/screens/profile_screen.dart';
+// import 'package:findme_gp_project/screens/search.dart';
 
+// =======
+import 'package:findme_gp_project/screens/tabs_Screen.dart';
+// >>>>>>> Moaaz-UI-V1
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -17,35 +21,23 @@ void main() {
   ));
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   // This widget is the root of your application.
+  @override
+  _MyAppState createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primaryColor: Colors.blue[400],
+        accentColor: Colors.deepPurple[50],
       ),
-      home: MyHomePage(),
+      title: 'Find Me',
+      home: TabsScreen(),
     );
-  }
-}
-
-class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
-  final String title;
-
-  @override
-  _MyHomePageState createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  @override
-  Widget build(BuildContext context) {
-    return Search();
-    //IndividualChatScreen();
-    //Profile();
-    //ChatsScreen();
   }
 }

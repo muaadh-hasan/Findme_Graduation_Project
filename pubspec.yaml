@@ -22,7 +22,6 @@ environment:
 
 dependencies:
   flutter_svg: ^0.19.3
-  adobe_xd:
   flutter:
     sdk: flutter
 
@@ -33,6 +32,7 @@ dependencies:
   image_picker:
   provider:
   toast:    
+
 
 dev_dependencies:
   flutter_test:

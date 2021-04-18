@@ -1,9 +1,10 @@
+// <<<<<<< HEAD
 import 'package:findme_gp_project/models/account.dart';
 import 'package:findme_gp_project/models/user.dart';
 
 class Message {
   final User sender;
-  final String
+  final DateTime
       time; // Would usually be type DateTime or Firebase Timestamp in production apps
   final String text;
   final bool unread;
@@ -79,50 +80,49 @@ List<User> users = [
   yasmeena5,
   yasmeena6,
   yasmeena7,
-
 ];
 
 // EXAMPLE CHATS ON HOME SCREEN
 List<Message> chats = [
   Message(
     sender: yasmeena,
-    time: '5:30 PM',
+    time: DateTime.now(),
     text: 'Hey, how\'s it going? What did you do today?',
     unread: true,
   ),
   Message(
     sender: yasmeena,
-    time: '4:30 PM',
+    time: DateTime.now(),
     text: 'Hey, how\'s it going? What did you do today?',
     unread: true,
   ),
   Message(
     sender: yasmeena,
-    time: '3:30 PM',
+    time: DateTime.now(),
     text: 'Hey, how\'s it going? What did you do today?',
     unread: false,
   ),
   Message(
     sender: yasmeena,
-    time: '2:30 PM',
+    time: DateTime.now(),
     text: 'Hey, how\'s it going? What did you do today?',
     unread: true,
   ),
   Message(
     sender: yasmeena,
-    time: '1:30 PM',
+    time: DateTime.now(),
     text: 'Hey, how\'s it going? What did you do today?',
     unread: false,
   ),
   Message(
     sender: yasmeena,
-    time: '12:30 PM',
+    time: DateTime.now(),
     text: 'Hey, how\'s it going? What did you do today?',
     unread: false,
   ),
   Message(
     sender: yasmeena,
-    time: '11:30 AM',
+    time: DateTime.now(),
     text: 'Hey, how\'s it going? What did you do today?',
     unread: false,
   ),
@@ -132,37 +132,37 @@ List<Message> chats = [
 List<Message> messages = [
   Message(
     sender: yasmeena,
-    time: '5:30 PM',
+    time: DateTime.now(),
     text: 'Hey, how\'s it going? What did you do today?',
     unread: true,
   ),
   Message(
     sender: currentUser,
-    time: '4:30 PM',
+    time: DateTime.now(),
     text: 'Just walked my doge. She was super duper cute. The best pupper!!',
     unread: true,
   ),
   Message(
     sender: yasmeena,
-    time: '3:45 PM',
+    time: DateTime.now(),
     text: 'How\'s the doggo?',
     unread: true,
   ),
   Message(
     sender: yasmeena,
-    time: '3:15 PM',
+    time: DateTime.now(),
     text: 'All the food',
     unread: true,
   ),
   Message(
     sender: currentUser,
-    time: '2:30 PM',
+    time: DateTime.now(),
     text: 'Nice! What kind of food did you eat?',
     unread: true,
   ),
   Message(
     sender: yasmeena,
-    time: '2:00 PM',
+    time: DateTime.now(),
     text: 'I ate so much food today.',
     unread: true,
   ),

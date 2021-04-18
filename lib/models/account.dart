@@ -2,7 +2,10 @@ class Account {
   final String name;
   final String username;
   final String password;
+// <<<<<<< HEAD
   final String phone;
+// =======
+// >>>>>>> Moaaz-UI-V1
   final String location;
   final String type;
   final String email;
