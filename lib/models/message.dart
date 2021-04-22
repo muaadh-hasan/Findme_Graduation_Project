@@ -6,7 +6,7 @@ import 'package:intl/intl.dart';
 class Message {
   final User sender;
   final DateTime
-      time; // Would usually be type DateTime or Firebase Timestamp in production apps
+      time; 
   final String text;
   final bool unread;
 
