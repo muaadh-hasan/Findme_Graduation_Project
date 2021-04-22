@@ -4,9 +4,8 @@ class Account {
   final String password;
 // <<<<<<< HEAD
   final String phone;
-// =======
-// >>>>>>> Moaaz-UI-V1
-  final String location;
+
+  final String location; // this will be the title of area
   final String type;
   final String email;
   final List<String> images;
