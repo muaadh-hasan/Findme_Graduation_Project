@@ -1,8 +1,12 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.findme_gp_project">
+     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
    <application
         android:label="findme_gp_project"
         android:icon="@mipmap/ic_launcher">
+         <meta-data android:name="com.google.android.geo.API_KEY"
+               android:value="AIzaSyBK-SFwqLj3k14nRxoU4TWc7iIbo2N-nv8"/>
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"

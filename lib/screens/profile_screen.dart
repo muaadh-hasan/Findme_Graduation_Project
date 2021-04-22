@@ -1,12 +1,15 @@
 import 'dart:io';
 
-import 'package:findme_gp_project/models/user.dart';
+import 'package:findme_gp_project/providers/location_provider.dart';
+import 'package:findme_gp_project/screens/map_screen.dart';
+
 import 'package:findme_gp_project/providers/profile_provider.dart';
 import 'package:findme_gp_project/widgets/relative_requests_widget.dart';
 import 'package:findme_gp_project/widgets/your_photos_widget.dart';
 import 'package:findme_gp_project/widgets/your_relatives_widget.dart';
 import 'package:findme_gp_project/widgets/profile_widgets.dart';
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
@@ -20,10 +23,11 @@ class Profile extends StatefulWidget {
 
 class _Profile extends State<Profile> {
   bool isLandScape;
+
   @override
   Widget build(BuildContext context) {
     isLandScape = MediaQuery.of(context).orientation == Orientation.landscape;
-
+    Provider.of<LocationProvider>(context, listen: false).locatePosition();
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -64,7 +68,15 @@ class _Profile extends State<Profile> {
                       flex: 2,
                       child: Padding(
                           padding: const EdgeInsets.only(right: 2),
-                          child: locationIcon(context)),
+                          child: GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => MapScreen()));
+                            },
+                            child: locationIcon(context),
+                          )),
                     ),
                   ],
                 ),

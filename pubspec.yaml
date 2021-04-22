@@ -22,6 +22,8 @@ environment:
 
 dependencies:
   flutter_svg: ^0.19.3
+  google_maps_flutter: ^2.0.3
+  geolocator:
   flutter:
     sdk: flutter
 
