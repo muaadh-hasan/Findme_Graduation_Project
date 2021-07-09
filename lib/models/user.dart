@@ -2,18 +2,32 @@ import 'package:findme_gp_project/models/chat.dart';
 import 'package:findme_gp_project/models/notification_user.dart';
 import 'package:findme_gp_project/models/post.dart';
 import 'package:findme_gp_project/models/request.dart';
-import 'package:findme_gp_project/models/account.dart';
 
 // FindMe.GP2021
 class User {
-  final Account account;
+  final String name;
+  final String username;
+  final String password;
+  final String phone;
+  final String location;
+  final String type;
+  final String email;
+  final List<String> images;
   final List<Post> posts;
   final List<NotificationUser> notifications;
   final List<Chat> chats;
   final List<User> relatives;
   final List<Request> requests;
+
   User({
-    this.account,
+    this.name,
+    this.username,
+    this.password,
+    this.phone,
+    this.location,
+    this.type,
+    this.email,
+    this.images,
     this.posts,
     this.notifications,
     this.chats,

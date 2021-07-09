@@ -2,7 +2,11 @@ import 'package:findme_gp_project/models/message.dart';
 import 'package:findme_gp_project/widgets/chats_widgets.dart';
 import 'package:flutter/material.dart';
 
+import '../data.dart';
+
 class IndividualChatScreen extends StatelessWidget {
+  List<Message> messages;
+  IndividualChatScreen(this.messages);
   bool opacityOfAppBar = true;
   @override
   Widget build(BuildContext context) {
@@ -51,7 +55,7 @@ class IndividualChatScreen extends StatelessWidget {
                         Expanded(
                           flex: 22,
                           child: Text(
-                            users[0].account.name,
+                            messages[0].sender.name,
                             style: TextStyle(
                               fontFamily: 'Europa',
                               fontSize: 30,
@@ -84,9 +88,8 @@ class IndividualChatScreen extends StatelessWidget {
                                     itemBuilder:
                                         (BuildContext context, int index) {
                                       final Message message = messages[index];
-                                      final bool isMe =
-                                          message.sender.account.email ==
-                                              currentUser.account.email;
+                                      final bool isMe = message.sender.email ==
+                                          currentUser.email;
                                       return _buildMessage(
                                           message, isMe, context);
                                     },

@@ -10,6 +10,8 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
+import 'map_screen.dart';
+
 class Profile extends StatefulWidget {
   Profile({Key key, this.title}) : super(key: key);
   final String title;
@@ -23,7 +25,6 @@ class _Profile extends State<Profile> {
   @override
   Widget build(BuildContext context) {
     isLandScape = MediaQuery.of(context).orientation == Orientation.landscape;
-
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -64,7 +65,15 @@ class _Profile extends State<Profile> {
                       flex: 2,
                       child: Padding(
                           padding: const EdgeInsets.only(right: 2),
-                          child: locationIcon(context)),
+                          child: GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => MapScreen()));
+                            },
+                            child: locationIcon(context),
+                          )),
                     ),
                   ],
                 ),

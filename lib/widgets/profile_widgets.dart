@@ -1,9 +1,20 @@
-import 'package:findme_gp_project/models/message.dart';
+import 'dart:io';
+
+import 'package:findme_gp_project/providers/location_provider.dart';
+import 'package:findme_gp_project/screens/map_screen.dart';
+
 import 'package:findme_gp_project/providers/profile_provider.dart';
 import 'package:findme_gp_project/screens/profile_screen.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:findme_gp_project/widgets/relative_requests_widget.dart';
+import 'package:findme_gp_project/widgets/your_photos_widget.dart';
+import 'package:findme_gp_project/widgets/your_relatives_widget.dart';
+import 'package:findme_gp_project/widgets/profile_widgets.dart';
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:provider/provider.dart';
+
+import '../data.dart';
 
 Widget customProfileAppBar(BuildContext context) {
   return Container(
@@ -87,7 +98,7 @@ Widget headerContents(BuildContext context) {
               //mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  users[0].account.name,
+                  currentUser.name,
                   style: TextStyle(
                     fontFamily: 'Europa',
                     fontSize: 29,
@@ -104,7 +115,7 @@ Widget headerContents(BuildContext context) {
                     ),
                     SizedBox(width: 10),
                     Text(
-                      users[0].account.email,
+                      currentUser.email,
                       style: TextStyle(
                         fontFamily: 'Europa',
                         fontSize: 11,

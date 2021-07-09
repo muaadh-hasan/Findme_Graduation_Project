@@ -1,8 +1,12 @@
+import 'package:findme_gp_project/models/chat.dart';
 import 'package:findme_gp_project/models/message.dart';
+import 'package:findme_gp_project/screens/individual_chat_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
-Widget recentChats(BuildContext context) {
+import '../data.dart';
+
+Widget recentChats(BuildContext context, List<Chat> chats) {
   return Expanded(
     child: Padding(
       padding: EdgeInsets.only(left: 10),
@@ -13,9 +17,11 @@ Widget recentChats(BuildContext context) {
             padding: EdgeInsets.only(top: 0),
             itemCount: chats.length,
             itemBuilder: (BuildContext context, int index) {
-              final Message chat = chats[index];
+              final Chat chat = chats[index];
               return GestureDetector(
-                onTap: () {},
+                onTap: () {
+                  IndividualChatScreen(chat.messages);
+                },
                 child: Container(
                   margin: EdgeInsets.only(
                     // top: 5.0,
@@ -25,7 +31,7 @@ Widget recentChats(BuildContext context) {
                   padding:
                       EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
                   decoration: BoxDecoration(
-                    color: chat.unread
+                    color: chat.messages[messages.length - 1].unread
                         ? const Color.fromARGB(100, 187, 215, 230)
                         : Colors.white,
                     borderRadius: BorderRadius.only(
@@ -40,15 +46,17 @@ Widget recentChats(BuildContext context) {
                         children: <Widget>[
                           CircleAvatar(
                             radius: 35.0,
-                            backgroundImage:
-                                AssetImage(chat.sender.account.images[0]),
+                            backgroundImage: AssetImage(chat
+                                .messages[messages.length - 1]
+                                .sender
+                                .images[0]),
                           ),
                           SizedBox(width: 10.0),
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
                               Text(
-                                chat.sender.account.name,
+                                chat.messages[messages.length - 1].sender.name,
                                 style: TextStyle(
                                   color: Colors.grey,
                                   fontSize: 15.0,
@@ -59,7 +67,7 @@ Widget recentChats(BuildContext context) {
                               Container(
                                 width: MediaQuery.of(context).size.width * 0.45,
                                 child: Text(
-                                  chat.text,
+                                  chat.messages[messages.length - 1].text,
                                   style: TextStyle(
                                     color: Colors.blueGrey,
                                     fontSize: 15.0,
@@ -75,7 +83,8 @@ Widget recentChats(BuildContext context) {
                       Column(
                         children: <Widget>[
                           Text(
-                            chat.time.hour.toString(),
+                            chat.messages[messages.length - 1].time.hour
+                                .toString(),
                             style: TextStyle(
                               color: Colors.grey,
                               fontSize: 15.0,
@@ -83,7 +92,7 @@ Widget recentChats(BuildContext context) {
                             ),
                           ),
                           SizedBox(height: 5.0),
-                          chat.unread
+                          chat.messages[messages.length - 1].unread
                               ? Container(
                                   width: 40.0,
                                   height: 20.0,

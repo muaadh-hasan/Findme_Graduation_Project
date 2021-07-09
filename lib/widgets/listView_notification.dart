@@ -31,10 +31,10 @@ class _ListViewNotificationState extends State<ListViewNotification> {
             child: ListTile(
               leading: CircleAvatar(
                 child: ProfileAvatar(
-                  imageUrl: currentUser.account.images[0],
+                  imageUrl: currentUser.images[0],
                 ),
               ),
-              title: Text(currentUser.notifications[position].user.account.name,
+              title: Text(currentUser.notifications[position].user.name,
                   style: TextStyle(
                     fontSize: 20,
                     letterSpacing: 1.0,

@@ -1,4 +1,7 @@
+import 'package:findme_gp_project/providers/location_provider.dart';
 import 'package:findme_gp_project/providers/profile_provider.dart';
+import 'package:findme_gp_project/screens/individual_chat_screen.dart';
+import 'package:findme_gp_project/screens/profile_screen.dart';
 import 'package:findme_gp_project/screens/tabs_Screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -8,6 +11,7 @@ void main() {
   runApp(MultiProvider(
     providers: [
       ChangeNotifierProvider(create: (_) => ProfileProvider()),
+      ChangeNotifierProvider(create: (_) => LocationProvider()),
     ],
     child: MyApp(),
   ));
@@ -29,11 +33,11 @@ class _MyAppState extends State<MyApp> {
         accentColor: Colors.deepPurple[50],
       ),
       title: 'Find Me',
-      home: Search(),
-      // IndividualChatScreen(),
-      // ChatsScreen(),
-      // Profile(),
-      //  TabsScreen(),
+      home: //Search(),
+          //IndividualChatScreen(),
+          //ChatsScreen(),
+          Profile(),
+      //TabsScreen(),
     );
   }
 }

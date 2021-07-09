@@ -4,34 +4,26 @@ import 'package:findme_gp_project/widgets/profile_widgets.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import '../data.dart';
+
 class Search extends StatefulWidget {
   @override
   _SearchState createState() => _SearchState();
 }
 
 class _SearchState extends State<Search> {
-  List<User> _users = [
-    mariam,
-    yasmeena,
-    yasmeena3,
-    yasmeena4,
-    yasmeena5,
-    yasmeena6,
-    yasmeena7,
-  ];
-
   List<User> _usersForDisplay;
 
   @override
   void initState() {
-    _usersForDisplay = _users;
+    _usersForDisplay = users;
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     for (var item in _usersForDisplay) {
-      print(item.account.name);
+      print(item.name);
       print("*****\n");
     }
     return Scaffold(
@@ -87,8 +79,8 @@ class _SearchState extends State<Search> {
               onChanged: (text) {
                 text = text.toLowerCase();
                 setState(() {
-                  _usersForDisplay = _users.where((user) {
-                    var userItem = user.account.email.toLowerCase();
+                  _usersForDisplay = users.where((user) {
+                    var userItem = user.email.toLowerCase();
                     return userItem.startsWith(text);
                   }).toList();
                 });
@@ -121,7 +113,7 @@ class _SearchState extends State<Search> {
           Padding(
             padding: EdgeInsets.only(left: 4),
             child: Text(
-              _usersForDisplay[index].account.name,
+              _usersForDisplay[index].name,
               style: TextStyle(
                 fontFamily: 'Roboto',
                 fontSize: 15.5,
