@@ -43,7 +43,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       children: [
                         Column(
                           children: [
-                            Text('Hi Moaaz',
+                            Text('Hi ' + currentUser.name.split(' ')[0],
                                 style: TextStyle(
                                   fontSize: 40,
                                 )),

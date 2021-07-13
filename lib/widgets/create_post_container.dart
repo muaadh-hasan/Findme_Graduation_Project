@@ -1,4 +1,5 @@
 import 'package:findme_gp_project/models/user.dart';
+import 'package:findme_gp_project/screens/profile_screen.dart';
 import 'package:flutter/material.dart';
 
 class CreatePostContainer extends StatelessWidget {
@@ -24,7 +25,6 @@ class CreatePostContainer extends StatelessWidget {
                 Expanded(
                   child: TextField(
                     decoration: InputDecoration(
-                      // icon: Icon(Icons.pending),
                       prefixIcon: Icon(Icons.insert_drive_file_outlined,
                           color: Colors.grey),
                       hintText: 'What\'s happen?',
@@ -53,24 +53,12 @@ class CreatePostContainer extends StatelessWidget {
                   Container(
                     height: 40.0,
                     child: TextButton.icon(
-                      onPressed: () => print('Photo'),
-                      icon: Icon(
-                        Icons.photo_library,
-                        color: Colors.green,
-                      ),
-                      label: Text('Choose Photo'),
-                    ),
-                  ),
-                  VerticalDivider(width: 8.0),
-                  Container(
-                    height: 40.0,
-                    child: TextButton.icon(
-                      onPressed: () => print(' TakePhoto'),
+                      onPressed: () => showChooseImageWindow(context),
                       icon: Icon(
                         Icons.add_a_photo_sharp,
                         color: Colors.green,
                       ),
-                      label: Text('Take Photo'),
+                      label: Text('Add Photo'),
                     ),
                   ),
                 ],
@@ -78,9 +66,9 @@ class CreatePostContainer extends StatelessWidget {
             ),
             Divider(),
             ElevatedButton.icon(
-              onPressed: () {},
+              onPressed: () => print('Post'),
               icon: Icon(Icons.add_circle_outline_sharp, size: 30),
-              label: Text("Add", style: TextStyle(fontSize: 25)),
+              label: Text("Post", style: TextStyle(fontSize: 25)),
               style: ElevatedButton.styleFrom(
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(30)),

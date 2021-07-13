@@ -15,6 +15,13 @@ class PostItem extends StatefulWidget {
 class _PostItemState extends State<PostItem> {
   TextEditingController postInfo = TextEditingController();
 
+  List<String> postImages = [
+    'https://th.bing.com/th/id/R9516c9859ea32406e2ff8560bb085919?rik=BtsEc5%2b79tQiBA&riu=http%3a%2f%2fwww.hdwallpapers.in%2fdownload%2fcute_kittens-2560x1600.jpg&ehk=qEj3I0ukvZ4d90k7AAKkeWPegTTHeCHNGkeixT7JbHY%3d&risl=&pid=ImgRaw',
+    'https://th.bing.com/th/id/OIP.om0Mv8Vg7kDoMJvA3m7ILwHaEo?pid=ImgDet&w=600&h=375&rs=1',
+    'https://th.bing.com/th/id/R9516c9859ea32406e2ff8560bb085919?rik=BtsEc5%2b79tQiBA&riu=http%3a%2f%2fwww.hdwallpapers.in%2fdownload%2fcute_kittens-2560x1600.jpg&ehk=qEj3I0ukvZ4d90k7AAKkeWPegTTHeCHNGkeixT7JbHY%3d&risl=&pid=ImgRaw',
+    'https://th.bing.com/th/id/OIP.om0Mv8Vg7kDoMJvA3m7ILwHaEo?pid=ImgDet&w=600&h=375&rs=1'
+  ];
+
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -32,20 +39,22 @@ class _PostItemState extends State<PostItem> {
           Divider(),
           // _createTextFormFiled('Post', ' What Happen!', postInfo, 5),
           Text(widget.post.infoPost),
+          Divider(),
           Container(
             height: 150,
-            child: GridView.count(
-              crossAxisCount: 2,
-              mainAxisSpacing: 0,
-              crossAxisSpacing: 5,
-              children: [
-                Image.network(
-                  'https://th.bing.com/th/id/R9516c9859ea32406e2ff8560bb085919?rik=BtsEc5%2b79tQiBA&riu=http%3a%2f%2fwww.hdwallpapers.in%2fdownload%2fcute_kittens-2560x1600.jpg&ehk=qEj3I0ukvZ4d90k7AAKkeWPegTTHeCHNGkeixT7JbHY%3d&risl=&pid=ImgRaw',
-                ),
-                Image.network(
-                  'https://th.bing.com/th/id/OIP.om0Mv8Vg7kDoMJvA3m7ILwHaEo?pid=ImgDet&w=600&h=375&rs=1',
-                ),
-              ],
+            child: GridView.builder(
+              itemCount: postImages.length,
+              gridDelegate:
+                  SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
+              itemBuilder: (BuildContext context, int index) {
+                return Container(
+                  color: Colors.white,
+                  child: Image.network(
+                    postImages[index],
+                    fit: BoxFit.cover,
+                  ),
+                );
+              },
             ),
           ),
           Divider(),
@@ -60,7 +69,7 @@ class _PostItemState extends State<PostItem> {
                     size: 20.0,
                   ),
                   label: 'Call',
-                  onTap: () => print('Like'),
+                  onTap: () => print('Call'),
                 ),
                 _PostButton(
                   icon: Icon(
@@ -69,7 +78,7 @@ class _PostItemState extends State<PostItem> {
                     size: 20.0,
                   ),
                   label: 'Message',
-                  onTap: () => print('Comment'),
+                  onTap: () => print('message'),
                 ),
                 _PostButton(
                   icon: Icon(
@@ -78,7 +87,7 @@ class _PostItemState extends State<PostItem> {
                     size: 25.0,
                   ),
                   label: 'Location',
-                  onTap: () => print('Share'),
+                  onTap: () => print('location'),
                 )
               ],
             ),

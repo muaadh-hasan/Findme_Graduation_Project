@@ -38,8 +38,8 @@ class _MyAppState extends State<MyApp> {
           //IndividualChatScreen(),
           //ChatsScreen(),
           // Profile(),
-          // TabsScreen(),
-          SplashScreen(),
+          TabsScreen(),
+      // SplashScreen(),
     );
   }
 }
