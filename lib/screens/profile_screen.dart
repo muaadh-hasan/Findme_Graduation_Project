@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:findme_gp_project/models/user.dart';
+import 'package:findme_gp_project/providers/location_provider.dart';
 import 'package:findme_gp_project/providers/profile_provider.dart';
 import 'package:findme_gp_project/widgets/relative_requests_widget.dart';
 import 'package:findme_gp_project/widgets/your_photos_widget.dart';

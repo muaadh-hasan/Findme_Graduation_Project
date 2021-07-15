@@ -5,6 +5,8 @@ import 'package:findme_gp_project/screens/map_screen.dart';
 
 import 'package:findme_gp_project/providers/profile_provider.dart';
 import 'package:findme_gp_project/screens/profile_screen.dart';
+import 'package:findme_gp_project/screens/search.dart';
+import 'package:findme_gp_project/screens/settings.dart';
 import 'package:findme_gp_project/widgets/relative_requests_widget.dart';
 import 'package:findme_gp_project/widgets/your_photos_widget.dart';
 import 'package:findme_gp_project/widgets/your_relatives_widget.dart';
@@ -30,9 +32,14 @@ Widget customProfileAppBar(BuildContext context) {
                   top: MediaQuery.of(context).size.height * .060,
                   left: MediaQuery.of(context).size.width * .030,
                 ),
-                child: Icon(
-                  Icons.arrow_back,
-                  color: Colors.white,
+                child: GestureDetector(
+                  onTap: () {
+                    Navigator.pop(context);
+                  },
+                  child: Icon(
+                    Icons.arrow_back,
+                    color: Colors.white,
+                  ),
                 ),
               ),
             ],
@@ -44,9 +51,17 @@ Widget customProfileAppBar(BuildContext context) {
           child: Column(
             children: [
               Container(
-                child: Icon(
-                  Icons.settings,
-                  color: Colors.white,
+                child: GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => Settings()),
+                    );
+                  },
+                  child: Icon(
+                    Icons.settings,
+                    color: Colors.white,
+                  ),
                 ),
                 margin: EdgeInsets.only(
                   top: MediaQuery.of(context).size.height * .060,
@@ -71,8 +86,8 @@ Widget headerContents(BuildContext context) {
           flex: 3,
           child: Container(
             margin: EdgeInsets.only(
-              top: MediaQuery.of(context).devicePixelRatio * 9.5,
-              left: MediaQuery.of(context).devicePixelRatio * 10,
+              top: 20,
+              left: 20,
               // bottom: MediaQuery.of(context).devicePixelRatio * 20,
             ),
             child: ClipRRect(
@@ -95,7 +110,6 @@ Widget headerContents(BuildContext context) {
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              //mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
                   currentUser.name,
@@ -206,70 +220,78 @@ Widget separator(String str, BuildContext context) {
 }
 
 Widget searchContainer(String str, BuildContext context) {
-  return Container(
-    decoration: BoxDecoration(
-      borderRadius: BorderRadius.circular(7.0),
-      color: Colors.white,
-      boxShadow: [
-        BoxShadow(
-          color: Color(0xff60aad2),
-          offset: Offset(0.0, 3.0), //(x,y)
-          blurRadius: 6.0,
-        ),
-      ],
-    ),
-    width: MediaQuery.of(context).size.width * .80,
-    height: MediaQuery.of(context).size.height * .060,
-    // margin: EdgeInsets.only(
-    //   top: !isLandScape
-    //       ? MediaQuery.of(context).size.height * .28
-    //       : MediaQuery.of(context).size.height * .55,
-    //   left: MediaQuery.of(context).devicePixelRatio * 10,
-    // ),
-    child: Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      //crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Row(
-          children: [
-            Padding(
-              padding: EdgeInsets.only(
-                left: 10,
-              ),
-              child: Align(
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  str,
-                  style: TextStyle(
-                    fontFamily: 'Roboto',
-                    fontSize: 17.5,
-                    color: const Color(0xff60aad2),
-                    letterSpacing: 1.05,
-                    //  height: 1.542857142857143,
-                  ),
+  return GestureDetector(
+    onTap: () {
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => Search()),
+      );
+    },
+    child: Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(7.0),
+        color: Colors.white,
+        boxShadow: [
+          BoxShadow(
+            color: Color(0xff60aad2),
+            offset: Offset(0.0, 3.0), //(x,y)
+            blurRadius: 6.0,
+          ),
+        ],
+      ),
+      width: MediaQuery.of(context).size.width * .80,
+      height: MediaQuery.of(context).size.height * .060,
+      // margin: EdgeInsets.only(
+      //   top: !isLandScape
+      //       ? MediaQuery.of(context).size.height * .28
+      //       : MediaQuery.of(context).size.height * .55,
+      //   left: MediaQuery.of(context).devicePixelRatio * 10,
+      // ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        //crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Padding(
+                padding: EdgeInsets.only(
+                  left: 10,
+                ),
+                child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    str,
+                    style: TextStyle(
+                      fontFamily: 'Roboto',
+                      fontSize: 17.5,
+                      color: const Color(0xff60aad2),
+                      letterSpacing: 1.05,
+                      //  height: 1.542857142857143,
+                    ),
 
-                  //textAlign: TextAlign.left,
+                    //textAlign: TextAlign.left,
+                  ),
                 ),
               ),
-            ),
-            Expanded(
-              child: Padding(
-                  padding: EdgeInsets.only(
-                    right: 10,
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      Icon(
-                        Icons.search,
-                        color: const Color(0xff60aad2),
-                      ),
-                    ],
-                  )),
-            ),
-          ],
-        ),
-      ],
+              Expanded(
+                child: Padding(
+                    padding: EdgeInsets.only(
+                      right: 10,
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        Icon(
+                          Icons.search,
+                          color: const Color(0xff60aad2),
+                        ),
+                      ],
+                    )),
+              ),
+            ],
+          ),
+        ],
+      ),
     ),
   );
 }
