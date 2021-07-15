@@ -22,6 +22,10 @@ class _PostItemState extends State<PostItem> {
     'https://th.bing.com/th/id/OIP.om0Mv8Vg7kDoMJvA3m7ILwHaEo?pid=ImgDet&w=600&h=375&rs=1'
   ];
 
+  // final Function deleteImage;
+
+  // _PostItemState(this.deleteImage);
+
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -35,11 +39,14 @@ class _PostItemState extends State<PostItem> {
             ),
             title: Text('Moaaz Hasan'),
             subtitle: Text('4:12 pm'),
+            // trailing: InkWell(
+            //   child: Icon(Icons.delete_outline, color: Colors.blue),
+            //   onTap: deleteImage,
+            // ),
           ),
           Divider(),
-          // _createTextFormFiled('Post', ' What Happen!', postInfo, 5),
           Text(widget.post.infoPost),
-          Divider(),
+          SizedBox(height: 10),
           Container(
             height: 150,
             child: GridView.builder(
@@ -60,36 +67,20 @@ class _PostItemState extends State<PostItem> {
           Divider(),
           Container(
             height: 45,
-            child: Row(
-              children: [
-                _PostButton(
-                  icon: Icon(
-                    FontAwesomeIcons.phoneAlt,
-                    color: Colors.blue[600],
-                    size: 20.0,
-                  ),
-                  label: 'Call',
-                  onTap: () => print('Call'),
+            child: InkWell(
+              onTap: () => print('Delete'),
+              child: Container(
+                padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                height: 25.0,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(FontAwesomeIcons.trash, color: Colors.blue),
+                    const SizedBox(width: 4.0),
+                    Text("Delete Post"),
+                  ],
                 ),
-                _PostButton(
-                  icon: Icon(
-                    FontAwesomeIcons.comment,
-                    color: Colors.blue[600],
-                    size: 20.0,
-                  ),
-                  label: 'Message',
-                  onTap: () => print('message'),
-                ),
-                _PostButton(
-                  icon: Icon(
-                    FontAwesomeIcons.mapMarkerAlt,
-                    color: Colors.blue[600],
-                    size: 25.0,
-                  ),
-                  label: 'Location',
-                  onTap: () => print('location'),
-                )
-              ],
+              ),
             ),
           ),
         ],
@@ -98,39 +89,39 @@ class _PostItemState extends State<PostItem> {
   }
 }
 
-class _PostButton extends StatelessWidget {
-  final Icon icon;
-  final String label;
-  final Function onTap;
+// class _PostButton extends StatelessWidget {
+//   final Icon icon;
+//   final String label;
+//   final Function onTap;
 
-  const _PostButton({
-    Key key,
-    @required this.icon,
-    @required this.label,
-    @required this.onTap,
-  }) : super(key: key);
+//   const _PostButton({
+//     Key key,
+//     @required this.icon,
+//     @required this.label,
+//     @required this.onTap,
+//   }) : super(key: key);
 
-  @override
-  Widget build(BuildContext context) {
-    return Expanded(
-      child: Material(
-        color: Colors.white,
-        child: InkWell(
-          onTap: onTap,
-          child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 12.0),
-            height: 25.0,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                icon,
-                const SizedBox(width: 4.0),
-                Text(label),
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-}
+//   @override
+//   Widget build(BuildContext context) {
+//     return Expanded(
+//       child: Material(
+//         color: Colors.white,
+//         child: InkWell(
+//           onTap: onTap,
+//           child: Container(
+//             padding: const EdgeInsets.symmetric(horizontal: 12.0),
+//             height: 25.0,
+//             child: Row(
+//               mainAxisAlignment: MainAxisAlignment.center,
+//               children: [
+//                 icon,
+//                 const SizedBox(width: 4.0),
+//                 Text(label),
+//               ],
+//             ),
+//           ),
+//         ),
+//       ),
+//     );
+//   }
+// }
