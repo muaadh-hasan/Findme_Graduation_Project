@@ -49,7 +49,7 @@ class YourPhotos extends StatelessWidget {
                 ),
               )
             : Container(
-                child: Text("No photos Added!"),
+                child: Center(child: Text("No photos Added!")),
               ),
       ),
     ]);

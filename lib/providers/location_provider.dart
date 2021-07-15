@@ -9,6 +9,7 @@ class LocationProvider with ChangeNotifier {
     Position position = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.high);
     currentPosition = position;
+
     print("******* Great Job ^^ *******");
     print(currentPosition.latitude);
     ChangeNotifier();

@@ -16,9 +16,6 @@ class _MapScreenState extends State<MapScreen> {
   Set<Marker> _markers = {};
 
   void _onMapCreated(GoogleMapController controller) {
-    currentPosition =
-        Provider.of<LocationProvider>(context, listen: true).currentPosition;
-
     setState(() {
       print("currentPosition.latitude**********************************");
       print(currentPosition.latitude);
@@ -31,9 +28,9 @@ class _MapScreenState extends State<MapScreen> {
 
   @override
   Widget build(BuildContext context) {
+    Provider.of<LocationProvider>(context, listen: false).locatePosition();
     currentPosition =
         Provider.of<LocationProvider>(context, listen: true).currentPosition;
-
     return Scaffold(
         body: Container(
       child: GoogleMap(

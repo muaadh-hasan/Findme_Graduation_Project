@@ -1,7 +1,9 @@
 import 'package:findme_gp_project/providers/location_provider.dart';
 import 'package:findme_gp_project/providers/profile_provider.dart';
-import 'package:findme_gp_project/screens/individual_chat_screen.dart';
 import 'package:findme_gp_project/screens/profile_screen.dart';
+import 'package:findme_gp_project/screens/settings.dart';
+import 'package:findme_gp_project/screens/sign_in.dart';
+import 'package:findme_gp_project/screens/sign_up.dart';
 import 'package:findme_gp_project/screens/tabs_Screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -36,6 +38,9 @@ class _MyAppState extends State<MyApp> {
       home: //Search(),
           //IndividualChatScreen(),
           //ChatsScreen(),
+          //SignIn(),
+          // Settings(),
+          //SignUp(),
           Profile(),
       //TabsScreen(),
     );
