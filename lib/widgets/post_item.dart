@@ -15,6 +15,17 @@ class PostItem extends StatefulWidget {
 class _PostItemState extends State<PostItem> {
   TextEditingController postInfo = TextEditingController();
 
+  List<String> postImages = [
+    'https://th.bing.com/th/id/R9516c9859ea32406e2ff8560bb085919?rik=BtsEc5%2b79tQiBA&riu=http%3a%2f%2fwww.hdwallpapers.in%2fdownload%2fcute_kittens-2560x1600.jpg&ehk=qEj3I0ukvZ4d90k7AAKkeWPegTTHeCHNGkeixT7JbHY%3d&risl=&pid=ImgRaw',
+    'https://th.bing.com/th/id/OIP.om0Mv8Vg7kDoMJvA3m7ILwHaEo?pid=ImgDet&w=600&h=375&rs=1',
+    'https://th.bing.com/th/id/R9516c9859ea32406e2ff8560bb085919?rik=BtsEc5%2b79tQiBA&riu=http%3a%2f%2fwww.hdwallpapers.in%2fdownload%2fcute_kittens-2560x1600.jpg&ehk=qEj3I0ukvZ4d90k7AAKkeWPegTTHeCHNGkeixT7JbHY%3d&risl=&pid=ImgRaw',
+    'https://th.bing.com/th/id/OIP.om0Mv8Vg7kDoMJvA3m7ILwHaEo?pid=ImgDet&w=600&h=375&rs=1'
+  ];
+
+  // final Function deleteImage;
+
+  // _PostItemState(this.deleteImage);
+
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -28,59 +39,48 @@ class _PostItemState extends State<PostItem> {
             ),
             title: Text('Moaaz Hasan'),
             subtitle: Text('4:12 pm'),
+            // trailing: InkWell(
+            //   child: Icon(Icons.delete_outline, color: Colors.blue),
+            //   onTap: deleteImage,
+            // ),
           ),
           Divider(),
-          // _createTextFormFiled('Post', ' What Happen!', postInfo, 5),
           Text(widget.post.infoPost),
+          SizedBox(height: 10),
           Container(
             height: 150,
-            child: GridView.count(
-              crossAxisCount: 2,
-              mainAxisSpacing: 0,
-              crossAxisSpacing: 5,
-              children: [
-                Image.network(
-                  'https://th.bing.com/th/id/R9516c9859ea32406e2ff8560bb085919?rik=BtsEc5%2b79tQiBA&riu=http%3a%2f%2fwww.hdwallpapers.in%2fdownload%2fcute_kittens-2560x1600.jpg&ehk=qEj3I0ukvZ4d90k7AAKkeWPegTTHeCHNGkeixT7JbHY%3d&risl=&pid=ImgRaw',
-                ),
-                Image.network(
-                  'https://th.bing.com/th/id/OIP.om0Mv8Vg7kDoMJvA3m7ILwHaEo?pid=ImgDet&w=600&h=375&rs=1',
-                ),
-              ],
+            child: GridView.builder(
+              itemCount: postImages.length,
+              gridDelegate:
+                  SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
+              itemBuilder: (BuildContext context, int index) {
+                return Container(
+                  color: Colors.white,
+                  child: Image.network(
+                    postImages[index],
+                    fit: BoxFit.cover,
+                  ),
+                );
+              },
             ),
           ),
           Divider(),
           Container(
             height: 45,
-            child: Row(
-              children: [
-                _PostButton(
-                  icon: Icon(
-                    FontAwesomeIcons.phoneAlt,
-                    color: Colors.blue[600],
-                    size: 20.0,
-                  ),
-                  label: 'Call',
-                  onTap: () => print('Like'),
+            child: InkWell(
+              onTap: () => print('Delete'),
+              child: Container(
+                padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                height: 25.0,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(FontAwesomeIcons.trash, color: Colors.blue),
+                    const SizedBox(width: 4.0),
+                    Text("Delete Post"),
+                  ],
                 ),
-                _PostButton(
-                  icon: Icon(
-                    FontAwesomeIcons.comment,
-                    color: Colors.blue[600],
-                    size: 20.0,
-                  ),
-                  label: 'Message',
-                  onTap: () => print('Comment'),
-                ),
-                _PostButton(
-                  icon: Icon(
-                    FontAwesomeIcons.mapMarkerAlt,
-                    color: Colors.blue[600],
-                    size: 25.0,
-                  ),
-                  label: 'Location',
-                  onTap: () => print('Share'),
-                )
-              ],
+              ),
             ),
           ),
         ],
@@ -89,39 +89,39 @@ class _PostItemState extends State<PostItem> {
   }
 }
 
-class _PostButton extends StatelessWidget {
-  final Icon icon;
-  final String label;
-  final Function onTap;
+// class _PostButton extends StatelessWidget {
+//   final Icon icon;
+//   final String label;
+//   final Function onTap;
 
-  const _PostButton({
-    Key key,
-    @required this.icon,
-    @required this.label,
-    @required this.onTap,
-  }) : super(key: key);
+//   const _PostButton({
+//     Key key,
+//     @required this.icon,
+//     @required this.label,
+//     @required this.onTap,
+//   }) : super(key: key);
 
-  @override
-  Widget build(BuildContext context) {
-    return Expanded(
-      child: Material(
-        color: Colors.white,
-        child: InkWell(
-          onTap: onTap,
-          child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 12.0),
-            height: 25.0,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                icon,
-                const SizedBox(width: 4.0),
-                Text(label),
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-}
+//   @override
+//   Widget build(BuildContext context) {
+//     return Expanded(
+//       child: Material(
+//         color: Colors.white,
+//         child: InkWell(
+//           onTap: onTap,
+//           child: Container(
+//             padding: const EdgeInsets.symmetric(horizontal: 12.0),
+//             height: 25.0,
+//             child: Row(
+//               mainAxisAlignment: MainAxisAlignment.center,
+//               children: [
+//                 icon,
+//                 const SizedBox(width: 4.0),
+//                 Text(label),
+//               ],
+//             ),
+//           ),
+//         ),
+//       ),
+//     );
+//   }
+// }
