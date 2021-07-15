@@ -6,6 +6,7 @@ import 'package:findme_gp_project/screens/tabs_Screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'screens/search.dart';
+import 'screens/splash_screen.dart';
 
 void main() {
   runApp(MultiProvider(
@@ -36,8 +37,9 @@ class _MyAppState extends State<MyApp> {
       home: //Search(),
           //IndividualChatScreen(),
           //ChatsScreen(),
-          Profile(),
-      //TabsScreen(),
+          // Profile(),
+          TabsScreen(),
+      // SplashScreen(),
     );
   }
 }

@@ -3,6 +3,7 @@ import 'package:findme_gp_project/widgets/profile_avatar.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
+import 'chats_screen.dart';
 import 'notification_screen.dart';
 import 'profile_screen.dart';
 
@@ -27,7 +28,10 @@ class _TabsScreenState extends State<TabsScreen> {
   @override
   void initState() {
     _pages = [
-      {'page': HomeScreen(), 'title': 'Home'},
+      {
+        'page': HomeScreen(),
+        'title': 'Home',
+      },
       {
         'page': NotificationScreen(),
         'title': 'Notifications',
@@ -53,10 +57,15 @@ class _TabsScreenState extends State<TabsScreen> {
         elevation: 0,
         actions: <Widget>[
           IconButton(
-              icon: Icon(FontAwesomeIcons.comment),
-              iconSize: 30,
-              color: Colors.white,
-              onPressed: () {}),
+            icon: Icon(FontAwesomeIcons.comment),
+            iconSize: 30,
+            color: Colors.white,
+            onPressed: () {
+              Navigator.push(context, MaterialPageRoute(builder: (context) {
+                return ChatsScreen();
+              }));
+            },
+          ),
           GestureDetector(
             child: Container(
               padding: EdgeInsets.all(7),
