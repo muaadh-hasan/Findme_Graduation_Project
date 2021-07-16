@@ -56,16 +56,16 @@ class _TabsScreenState extends State<TabsScreen> {
         ),
         elevation: 0,
         actions: <Widget>[
-          IconButton(
-            icon: Icon(FontAwesomeIcons.comment),
-            iconSize: 30,
-            color: Colors.white,
-            onPressed: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) {
-                return ChatsScreen();
-              }));
-            },
-          ),
+          // IconButton(
+          //   icon: Icon(FontAwesomeIcons.comment),
+          //   iconSize: 30,
+          //   color: Colors.white,
+          //   onPressed: () {
+          //     Navigator.push(context, MaterialPageRoute(builder: (context) {
+          //       return ChatsScreen();
+          //     }));
+          //   },
+          // ),
           GestureDetector(
             child: Container(
               padding: EdgeInsets.all(7),
