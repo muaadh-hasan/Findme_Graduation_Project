@@ -95,7 +95,7 @@ Widget headerContents(BuildContext context) {
               child: Image(
                 width: MediaQuery.of(context).size.width * 0.3,
                 height: MediaQuery.of(context).size.height * 0.2,
-                image: const AssetImage('assets/images/pic11.jpg'),
+                image: NetworkImage(currentUser.images[0]),
                 fit: BoxFit.fill,
               ),
             ),

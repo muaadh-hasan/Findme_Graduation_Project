@@ -15,6 +15,7 @@ import 'package:provider/provider.dart';
 
 import '../constants.dart';
 import 'map_screen.dart';
+import 'tabs_screen.dart';
 
 class SignIn extends StatefulWidget {
   SignIn({Key key, this.title}) : super(key: key);
@@ -272,7 +273,7 @@ class _Profile extends State<SignIn> {
             ),
             onPressed: () {
               Navigator.of(context).pushReplacement(new MaterialPageRoute(
-                  builder: (BuildContext context) => Profile()));
+                  builder: (BuildContext context) => TabsScreen()));
             },
             child: Text(
               "Login",

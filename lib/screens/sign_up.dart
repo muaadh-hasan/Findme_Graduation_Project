@@ -14,6 +14,7 @@ import 'package:provider/provider.dart';
 
 import '../constants.dart';
 import 'map_screen.dart';
+import 'tabs_screen.dart';
 
 class SignUp extends StatefulWidget {
   SignUp({Key key, this.title}) : super(key: key);
@@ -92,17 +93,6 @@ class _Profile extends State<SignUp> {
                           bottomLeft: Radius.circular(40),
                           bottomRight: Radius.circular(40),
                         )),
-                  ),
-                ),
-                Container(
-                  child: Padding(
-                    padding: const EdgeInsets.only(bottom: 15.0),
-                    child: Column(
-                      children: [
-                        _buildOrRow(),
-                        _buildSocialBtnRow(),
-                      ],
-                    ),
                   ),
                 ),
               ],
@@ -279,8 +269,9 @@ class _Profile extends State<SignUp> {
               borderRadius: BorderRadius.circular(30.0),
             ),
             onPressed: () {
+              Navigator.pop(context);
               Navigator.of(context).pushReplacement(new MaterialPageRoute(
-                  builder: (BuildContext context) => Profile()));
+                  builder: (BuildContext context) => TabsScreen()));
             },
             child: Text(
               "SignUp",
