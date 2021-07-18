@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:findme_gp_project/models/user.dart';
-import 'package:findme_gp_project/providers/profile_provider.dart';
+import 'package:findme_gp_project/providers/user_provider.dart';
 import 'package:findme_gp_project/screens/profile_screen.dart';
 import 'package:findme_gp_project/widgets/relative_requests_widget.dart';
 import 'package:findme_gp_project/widgets/your_photos_widget.dart';
@@ -25,8 +25,21 @@ class SignUp extends StatefulWidget {
 }
 
 class _Profile extends State<SignUp> {
+  final GlobalKey<FormState> _formKey = GlobalKey();
+  Map<String, dynamic> _authData = {
+    'name': '',
+    'email': '',
+    'password': '',
+    'phone': ''
+  };
+
+  TextEditingController _nameController = new TextEditingController();
+  TextEditingController _emailController = new TextEditingController();
+  TextEditingController _passwordController = new TextEditingController();
+  TextEditingController _phoneController = new TextEditingController();
+
   bool isLandScape;
-  String email, password;
+
   @override
   Widget build(BuildContext context) {
     isLandScape = MediaQuery.of(context).orientation == Orientation.landscape;
@@ -139,10 +152,17 @@ class _Profile extends State<SignUp> {
                             ),
                           ],
                         ),
-                        _buildUserNameRow(),
-                        _buildEmailRow(),
-                        _buildPasswordRow(),
-                        _buildSignUpButton(),
+                        Form(
+                            key: _formKey,
+                            child: Column(
+                              children: [
+                                _buildUserNameRow(),
+                                _buildEmailRow(),
+                                _buildPasswordRow(),
+                                _buildPhoneRow(),
+                                _buildSignUpButton(),
+                              ],
+                            ))
                       ],
                     ),
                   ),
@@ -168,10 +188,11 @@ class _Profile extends State<SignUp> {
           ),
         ),
         child: TextFormField(
+          controller: _emailController,
           keyboardType: TextInputType.emailAddress,
           onChanged: (value) {
             setState(() {
-              email = value;
+              _authData['email'] = value;
             });
           },
           decoration: InputDecoration(
@@ -201,10 +222,11 @@ class _Profile extends State<SignUp> {
           ),
         ),
         child: TextFormField(
+          controller: _nameController,
           keyboardType: TextInputType.emailAddress,
           onChanged: (value) {
             setState(() {
-              email = value;
+              _authData['name'] = value;
             });
           },
           decoration: InputDecoration(
@@ -234,11 +256,12 @@ class _Profile extends State<SignUp> {
           ),
         ),
         child: TextFormField(
+          controller: _passwordController,
           keyboardType: TextInputType.emailAddress,
           obscureText: true,
           onChanged: (value) {
             setState(() {
-              password = value;
+              _authData['password'] = value;
             });
           },
           decoration: InputDecoration(
@@ -249,6 +272,41 @@ class _Profile extends State<SignUp> {
             border: InputBorder.none,
             labelText: 'Password',
           ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildPhoneRow() {
+    return Padding(
+      padding: EdgeInsets.all(8),
+      child: Container(
+        decoration: BoxDecoration(
+          color: Colors.white,
+          border: Border.all(color: Colors.grey[200]),
+          borderRadius: BorderRadius.only(
+            bottomLeft: Radius.circular(50),
+            bottomRight: Radius.circular(50),
+            topLeft: Radius.circular(50),
+            topRight: Radius.circular(50),
+          ),
+        ),
+        child: TextFormField(
+          controller: _phoneController,
+          keyboardType: TextInputType.number,
+          onTap: () {},
+          onChanged: (value) {
+            setState(() {
+              _authData['phone'] = value;
+            });
+          },
+          decoration: InputDecoration(
+              prefixIcon: Icon(
+                Icons.phone,
+                color: mainColor,
+              ),
+              border: InputBorder.none,
+              labelText: 'phone number'),
         ),
       ),
     );
@@ -268,10 +326,42 @@ class _Profile extends State<SignUp> {
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(30.0),
             ),
-            onPressed: () {
-              Navigator.pop(context);
-              Navigator.of(context).pushReplacement(new MaterialPageRoute(
-                  builder: (BuildContext context) => TabsScreen()));
+            onPressed: () async {
+              if (_nameController.text.isEmpty) {
+                ScaffoldMessenger.of(context)
+                    .showSnackBar(SnackBar(content: Text("Please Enter Name")));
+                return;
+              }
+              if (!reg.hasMatch(_emailController.text)) {
+                ScaffoldMessenger.of(context)
+                    .showSnackBar(SnackBar(content: Text("Enter Valid Email")));
+                return;
+              }
+              if (_passwordController.text.isEmpty ||
+                  _passwordController.text.length < 6) {
+                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                    content: Text("Password should be minimum 6 characters")));
+                return;
+              }
+              bool check = await context.read<UserProvider>().signUp(
+                    _authData['email'],
+                    _authData['password'],
+                    _authData['name'],
+                    _authData['phone'],
+                  );
+
+              print(_authData);
+
+              if (check == true) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text("Sign up successfully!")));
+                Navigator.pop(context);
+                Navigator.of(context).pushReplacement(new MaterialPageRoute(
+                    builder: (BuildContext context) => TabsScreen()));
+              } else {
+                ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text("Failed!!!, try again.")));
+              }
             },
             child: Text(
               "SignUp",
@@ -280,52 +370,6 @@ class _Profile extends State<SignUp> {
                 letterSpacing: 1.5,
                 fontSize: MediaQuery.of(context).size.height / 40,
               ),
-            ),
-          ),
-        )
-      ],
-    );
-  }
-
-  Widget _buildOrRow() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: <Widget>[
-        Container(
-          margin: EdgeInsets.only(bottom: 20),
-          child: Text(
-            '- OR -',
-            style: TextStyle(
-              fontWeight: FontWeight.w400,
-            ),
-          ),
-        )
-      ],
-    );
-  }
-
-  Widget _buildSocialBtnRow() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: <Widget>[
-        GestureDetector(
-          onTap: () {},
-          child: Container(
-            height: 60,
-            width: 60,
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              color: mainColor,
-              boxShadow: [
-                BoxShadow(
-                    color: Colors.black26,
-                    offset: Offset(0, 2),
-                    blurRadius: 6.0)
-              ],
-            ),
-            child: Icon(
-              FontAwesomeIcons.google,
-              color: Colors.white,
             ),
           ),
         )

@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:findme_gp_project/providers/location_provider.dart';
 import 'package:findme_gp_project/screens/map_screen.dart';
 
-import 'package:findme_gp_project/providers/profile_provider.dart';
+import 'package:findme_gp_project/providers/user_provider.dart';
 import 'package:findme_gp_project/screens/profile_screen.dart';
 import 'package:findme_gp_project/screens/search.dart';
 import 'package:findme_gp_project/screens/settings.dart';

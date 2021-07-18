@@ -1,4 +1,4 @@
-import 'package:findme_gp_project/providers/profile_provider.dart';
+import 'package:findme_gp_project/providers/user_provider.dart';
 import 'package:findme_gp_project/screens/profile_screen.dart';
 import 'package:findme_gp_project/screens/settings.dart';
 import 'package:findme_gp_project/screens/sign_in.dart';
@@ -6,6 +6,7 @@ import 'package:findme_gp_project/screens/sign_up.dart';
 import 'package:findme_gp_project/screens/tabs_Screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'providers/location_provider.dart';
 import 'screens/chats_screen.dart';
 import 'screens/individual_chat_screen.dart';
 import 'screens/search.dart';
@@ -13,7 +14,8 @@ import 'screens/search.dart';
 void main() {
   runApp(MultiProvider(
     providers: [
-      ChangeNotifierProvider(create: (_) => ProfileProvider()),
+      ChangeNotifierProvider(create: (_) => UserProvider()),
+      ChangeNotifierProvider(create: (_) => LocationProvider())
     ],
     child: MyApp(),
   ));

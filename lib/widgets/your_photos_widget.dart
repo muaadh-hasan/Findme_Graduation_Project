@@ -1,13 +1,13 @@
 import 'dart:io';
 
-import 'package:findme_gp_project/providers/profile_provider.dart';
+import 'package:findme_gp_project/providers/user_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class YourPhotos extends StatelessWidget {
   Widget build(BuildContext context) {
-    List<File> imagesList = Provider.of<ProfileProvider>(context).imagesList;
+    List<File> imagesList = Provider.of<UserProvider>(context).imagesList;
 
     return Column(crossAxisAlignment: CrossAxisAlignment.center, children: [
       Container(

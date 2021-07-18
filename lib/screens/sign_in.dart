@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:findme_gp_project/models/user.dart';
-import 'package:findme_gp_project/providers/profile_provider.dart';
+import 'package:findme_gp_project/providers/user_provider.dart';
 import 'package:findme_gp_project/screens/profile_screen.dart';
 import 'package:findme_gp_project/screens/sign_up.dart';
 import 'package:findme_gp_project/widgets/relative_requests_widget.dart';
@@ -27,7 +27,15 @@ class SignIn extends StatefulWidget {
 
 class _Profile extends State<SignIn> {
   bool isLandScape;
-  String email, password;
+
+  final GlobalKey<FormState> _formKey = GlobalKey();
+  Map<String, dynamic> _authData = {
+    'email': '',
+    'password': '',
+  };
+
+  TextEditingController _emailController = new TextEditingController();
+  TextEditingController _passwordController = new TextEditingController();
   @override
   Widget build(BuildContext context) {
     isLandScape = MediaQuery.of(context).orientation == Orientation.landscape;
@@ -140,14 +148,16 @@ class _Profile extends State<SignIn> {
                             ),
                           ],
                         ),
-                        _buildEmailRow(),
-                        _buildPasswordRow(),
-
-                        // _buildRememberMeButton(),
-                        _buildForgetPasswordButton(),
-
-                        _buildLoginButton(),
-                        _buildSignUpButton(),
+                        Form(
+                            child: Column(
+                          children: [
+                            _buildEmailRow(),
+                            _buildPasswordRow(),
+                            // _buildForgetPasswordButton(),
+                            _buildLoginButton(),
+                            _buildSignUpButton(),
+                          ],
+                        ))
                       ],
                     ),
                   ),
@@ -173,10 +183,11 @@ class _Profile extends State<SignIn> {
           ),
         ),
         child: TextFormField(
+          controller: _emailController,
           keyboardType: TextInputType.emailAddress,
           onChanged: (value) {
             setState(() {
-              email = value;
+              _authData['email'] = value;
             });
           },
           decoration: InputDecoration(
@@ -206,11 +217,12 @@ class _Profile extends State<SignIn> {
           ),
         ),
         child: TextFormField(
+          controller: _passwordController,
           keyboardType: TextInputType.emailAddress,
           obscureText: true,
           onChanged: (value) {
             setState(() {
-              password = value;
+              _authData['password'] = value;
             });
           },
           decoration: InputDecoration(
@@ -223,37 +235,6 @@ class _Profile extends State<SignIn> {
           ),
         ),
       ),
-    );
-  }
-
-  Widget _buildForgetPasswordButton() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: <Widget>[
-        FlatButton(
-          onPressed: () {},
-          child: Text(
-            "Forgot Password ?",
-            style: TextStyle(
-              color: Colors.grey,
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildRememberMeButton() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.start,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        FlatButton(
-          onPressed: () {},
-          child: Text("Remember me"),
-        ),
-      ],
     );
   }
 
@@ -271,9 +252,33 @@ class _Profile extends State<SignIn> {
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(30.0),
             ),
-            onPressed: () {
-              Navigator.of(context).pushReplacement(new MaterialPageRoute(
-                  builder: (BuildContext context) => TabsScreen()));
+            onPressed: () async {
+              print("Data ***********************");
+              print(_authData['email']);
+              print(_authData['password']);
+
+              if (!reg.hasMatch(_emailController.text)) {
+                ScaffoldMessenger.of(context)
+                    .showSnackBar(SnackBar(content: Text("Enter Valid Email")));
+                return;
+              }
+
+              bool check = await context.read<UserProvider>().signIn(
+                    _authData['email'],
+                    _authData['password'],
+                  );
+
+              print("check ***********************");
+              print(check);
+              if (check == true) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text("Sign In successfully!")));
+                Navigator.of(context).pushReplacement(new MaterialPageRoute(
+                    builder: (BuildContext context) => TabsScreen()));
+              } else {
+                ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text("Failed!!!, try again.")));
+              }
             },
             child: Text(
               "Login",
