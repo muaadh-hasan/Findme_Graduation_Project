@@ -11,6 +11,9 @@ import 'screens/chats_screen.dart';
 import 'screens/individual_chat_screen.dart';
 import 'screens/search.dart';
 
+// email: findme.gp@gmail.com
+// pass: FindMe.GP2021
+
 void main() {
   runApp(MultiProvider(
     providers: [

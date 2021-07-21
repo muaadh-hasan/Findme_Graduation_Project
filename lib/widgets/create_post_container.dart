@@ -1,7 +1,12 @@
+import 'dart:html';
+
+import 'package:findme_gp_project/models/post.dart';
 import 'package:findme_gp_project/models/user.dart';
-import 'package:findme_gp_project/screens/profile_screen.dart';
+import 'package:findme_gp_project/providers/user_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:provider/provider.dart';
 
 class CreatePostContainer extends StatefulWidget {
   final User currentUser;
@@ -19,6 +24,10 @@ class _CreatePostContainerState extends State<CreatePostContainer> {
   List<String> statesFinder = ["Choose!", "In hand", "Kidnapped"];
   var postTypeSelected;
   var stateFinderSelected;
+
+  final GlobalKey<FormState> _formKey = GlobalKey();
+
+  TextEditingController _infoPostController = new TextEditingController();
 
   @override
   void initState() {
@@ -41,22 +50,26 @@ class _CreatePostContainerState extends State<CreatePostContainer> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Expanded(
-                  child: TextField(
-                    decoration: InputDecoration(
-                      prefixIcon: Icon(Icons.insert_drive_file_outlined,
-                          color: Colors.grey),
-                      hintText: 'What\'s happen?',
-                      hintStyle: TextStyle(
-                        color: Colors.grey,
-                        fontSize: 18,
+                  child: Form(
+                    key: _formKey,
+                    child: TextField(
+                      controller: _infoPostController,
+                      decoration: InputDecoration(
+                        prefixIcon: Icon(Icons.insert_drive_file_outlined,
+                            color: Colors.grey),
+                        hintText: 'What\'s happened?',
+                        hintStyle: TextStyle(
+                          color: Colors.grey,
+                          fontSize: 18,
+                        ),
+                        border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(20)),
                       ),
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(20)),
+                      maxLines: 10,
+                      // onTap: () {
+                      //   print('Post');
+                      // },
                     ),
-                    maxLines: 10,
-                    onTap: () {
-                      print('Post');
-                    },
                   ),
                 )
               ],
@@ -95,7 +108,9 @@ class _CreatePostContainerState extends State<CreatePostContainer> {
                   Container(
                     height: 40.0,
                     child: TextButton.icon(
-                      onPressed: () => showChooseImageWindow(context),
+                      onPressed: () {
+                        showChooseImageWindow(context);
+                      },
                       icon: Icon(
                         Icons.add_a_photo_sharp,
                         color: Colors.green,
@@ -108,7 +123,15 @@ class _CreatePostContainerState extends State<CreatePostContainer> {
             ),
             Divider(),
             ElevatedButton.icon(
-              onPressed: () => print('Post'),
+              onPressed: () async {
+                Post post = Post(
+                  infoPost: _infoPostController.text,
+                  image: context.read<UserProvider>().imagePost,
+                  state: stateFinderSelected,
+                  postType: postTypeSelected,
+                );
+                await context.read<UserProvider>().addPost(post);
+              },
               icon: Icon(Icons.add_circle_outline_sharp, size: 30),
               label: Text("Post", style: TextStyle(fontSize: 25)),
               style: ElevatedButton.styleFrom(
@@ -120,6 +143,49 @@ class _CreatePostContainerState extends State<CreatePostContainer> {
         ),
       ),
     );
+  }
+
+  Builder buildDialogItem(
+      BuildContext context, String text, IconData icon, ImageSource src) {
+    return Builder(
+      builder: (innerContext) => Container(
+        decoration: BoxDecoration(
+          color: const Color(0xff60aad2),
+          borderRadius: BorderRadius.circular(15),
+        ),
+        child: ListTile(
+          leading: Icon(icon, color: Colors.white),
+          title: Text(text),
+          onTap: () async {
+            // File image = (await context.read<UserProvider>().getImage(src)) as File;
+            context
+                .read<UserProvider>()
+                .addImagePost(await context.read<UserProvider>().getImage(src));
+            Navigator.of(innerContext).pop();
+          },
+        ),
+      ),
+    );
+  }
+
+  void showChooseImageWindow(BuildContext context) {
+    var ad = AlertDialog(
+      title: Text("Choose Picture from:"),
+      content: Container(
+        height: 150,
+        child: Column(
+          children: [
+            Divider(color: Colors.black),
+            buildDialogItem(context, "Camera", Icons.add_a_photo_outlined,
+                ImageSource.camera),
+            SizedBox(height: 10),
+            buildDialogItem(
+                context, "Gallery", Icons.image_outlined, ImageSource.gallery),
+          ],
+        ),
+      ),
+    );
+    showDialog(builder: (context) => ad, context: context);
   }
 
   Widget _createDropdownButton(List<String> list, String selected, String T_S) {

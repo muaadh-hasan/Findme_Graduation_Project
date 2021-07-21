@@ -23,9 +23,11 @@ class Profile extends StatefulWidget {
 
 class _Profile extends State<Profile> {
   bool isLandScape;
+
   @override
   Widget build(BuildContext context) {
     isLandScape = MediaQuery.of(context).orientation == Orientation.landscape;
+    File image;
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -92,7 +94,7 @@ class _Profile extends State<Profile> {
                   separator("Your Relatives", context),
                   YourRelatives(),
                   separator("Your Photos", context),
-                  YourPhotos(),
+                  // YourPhotos(),
                 ],
               ),
             ),
@@ -114,8 +116,10 @@ Builder buildDialogItem(
       child: ListTile(
         leading: Icon(icon, color: Colors.white),
         title: Text(text),
-        onTap: () {
-          context.read<UserProvider>().getImage(src);
+        onTap: () async {
+          var image = await context.read<UserProvider>().getImage(src);
+          context.read<UserProvider>().addImagePost(image);
+
           Navigator.of(innerContext).pop();
         },
       ),

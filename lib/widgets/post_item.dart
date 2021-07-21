@@ -72,13 +72,18 @@ class _PostItemState extends State<PostItem> {
               child: Container(
                 padding: const EdgeInsets.symmetric(horizontal: 12.0),
                 height: 25.0,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(FontAwesomeIcons.trash, color: Colors.blue),
-                    const SizedBox(width: 4.0),
-                    Text("Delete Post"),
-                  ],
+                child: GestureDetector(
+                  onTap: () async {
+                    bool check = await context.read<UserProvider>().signIn();
+                  },
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(FontAwesomeIcons.trash, color: Colors.blue),
+                      const SizedBox(width: 4.0),
+                      Text("Delete Post"),
+                    ],
+                  ),
                 ),
               ),
             ),

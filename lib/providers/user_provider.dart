@@ -16,8 +16,9 @@ class UserProvider with ChangeNotifier {
   var mainUrl = Api.authUrl;
   var authKey = Api.authKey;
 
-  List<File> imagesList = [];
+  // List<File> imagesList = [];
   File image;
+  File imagePost;
 
   User currentUser;
 
@@ -32,104 +33,134 @@ class UserProvider with ChangeNotifier {
 
   Future<bool> signUp(
       String email, String password, String name, String phone) async {
-    // try {
-    //   final responce = await http.post(Uri.parse(mainUrl),
-    //       body: json.encode({
-    //         'email': email,
-    //         'password': password,
-    //         'name': name,
-    //         'phone': phone
-    //       }));
+    try {
+      final responce = await http.post(Uri.parse(mainUrl),
+          body: json.encode({
+            'email': email,
+            'password': password,
+            'name': name,
+            'phone': phone
+          }));
 
-    //   final responceData = json.decode(responce.body);
+      var responceData;
 
-    //   print(responceData);
-    //   // if (responceData['error'] != null) {
-    //   //   throw HttpException(responceData['error']['message']);
-    //   // }
+      print(responceData);
 
-    //   // if(responceData.hashCode == 200){
+      if (responce.statusCode == 200) {
+        // If the server did return a 200 OK response,
+        // then parse the JSON.
+        responceData = User.fromJson(jsonDecode(responce.body));
+      } else {
+        // If the server did not return a 200 OK response,
+        // then throw an exception.
+        throw Exception('Failed to load album');
+      }
 
-    //   // }else{}
+      currentUser = responceData['user'];
 
-    //   currentUser = responceData['user'];
+      notifyListeners();
 
-    //   notifyListeners();
+      final prefs = await SharedPreferences.getInstance();
 
-    //   final prefs = await SharedPreferences.getInstance();
+      final userData = json.encode({
+        'currentUser': currentUser,
+      });
 
-    //   final userData = json.encode({
-    //     'currentUser': currentUser,
-    //   });
+      prefs.setString('userData', userData);
 
-    //   prefs.setString('userData', userData);
-
-    //   print('check' + userData.toString());
-    // } catch (e) {
-    //   return false;
-    // }
+      print('check' + userData.toString());
+    } catch (e) {
+      return false;
+    }
     return true;
   }
 
   Future<bool> signIn(String email, String password) async {
-    // try {
-    //   final responce = await http.post(Uri.parse(mainUrl),
-    //       body: json.encode({'email': email, 'password': password}));
+    try {
+      final responce = await http.post(Uri.parse(mainUrl),
+          body: json.encode({'email': email, 'password': password}));
 
-    //   final responceData = json.decode(responce.body);
+      var responceData;
 
-    //   print(responceData);
-    //   // if (responceData['error'] != null) {
-    //   //   throw HttpException(responceData['error']['message']);
-    //   // }
+      if (responce.statusCode == 200) {
+        // If the server did return a 200 OK response,
+        // then parse the JSON.
+        responceData = User.fromJson(jsonDecode(responce.body));
+      } else {
+        // If the server did not return a 200 OK response,
+        // then throw an exception.
+        throw Exception('Failed to load album');
+      }
 
-    //   // if(responceData.hashCode == 200){
+      currentUser = responceData['user'];
 
-    //   // }else{}
+      notifyListeners();
 
-    //   currentUser = responceData['user'];
+      final prefs = await SharedPreferences.getInstance();
 
-    //   notifyListeners();
+      final userData = json.encode({
+        'currentUser': currentUser,
+      });
 
-    //   final prefs = await SharedPreferences.getInstance();
-    //   final userData = json.encode({
-    //     'currentUser': currentUser,
-    //   });
+      prefs.setString('userData', userData);
 
-    //   prefs.setString('userData', userData);
-
-    //   print('check' + userData.toString());
-    // } catch (e) {
-    //   return false;
-    // }
+      print('check' + userData.toString());
+    } catch (e) {
+      return false;
+    }
     return true;
   }
 
-  void addImage({File image}) {
-    imagesList.add(image);
+  void addImagePost(File image) {
+    this.imagePost = image;
     notifyListeners();
   }
 
-  Future getImage(ImageSource src) async {
+  Future<File> getImage(ImageSource src) async {
     final pickedFile = await ImagePicker().getImage(source: src);
 
     if (pickedFile != null) {
       image = File(pickedFile.path);
-      imagesList.add(image);
+      // imagesList.add(image);
       notifyListeners();
       print('Image selected.');
     } else {
       print('No image selected.');
     }
+    return image == null ? null : image;
   }
 
   void deleteImage() {
     image = null;
   }
 
-  // void addPost(Post post) {
-  //   posts.add(post);
-  // }
+  Future<bool> deletePost(String id) async {
+    final responce = await http.post(Uri.parse(mainUrl + '\deletePost'),
+        body: json.encode({'id': id}));
+
+    notifyListeners();
+
+    if (responce.statusCode == 200) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  Future<bool> addPost(Post post) async {
+    final responce = await http.post(Uri.parse(mainUrl + '\addPost'),
+        body: json.encode({
+          'infoPost': post.infoPost,
+          'postType': post.postType,
+          'state': post.state,
+          'image': post.image,
+        }));
+    if (responce.statusCode == 200) {
+      return true;
+    } else {
+      return false;
+    }
+  }
 
   // void addRelative(User relative) {
   //   relatives.add(relative);
