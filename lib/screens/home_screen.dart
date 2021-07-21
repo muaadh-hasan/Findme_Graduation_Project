@@ -43,9 +43,9 @@ class _HomeScreenState extends State<HomeScreen> {
                       children: [
                         Column(
                           children: [
-                            Text('Hi ' + currentUser.name.split(' ')[0],
+                            Text('Hi ' + currentUser.username,
                                 style: TextStyle(
-                                  fontSize: 40,
+                                  fontSize: 25,
                                 )),
                             Padding(
                               padding: const EdgeInsets.only(left: 30),

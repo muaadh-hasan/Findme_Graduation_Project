@@ -1,5 +1,3 @@
-import 'dart:html';
-
 import 'package:findme_gp_project/models/user.dart';
 
 class Post {
@@ -10,7 +8,7 @@ class Post {
   final String location;
 
   final DateTime date;
-  final File image;
+  final String image;
   Post(
       {this.location,
       this.postType,

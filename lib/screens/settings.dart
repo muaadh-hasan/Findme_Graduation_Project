@@ -1,7 +1,9 @@
-import 'package:findme_gp_project/models/message.dart';
+import 'dart:io';
+import 'package:findme_gp_project/providers/user_provider.dart';
 import 'package:findme_gp_project/screens/profile_screen.dart';
 import 'package:findme_gp_project/widgets/chats_widgets.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 // import '../constants.dart';
 import '../constants.dart';
@@ -15,7 +17,22 @@ class Settings extends StatefulWidget {
 class _SettingsState extends State<Settings> {
   bool opacityOfAppBar = true;
 
-  String email, password;
+  String email, userName, password, phone, location;
+  final GlobalKey<FormState> _formKey = GlobalKey();
+  TextEditingController _userNameController = new TextEditingController();
+  TextEditingController _emailController = new TextEditingController();
+  TextEditingController _passwordController = new TextEditingController();
+  TextEditingController _phoneController = new TextEditingController();
+  TextEditingController _locationController = new TextEditingController();
+
+  Map<String, dynamic> _editedData = {
+    'email': '',
+    'user_name': '',
+    'password': '',
+    'phone': '',
+    'location': '',
+    'image_profile': ''
+  };
 
   @override
   Widget build(BuildContext context) {
@@ -86,20 +103,23 @@ class _SettingsState extends State<Settings> {
                         ),
                       ],
                     ),
-                    Column(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(
-                            top: 20,
+                    Form(
+                      key: _formKey,
+                      child: Column(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(
+                              top: 20,
+                            ),
+                            child: CircleAvatar(
+                              radius: 50.0,
+                              backgroundImage:
+                                  AssetImage("assets/images/pic4.jpg"),
+                            ),
                           ),
-                          child: CircleAvatar(
-                            radius: 50.0,
-                            backgroundImage:
-                                AssetImage("assets/images/pic4.jpg"),
-                          ),
-                        ),
-                        _infoBox(context),
-                      ],
+                          _infoBox(context),
+                        ],
+                      ),
                     )
                   ],
                 ),
@@ -151,6 +171,7 @@ class _SettingsState extends State<Settings> {
           ),
         ),
         child: TextFormField(
+          initialValue: currentUser.email,
           keyboardType: TextInputType.emailAddress,
           onChanged: (value) {
             setState(() {
@@ -184,10 +205,12 @@ class _SettingsState extends State<Settings> {
           ),
         ),
         child: TextFormField(
+          initialValue: currentUser.username,
+          controller: _emailController,
           keyboardType: TextInputType.emailAddress,
           onChanged: (value) {
             setState(() {
-              email = value;
+              _editedData['email'] = value;
             });
           },
           decoration: InputDecoration(
@@ -196,7 +219,7 @@ class _SettingsState extends State<Settings> {
                 color: mainColor,
               ),
               border: InputBorder.none,
-              labelText: 'User Name'),
+              labelText: 'User_name'),
         ),
       ),
     );
@@ -217,11 +240,13 @@ class _SettingsState extends State<Settings> {
           ),
         ),
         child: TextFormField(
-          keyboardType: TextInputType.emailAddress,
+          initialValue: currentUser.password,
+          controller: _passwordController,
+          keyboardType: TextInputType.visiblePassword,
           obscureText: true,
           onChanged: (value) {
             setState(() {
-              password = value;
+              _editedData['password'] = value;
             });
           },
           decoration: InputDecoration(
@@ -234,35 +259,6 @@ class _SettingsState extends State<Settings> {
           ),
         ),
       ),
-    );
-  }
-
-  Widget _buildSaveButton(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: <Widget>[
-        Container(
-          height: 1.2 * (MediaQuery.of(context).size.height / 20),
-          width: 3 * (MediaQuery.of(context).size.width / 10),
-          margin: EdgeInsets.only(bottom: 20),
-          child: RaisedButton(
-            elevation: 3.0,
-            color: mainColor,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(30.0),
-            ),
-            onPressed: () {},
-            child: Text(
-              "Save",
-              style: TextStyle(
-                color: Colors.white,
-                letterSpacing: 1.5,
-                fontSize: MediaQuery.of(context).size.height / 40,
-              ),
-            ),
-          ),
-        )
-      ],
     );
   }
 
@@ -281,11 +277,13 @@ class _SettingsState extends State<Settings> {
           ),
         ),
         child: TextFormField(
-          keyboardType: TextInputType.emailAddress,
+          initialValue: currentUser.phone,
+          controller: _phoneController,
+          keyboardType: TextInputType.phone,
           onTap: () {},
           onChanged: (value) {
             setState(() {
-              email = value;
+              _editedData['phone'] = value;
             });
           },
           decoration: InputDecoration(
@@ -315,10 +313,12 @@ class _SettingsState extends State<Settings> {
           ),
         ),
         child: TextFormField(
-          keyboardType: TextInputType.emailAddress,
+          initialValue: currentUser.location,
+          controller: _locationController,
+          keyboardType: TextInputType.text,
           onChanged: (value) {
             setState(() {
-              email = value;
+              _editedData['location'] = value;
             });
           },
           decoration: InputDecoration(
@@ -330,6 +330,67 @@ class _SettingsState extends State<Settings> {
               labelText: 'Location'),
         ),
       ),
+    );
+  }
+
+  Widget _buildSaveButton(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget>[
+        Container(
+          height: 1.2 * (MediaQuery.of(context).size.height / 20),
+          width: 3 * (MediaQuery.of(context).size.width / 10),
+          margin: EdgeInsets.only(bottom: 20),
+          child: RaisedButton(
+            elevation: 3.0,
+            color: mainColor,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(30.0),
+            ),
+            onPressed: () async {
+              if (!reg.hasMatch(_emailController.text)) {
+                ScaffoldMessenger.of(context)
+                    .showSnackBar(SnackBar(content: Text("Enter Valid Email")));
+                return;
+              }
+
+              String check = await context.read<UserProvider>().editSettings(
+                    email: _emailController.text,
+                    userName: _userNameController.text,
+                    password: _passwordController.text,
+                    phone: _phoneController.text,
+                    location: _locationController.text,
+                    image:
+                        context.watch<UserProvider>().imageProfile.toString(),
+                  );
+
+              print("Data ***********************");
+              print(_emailController.text);
+              print(_userNameController.text);
+              print(_passwordController.text);
+              print(context.watch<UserProvider>().imageProfile.toString());
+
+              print("check ***********************");
+              print(check);
+              if (check == "true") {
+                ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text("Data updated successfully!")));
+              } else {
+                ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text("Failed!!!, try again.")));
+              }
+            },
+            child: Text(
+              "Save",
+              style: TextStyle(
+                color: Colors.white,
+                letterSpacing: 1.5,
+                fontSize: MediaQuery.of(context).size.height / 40,
+              ),
+            ),
+          ),
+        )
+      ],
     );
   }
 

@@ -21,6 +21,8 @@ class UserProvider with ChangeNotifier {
   File imagePost;
   File image;
 
+  List<User> UsersSearch;
+
   User currentUser;
 
   Future<void> logout() async {
@@ -77,38 +79,38 @@ class UserProvider with ChangeNotifier {
   }
 
   Future<bool> signIn(String email, String password) async {
-    try {
-      final responce = await http.post(Uri.parse(mainUrl),
-          body: json.encode({'email': email, 'password': password}));
+    // try {
+    //   final responce = await http.post(Uri.parse(mainUrl),
+    //       body: json.encode({'email': email, 'password': password}));
 
-      var responceData;
+    //   var responceData;
 
-      if (responce.statusCode == 200) {
-        // If the server did return a 200 OK response,
-        // then parse the JSON.
-        responceData = User.fromJson(jsonDecode(responce.body));
-      } else {
-        // If the server did not return a 200 OK response,
-        // then throw an exception.
-        throw Exception('Failed to load album');
-      }
+    //   if (responce.statusCode == 200) {
+    //     // If the server did return a 200 OK response,
+    //     // then parse the JSON.
+    //     responceData = User.fromJson(jsonDecode(responce.body));
+    //   } else {
+    //     // If the server did not return a 200 OK response,
+    //     // then throw an exception.
+    //     throw Exception('Failed to load album');
+    //   }
 
-      currentUser = responceData['user'];
+    //   currentUser = responceData['user'];
 
-      notifyListeners();
+    //   notifyListeners();
 
-      final prefs = await SharedPreferences.getInstance();
+    //   final prefs = await SharedPreferences.getInstance();
 
-      final userData = json.encode({
-        'currentUser': currentUser,
-      });
+    //   final userData = json.encode({
+    //     'currentUser': currentUser,
+    //   });
 
-      prefs.setString('userData', userData);
+    //   prefs.setString('userData', userData);
 
-      print('check' + userData.toString());
-    } catch (e) {
-      return false;
-    }
+    //   print('check' + userData.toString());
+    // } catch (e) {
+    //   return false;
+    // }
     return true;
   }
 
@@ -122,7 +124,7 @@ class UserProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<i.File> getImage(ImageSource src) async {
+  Future<File> getImage(ImageSource src) async {
     final pickedFile = await ImagePicker().getImage(source: src);
 
     if (pickedFile != null) {
@@ -166,6 +168,62 @@ class UserProvider with ChangeNotifier {
     } else {
       return false;
     }
+  }
+
+  void searchUser(String searchWord) async {
+    final responce = await http.post(Uri.parse(mainUrl + 'myapp/SearchUser'),
+        body: json.encode({"username": searchWord}));
+    var responceData;
+
+    if (responce.statusCode == 200) {
+      // If the server did return a 200 OK response,
+      // then parse the JSON.
+      responceData = User.fromJsonForSearch(jsonDecode(responce.body));
+    } else {
+      // If the server did not return a 200 OK response,
+      // then throw an exception.
+      throw Exception('Failed to load album');
+    }
+    notifyListeners();
+    UsersSearch = responceData;
+  }
+
+  Future<String> editSettings(
+      {String email,
+      String userName,
+      String password,
+      String location,
+      String phone,
+      String image}) async {
+    try {
+      final responce = await http.post(Uri.parse(mainUrl),
+          body: json.encode({
+            'email': email,
+            'password': password,
+            'user_name': userName,
+            'location': location,
+            'phone': phone,
+            'image': image
+          }));
+
+      var responceData;
+
+      if (responce.statusCode == 200) {
+        // If the server did return a 200 OK response,
+        // then parse the JSON.
+        responceData = responce.body;
+        if (responceData == "true") {}
+      } else {
+        // If the server did not return a 200 OK response,
+        // then throw an exception.
+        throw Exception('Failed to edit data');
+      }
+
+      notifyListeners();
+    } catch (e) {
+      return "false";
+    }
+    return "true";
   }
 
   // void addRelative(User relative) {

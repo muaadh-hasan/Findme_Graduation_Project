@@ -12,6 +12,7 @@ import 'package:findme_gp_project/widgets/your_photos_widget.dart';
 import 'package:findme_gp_project/widgets/your_relatives_widget.dart';
 import 'package:findme_gp_project/widgets/profile_widgets.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
@@ -95,7 +96,7 @@ Widget headerContents(BuildContext context) {
               child: Image(
                 width: MediaQuery.of(context).size.width * 0.3,
                 height: MediaQuery.of(context).size.height * 0.2,
-                image: NetworkImage(currentUser.images[0]),
+                image: NetworkImage(currentUser.profilePicture[0]),
                 fit: BoxFit.fill,
               ),
             ),
@@ -112,7 +113,7 @@ Widget headerContents(BuildContext context) {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  currentUser.name,
+                  currentUser.username,
                   style: TextStyle(
                     fontFamily: 'Europa',
                     fontSize: 29,
@@ -169,16 +170,18 @@ Widget headerContents(BuildContext context) {
 
 Widget locationIcon(BuildContext context) {
   return Container(
-    child: Row(
-      mainAxisAlignment: MainAxisAlignment.end,
-      children: [
-        Image(
-          image: const AssetImage(
-            'assets/images/location_icon.png',
-          ),
-          fit: BoxFit.cover,
-        ),
-      ],
+    child: Padding(
+      padding: EdgeInsets.only(left: 10),
+      // mainAxisAlignment: MainAxisAlignment.end,
+      // children: [
+      child: Icon(FontAwesomeIcons.mapMarkerAlt, color: Colors.white),
+      // Image(
+      //   image: const AssetImage(
+      //     'assets/images/location_icon.png',
+      //   ),
+      //   fit: BoxFit.cover,
+      // ),
+      // ],
     ),
   );
 }

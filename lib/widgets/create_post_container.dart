@@ -1,5 +1,3 @@
-import 'dart:html';
-
 import 'package:findme_gp_project/models/post.dart';
 import 'package:findme_gp_project/models/user.dart';
 import 'package:findme_gp_project/providers/user_provider.dart';

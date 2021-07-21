@@ -1,8 +1,10 @@
 import 'package:findme_gp_project/models/message.dart';
 import 'package:findme_gp_project/models/user.dart';
+import 'package:findme_gp_project/providers/user_provider.dart';
 import 'package:findme_gp_project/widgets/profile_widgets.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../data.dart';
 
@@ -13,19 +15,22 @@ class Search extends StatefulWidget {
 
 class _SearchState extends State<Search> {
   List<User> _usersForDisplay;
+  final GlobalKey<FormState> _formKey = GlobalKey();
+
+  TextEditingController _SearchController = new TextEditingController();
 
   @override
   void initState() {
-    _usersForDisplay = users;
+    _usersForDisplay = context.watch<UserProvider>().UsersSearch;
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    for (var item in _usersForDisplay) {
-      print(item.name);
-      print("*****\n");
-    }
+    // for (var item in _usersForDisplay) {
+    //   print(item.name);
+    //   // print("*****\n");
+    // }
     return Scaffold(
       body: ListView.builder(
         itemCount: _usersForDisplay.length + 1,
@@ -62,29 +67,34 @@ class _SearchState extends State<Search> {
           padding: const EdgeInsets.all(0.8),
           child: Padding(
             padding: const EdgeInsets.all(8.0),
-            child: TextFormField(
-              decoration: InputDecoration(
-                hintText: "Search...",
-                enabledBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(color: Colors.white),
+            child: Form(
+              key: _formKey,
+              child: TextFormField(
+                controller: _SearchController,
+                decoration: InputDecoration(
+                  hintText: "Search...",
+                  enabledBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(color: Colors.white),
+                  ),
                 ),
+                style: TextStyle(
+                  fontFamily: 'Roboto',
+                  fontSize: 17.5,
+                  color: const Color(0xff60aad2),
+                  letterSpacing: 1.05,
+                  //  height: 1.542857142857143,
+                ),
+                onChanged: (text) {
+                  text = text.toLowerCase();
+                  setState(() {
+                    // _usersForDisplay = users.where((user) {
+                    //   var userItem = user.email.toLowerCase();
+                    //   return userItem.startsWith(text);
+                    // }).toList();
+                    context.read<UserProvider>().searchUser(text);
+                  });
+                },
               ),
-              style: TextStyle(
-                fontFamily: 'Roboto',
-                fontSize: 17.5,
-                color: const Color(0xff60aad2),
-                letterSpacing: 1.05,
-                //  height: 1.542857142857143,
-              ),
-              onChanged: (text) {
-                text = text.toLowerCase();
-                setState(() {
-                  _usersForDisplay = users.where((user) {
-                    var userItem = user.email.toLowerCase();
-                    return userItem.startsWith(text);
-                  }).toList();
-                });
-              },
             ),
           ),
         ),
@@ -113,7 +123,7 @@ class _SearchState extends State<Search> {
           Padding(
             padding: EdgeInsets.only(left: 4),
             child: Text(
-              _usersForDisplay[index].name,
+              _usersForDisplay[index].username,
               style: TextStyle(
                 fontFamily: 'Roboto',
                 fontSize: 15.5,

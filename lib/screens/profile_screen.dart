@@ -60,9 +60,10 @@ class _Profile extends State<Profile> {
                         child: Padding(
                           padding: const EdgeInsets.only(left: 14),
                           child: GestureDetector(
-                              onTap: () {},
-                              child: searchContainer(
-                                  "Search peaople...", context)),
+                            onTap: () {},
+                            child:
+                                searchContainer("Search peaople...", context),
+                          ),
                         )),
                     Expanded(
                       flex: 2,
