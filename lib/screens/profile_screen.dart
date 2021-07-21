@@ -117,9 +117,8 @@ Builder buildDialogItem(
         leading: Icon(icon, color: Colors.white),
         title: Text(text),
         onTap: () async {
-          var image = await context.read<UserProvider>().getImage(src);
-          context.read<UserProvider>().addImagePost(image);
-
+          File image = await context.read<UserProvider>().getImage(src);
+          context.read<UserProvider>().addImageProfile(image);
           Navigator.of(innerContext).pop();
         },
       ),

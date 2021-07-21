@@ -149,15 +149,16 @@ class _Profile extends State<SignIn> {
                           ],
                         ),
                         Form(
+                            key: _formKey,
                             child: Column(
-                          children: [
-                            _buildEmailRow(),
-                            _buildPasswordRow(),
-                            // _buildForgetPasswordButton(),
-                            _buildLoginButton(),
-                            _buildSignUpButton(),
-                          ],
-                        ))
+                              children: [
+                                _buildEmailRow(),
+                                _buildPasswordRow(),
+                                // _buildForgetPasswordButton(),
+                                _buildLoginButton(),
+                                _buildSignUpButton(),
+                              ],
+                            ))
                       ],
                     ),
                   ),

@@ -17,8 +17,9 @@ class UserProvider with ChangeNotifier {
   var authKey = Api.authKey;
 
   // List<File> imagesList = [];
-  File image;
+  File imageProfile;
   File imagePost;
+  File image;
 
   User currentUser;
 
@@ -111,16 +112,21 @@ class UserProvider with ChangeNotifier {
     return true;
   }
 
-  void addImagePost(File image) {
+  void addImagePost(i.File image) {
     this.imagePost = image;
     notifyListeners();
   }
 
-  Future<File> getImage(ImageSource src) async {
+  void addImageProfile(i.File image) {
+    this.imageProfile = image;
+    notifyListeners();
+  }
+
+  Future<i.File> getImage(ImageSource src) async {
     final pickedFile = await ImagePicker().getImage(source: src);
 
     if (pickedFile != null) {
-      image = File(pickedFile.path);
+      image = i.File(pickedFile.path);
       // imagesList.add(image);
       notifyListeners();
       print('Image selected.');
@@ -135,7 +141,7 @@ class UserProvider with ChangeNotifier {
   }
 
   Future<bool> deletePost(String id) async {
-    final responce = await http.post(Uri.parse(mainUrl + '\deletePost'),
+    final responce = await http.post(Uri.parse(mainUrl + '/deletePost'),
         body: json.encode({'id': id}));
 
     notifyListeners();
@@ -148,7 +154,7 @@ class UserProvider with ChangeNotifier {
   }
 
   Future<bool> addPost(Post post) async {
-    final responce = await http.post(Uri.parse(mainUrl + '\addPost'),
+    final responce = await http.post(Uri.parse(mainUrl + '/addPost'),
         body: json.encode({
           'infoPost': post.infoPost,
           'postType': post.postType,

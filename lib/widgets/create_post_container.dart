@@ -126,9 +126,11 @@ class _CreatePostContainerState extends State<CreatePostContainer> {
               onPressed: () async {
                 Post post = Post(
                   infoPost: _infoPostController.text,
-                  image: context.read<UserProvider>().imagePost,
+                  // image: context.watch<UserProvider>().imagePost,
+                  // image: File(),
                   state: stateFinderSelected,
                   postType: postTypeSelected,
+                  // location:
                 );
                 await context.read<UserProvider>().addPost(post);
               },

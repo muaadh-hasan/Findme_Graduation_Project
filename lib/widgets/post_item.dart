@@ -1,7 +1,9 @@
 import 'package:findme_gp_project/models/post.dart';
+import 'package:findme_gp_project/providers/user_provider.dart';
 import 'package:findme_gp_project/widgets/profile_avatar.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:provider/provider.dart';
 
 // ignore: must_be_immutable
 class PostItem extends StatefulWidget {
@@ -68,22 +70,29 @@ class _PostItemState extends State<PostItem> {
           Container(
             height: 45,
             child: InkWell(
-              onTap: () => print('Delete'),
+              onTap: () async {
+                bool check = await context
+                    .read<UserProvider>()
+                    .deletePost(widget.post.infoPost);
+
+                if (check == true) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text("Delete successfully!")));
+                } else {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text("Error!!!, Try again.")));
+                }
+              },
               child: Container(
                 padding: const EdgeInsets.symmetric(horizontal: 12.0),
                 height: 25.0,
-                child: GestureDetector(
-                  onTap: () async {
-                    bool check = await context.read<UserProvider>().signIn();
-                  },
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(FontAwesomeIcons.trash, color: Colors.blue),
-                      const SizedBox(width: 4.0),
-                      Text("Delete Post"),
-                    ],
-                  ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(FontAwesomeIcons.trash, color: Colors.blue),
+                    const SizedBox(width: 4.0),
+                    Text("Delete Post"),
+                  ],
                 ),
               ),
             ),
