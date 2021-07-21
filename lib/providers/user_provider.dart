@@ -112,12 +112,12 @@ class UserProvider with ChangeNotifier {
     return true;
   }
 
-  void addImagePost(i.File image) {
+  void addImagePost(File image) {
     this.imagePost = image;
     notifyListeners();
   }
 
-  void addImageProfile(i.File image) {
+  void addImageProfile(File image) {
     this.imageProfile = image;
     notifyListeners();
   }
@@ -126,7 +126,7 @@ class UserProvider with ChangeNotifier {
     final pickedFile = await ImagePicker().getImage(source: src);
 
     if (pickedFile != null) {
-      image = i.File(pickedFile.path);
+      image = File(pickedFile.path);
       // imagesList.add(image);
       notifyListeners();
       print('Image selected.');
