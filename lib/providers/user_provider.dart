@@ -3,7 +3,7 @@ import 'dart:io';
 
 import 'package:findme_gp_project/models/notification_user.dart';
 import 'package:findme_gp_project/models/post.dart';
-import 'package:findme_gp_project/models/request.dart';
+import 'package:findme_gp_project/models/relative.dart';
 import 'package:findme_gp_project/models/user.dart';
 import 'package:findme_gp_project/utils/api.dart';
 import 'package:flutter/cupertino.dart';
@@ -16,6 +16,8 @@ class UserProvider with ChangeNotifier {
   var mainUrl = Api.authUrl;
   var authKey = Api.authKey;
 
+  String message = "";
+
   // List<File> imagesList = [];
   File imageProfile;
   File imagePost;
@@ -25,92 +27,152 @@ class UserProvider with ChangeNotifier {
 
   User currentUser;
 
-  Future<void> logout() async {
-    currentUser = null;
+  Future<bool> logout() async {
+    // currentUser = null;
 
-    notifyListeners();
+    try {
+      final responce = await http.get(Uri.parse(mainUrl + "/myapp/view/"));
 
-    final pref = await SharedPreferences.getInstance();
-    pref.clear();
+      print(responce.body);
+
+      if (responce.statusCode == 200) {
+        if (jsonDecode(responce.body)['error'] == false) {
+          // message = jsonDecode(responce.body)['msg'];
+          print(responce.body);
+          print(jsonDecode(responce.body)['error']);
+          return false;
+        } else {
+          // If the server did return a 200 OK response,
+          // then parse the JSON.
+          print(responce.body);
+          print(jsonDecode(responce.body)['error']);
+
+          // responceData = User.fromJson(jsonDecode(responce.body));
+
+          // currentUser = responceData;
+        }
+      } else {
+        throw Exception('Errrooooorrr!!!!!!');
+      }
+      notifyListeners();
+    } catch (e) {
+      return false;
+    }
+
+    return true;
   }
 
   Future<bool> signUp(
       String email, String password, String name, String phone) async {
+    var map = new Map<String, dynamic>();
+
+    map['email'] = email;
+    map['password'] = password;
+    map['user_name'] = name;
+    map['phone'] = phone;
+
     try {
-      final responce = await http.post(Uri.parse(mainUrl),
-          body: json.encode({
-            'email': email,
-            'password': password,
-            'name': name,
-            'phone': phone
-          }));
+      final responce =
+          await http.post(Uri.parse(mainUrl + "/myapp/SignUp/"), body: map);
 
       var responceData;
 
-      print(responceData);
-
       if (responce.statusCode == 200) {
-        // If the server did return a 200 OK response,
-        // then parse the JSON.
-        responceData = User.fromJson(jsonDecode(responce.body));
+        if (jsonDecode(responce.body)['error'] == true) {
+          message = jsonDecode(responce.body)['msg'];
+          return false;
+        } else {
+          // If the server did return a 200 OK response,
+          // then parse the JSON.
+          print(responce.body);
+          print(jsonDecode(responce.body)['error']);
+
+          responceData = User.fromJson(jsonDecode(responce.body));
+          print("**********-------");
+          print(responceData.email);
+
+          currentUser = responceData;
+        }
       } else {
         // If the server did not return a 200 OK response,
         // then throw an exception.
         throw Exception('Failed to load album');
       }
-
-      currentUser = responceData['user'];
-
       notifyListeners();
 
-      final prefs = await SharedPreferences.getInstance();
+      // final prefs = await SharedPreferences.getInstance();
 
-      final userData = json.encode({
-        'currentUser': currentUser,
-      });
+      // final userData = json.encode({
+      //   'currentUser': currentUser,
+      // });
 
-      prefs.setString('userData', userData);
+      // prefs.setString('userData', userData);
 
-      print('check' + userData.toString());
+      // print('check' + userData.toString());
     } catch (e) {
       return false;
     }
+
     return true;
   }
 
   Future<bool> signIn(String email, String password) async {
-    // try {
-    //   final responce = await http.post(Uri.parse(mainUrl),
-    //       body: json.encode({'email': email, 'password': password}));
+    try {
+      print("***** Logic Login");
+      print(email);
+      print(password);
+      var map = new Map<String, dynamic>();
 
-    //   var responceData;
+      map['email'] = email;
+      map['password'] = password;
 
-    //   if (responce.statusCode == 200) {
-    //     // If the server did return a 200 OK response,
-    //     // then parse the JSON.
-    //     responceData = User.fromJson(jsonDecode(responce.body));
-    //   } else {
-    //     // If the server did not return a 200 OK response,
-    //     // then throw an exception.
-    //     throw Exception('Failed to load album');
-    //   }
+      final responce =
+          await http.post(Uri.parse(mainUrl + "/myapp/LogIn/"), body: map);
 
-    //   currentUser = responceData['user'];
+      var responceData;
 
-    //   notifyListeners();
+      final responce2 = await http.get(Uri.parse(mainUrl + "/myapp/view/"));
 
-    //   final prefs = await SharedPreferences.getInstance();
+      print("R2");
+      print(responce2.body);
 
-    //   final userData = json.encode({
-    //     'currentUser': currentUser,
-    //   });
+      if (responce.statusCode == 200) {
+        if (jsonDecode(responce.body)['error'] == true) {
+          message = jsonDecode(responce.body)['msg'];
+          return false;
+        } else {
+          // If the server did return a 200 OK response,
+          // then parse the JSON.
+          print(responce.body);
+          print(jsonDecode(responce.body)['error']);
 
-    //   prefs.setString('userData', userData);
+          responceData = User.fromJson(jsonDecode(responce.body));
+          print("**********-------");
+          print(responceData.email);
 
-    //   print('check' + userData.toString());
-    // } catch (e) {
-    //   return false;
-    // }
+          currentUser = responceData;
+        }
+      } else {
+        // If the server did not return a 200 OK response,
+        // then throw an exception.
+        throw Exception('Errrooooorrr!!!!!!');
+      }
+
+      notifyListeners();
+
+      // final prefs = await SharedPreferences.getInstance();
+
+      // final userData = json.encode({
+      //   'currentUser': currentUser,
+      // });
+
+      // prefs.setString('userData', userData);
+
+      // print('check' + userData.toString());
+    } catch (e) {
+      print(e);
+      return false;
+    }
     return true;
   }
 
@@ -182,7 +244,7 @@ class UserProvider with ChangeNotifier {
     } else {
       // If the server did not return a 200 OK response,
       // then throw an exception.
-      throw Exception('Failed to load album');
+      throw Exception('Errrooooorrr!!!!!!');
     }
     notifyListeners();
     UsersSearch = responceData;

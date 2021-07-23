@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:findme_gp_project/models/relative.dart';
 import 'package:findme_gp_project/providers/location_provider.dart';
 import 'package:findme_gp_project/screens/map_screen.dart';
 
@@ -93,12 +94,25 @@ Widget headerContents(BuildContext context) {
             ),
             child: ClipRRect(
               borderRadius: BorderRadius.circular(20.0),
-              child: Image(
-                width: MediaQuery.of(context).size.width * 0.3,
-                height: MediaQuery.of(context).size.height * 0.2,
-                image: NetworkImage(currentUser.profilePicture[0]),
-                fit: BoxFit.fill,
-              ),
+              child: context.read<UserProvider>().currentUser.profilePicture ==
+                      null
+                  ? Padding(
+                      padding: const EdgeInsets.only(bottom: 25.0),
+                      child: Icon(
+                        FontAwesomeIcons.userCircle,
+                        size: 100,
+                        color: Colors.white,
+                      ),
+                    )
+                  : Image(
+                      width: MediaQuery.of(context).size.width * 0.3,
+                      height: MediaQuery.of(context).size.height * 0.2,
+                      image: NetworkImage(context
+                          .read<UserProvider>()
+                          .currentUser
+                          .profilePicture),
+                      fit: BoxFit.fill,
+                    ),
             ),
           ),
         ),
@@ -113,7 +127,7 @@ Widget headerContents(BuildContext context) {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  currentUser.username,
+                  context.read<UserProvider>().currentUser.username,
                   style: TextStyle(
                     fontFamily: 'Europa',
                     fontSize: 29,
@@ -130,7 +144,7 @@ Widget headerContents(BuildContext context) {
                     ),
                     SizedBox(width: 10),
                     Text(
-                      currentUser.email,
+                      context.read<UserProvider>().currentUser.email,
                       style: TextStyle(
                         fontFamily: 'Europa',
                         fontSize: 11,
@@ -174,7 +188,11 @@ Widget locationIcon(BuildContext context) {
       padding: EdgeInsets.only(left: 10),
       // mainAxisAlignment: MainAxisAlignment.end,
       // children: [
-      child: Icon(FontAwesomeIcons.mapMarkerAlt, color: Colors.white),
+      child: Icon(
+        FontAwesomeIcons.mapMarkerAlt,
+        color: Colors.white,
+        size: 35,
+      ),
       // Image(
       //   image: const AssetImage(
       //     'assets/images/location_icon.png',
@@ -299,7 +317,7 @@ Widget searchContainer(String str, BuildContext context) {
   );
 }
 
-Widget relativeRequest(BuildContext context) {
+Widget relativeRequest(BuildContext context, Relative relative) {
   return Container(
     decoration: BoxDecoration(
       borderRadius: BorderRadius.circular(50),
@@ -310,17 +328,17 @@ Widget relativeRequest(BuildContext context) {
     margin: EdgeInsets.only(
       //  top: !isLandScape ? MediaQuery.of(context).size.height* .28
       // : MediaQuery.of(context).size.height* .55,
-      left: MediaQuery.of(context).devicePixelRatio * 10,
+      left: MediaQuery.of(context).devicePixelRatio * 5,
     ),
     child: Row(
       //crossAxisAlignment: CrossAxisAlignment.start,
       //mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        profileImage(context),
+        profileImage(context, relative.profilePicture),
         Padding(
           padding: EdgeInsets.only(left: 4),
           child: Text(
-            'Mariam Nasser',
+            relative.username,
             style: TextStyle(
               fontFamily: 'Roboto',
               fontSize: 15.5,
@@ -332,7 +350,7 @@ Widget relativeRequest(BuildContext context) {
             //textAlign: TextAlign.left,
           ),
         ),
-        SizedBox(width: 2),
+        SizedBox(width: 15),
         button(Colors.green, "Confirm", context),
         button(Colors.red, "Delete", context),
       ],
@@ -340,14 +358,14 @@ Widget relativeRequest(BuildContext context) {
   );
 }
 
-Widget profileImage(BuildContext context) {
+Widget profileImage(BuildContext context, String image) {
   return Container(
     width: MediaQuery.of(context).size.height * .060,
     height: MediaQuery.of(context).size.height * .060,
     decoration: BoxDecoration(
       borderRadius: BorderRadius.circular(50.0),
       image: DecorationImage(
-        image: const AssetImage('assets/images/profile_image.jpg'),
+        image: NetworkImage(image),
         fit: BoxFit.cover,
       ),
     ),

@@ -1,4 +1,6 @@
+import 'package:findme_gp_project/providers/user_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../data.dart';
 import 'profile_avatar.dart';
@@ -31,22 +33,39 @@ class _ListViewNotificationState extends State<ListViewNotification> {
             child: ListTile(
               leading: CircleAvatar(
                 child: ProfileAvatar(
-                  imageUrl: currentUser.profilePicture[0],
+                  imageUrl: context
+                      .read<UserProvider>()
+                      .currentUser
+                      .profilePicture[0],
                 ),
               ),
-              title: Text(currentUser.notifications[position].user.username,
+              title: Text(
+                  context
+                      .read<UserProvider>()
+                      .currentUser
+                      .notifications[position]
+                      .user
+                      .username,
                   style: TextStyle(
                     fontSize: 20,
                     letterSpacing: 1.0,
                   )),
-              subtitle:
-                  Text(currentUser.notifications[position].smallDescription,
-                      style: TextStyle(
-                        fontSize: 12,
-                        letterSpacing: 1.0,
-                      )),
+              subtitle: Text(
+                  context
+                      .read<UserProvider>()
+                      .currentUser
+                      .notifications[position]
+                      .smallDescription,
+                  style: TextStyle(
+                    fontSize: 12,
+                    letterSpacing: 1.0,
+                  )),
               trailing: Text(
-                currentUser.notifications[position].date,
+                context
+                    .read<UserProvider>()
+                    .currentUser
+                    .notifications[position]
+                    .date,
                 style: TextStyle(
                   fontSize: 10,
                   letterSpacing: 1.0,

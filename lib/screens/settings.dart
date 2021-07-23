@@ -171,7 +171,7 @@ class _SettingsState extends State<Settings> {
           ),
         ),
         child: TextFormField(
-          initialValue: currentUser.email,
+          initialValue: context.read<UserProvider>().currentUser.email,
           keyboardType: TextInputType.emailAddress,
           onChanged: (value) {
             setState(() {
@@ -205,7 +205,7 @@ class _SettingsState extends State<Settings> {
           ),
         ),
         child: TextFormField(
-          initialValue: currentUser.username,
+          initialValue: context.read<UserProvider>().currentUser.username,
           controller: _emailController,
           keyboardType: TextInputType.emailAddress,
           onChanged: (value) {
@@ -240,7 +240,7 @@ class _SettingsState extends State<Settings> {
           ),
         ),
         child: TextFormField(
-          initialValue: currentUser.password,
+          initialValue: context.read<UserProvider>().currentUser.password,
           controller: _passwordController,
           keyboardType: TextInputType.visiblePassword,
           obscureText: true,
@@ -277,7 +277,7 @@ class _SettingsState extends State<Settings> {
           ),
         ),
         child: TextFormField(
-          initialValue: currentUser.phone,
+          initialValue: context.read<UserProvider>().currentUser.phone,
           controller: _phoneController,
           keyboardType: TextInputType.phone,
           onTap: () {},
@@ -313,7 +313,7 @@ class _SettingsState extends State<Settings> {
           ),
         ),
         child: TextFormField(
-          initialValue: currentUser.location,
+          initialValue: context.read<UserProvider>().currentUser.location,
           controller: _locationController,
           keyboardType: TextInputType.text,
           onChanged: (value) {

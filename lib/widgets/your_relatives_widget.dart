@@ -63,7 +63,7 @@ class YourRelatives extends StatelessWidget {
           //crossAxisAlignment: CrossAxisAlignment.start,
           //mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            profileImage(context),
+            // profileImage(context),
             Padding(
               padding: EdgeInsets.only(left: 3, right: 10),
               child: Text(

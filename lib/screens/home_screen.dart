@@ -1,7 +1,9 @@
+import 'package:findme_gp_project/providers/user_provider.dart';
 import 'package:findme_gp_project/screens/add_post_screen.dart';
 import 'package:findme_gp_project/widgets/post_item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:provider/provider.dart';
 
 import '../data.dart';
 
@@ -43,7 +45,12 @@ class _HomeScreenState extends State<HomeScreen> {
                       children: [
                         Column(
                           children: [
-                            Text('Hi ' + currentUser.username,
+                            Text(
+                                'Hi ' +
+                                    context
+                                        .read<UserProvider>()
+                                        .currentUser
+                                        .username,
                                 style: TextStyle(
                                   fontSize: 25,
                                 )),
@@ -79,9 +86,13 @@ class _HomeScreenState extends State<HomeScreen> {
                   height: 653,
                   child: ListView.builder(
                     itemBuilder: (context, index) {
-                      return PostItem(currentUser.posts[index]);
+                      return PostItem(context
+                          .read<UserProvider>()
+                          .currentUser
+                          .posts[index]);
                     },
-                    itemCount: currentUser.posts.length,
+                    itemCount:
+                        context.read<UserProvider>().currentUser.posts.length,
                     shrinkWrap: true,
                   ),
                 ),

@@ -1,7 +1,10 @@
+import 'package:findme_gp_project/providers/user_provider.dart';
 import 'package:findme_gp_project/screens/home_screen.dart';
+import 'package:findme_gp_project/screens/sign_in.dart';
 import 'package:findme_gp_project/widgets/profile_avatar.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:provider/provider.dart';
 
 import 'chats_screen.dart';
 import 'notification_screen.dart';
@@ -56,16 +59,6 @@ class _TabsScreenState extends State<TabsScreen> {
         ),
         elevation: 0,
         actions: <Widget>[
-          // IconButton(
-          //   icon: Icon(FontAwesomeIcons.comment),
-          //   iconSize: 30,
-          //   color: Colors.white,
-          //   onPressed: () {
-          //     Navigator.push(context, MaterialPageRoute(builder: (context) {
-          //       return ChatsScreen();
-          //     }));
-          //   },
-          // ),
           GestureDetector(
             child: Container(
               padding: EdgeInsets.all(7),
@@ -78,6 +71,20 @@ class _TabsScreenState extends State<TabsScreen> {
               Navigator.push(context, MaterialPageRoute(builder: (context) {
                 return Profile();
               }));
+            },
+          ),
+          IconButton(
+            icon: Icon(FontAwesomeIcons.signOutAlt),
+            iconSize: 30,
+            color: Colors.white,
+            tooltip: "Logout",
+            onPressed: () async {
+              bool check = await context.read<UserProvider>().logout();
+              if (check == true) {
+                Navigator.push(context, MaterialPageRoute(builder: (context) {
+                  return SignIn();
+                }));
+              }
             },
           ),
         ],

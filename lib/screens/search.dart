@@ -102,7 +102,7 @@ class _SearchState extends State<Search> {
     );
   }
 
-  Widget relativeRequest(BuildContext context, index) {
+  Widget relativeRequest(BuildContext context, int index) {
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(50),
@@ -119,7 +119,7 @@ class _SearchState extends State<Search> {
         //crossAxisAlignment: CrossAxisAlignment.start,
         //mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          profileImage(context),
+          profileImage(context, /*_usersForDisplay.profilePicture*/ ""),
           Padding(
             padding: EdgeInsets.only(left: 4),
             child: Text(

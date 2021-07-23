@@ -1,5 +1,7 @@
+import 'package:findme_gp_project/providers/user_provider.dart';
 import 'package:findme_gp_project/widgets/listView_notification.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../data.dart';
 
@@ -42,7 +44,12 @@ class _NotificationScreenState extends State<NotificationScreen> {
                       height: 1000,
                       width: double.infinity,
                       child: ListViewNotification(
-                          currentUser.notifications.length),
+                        context
+                            .read<UserProvider>()
+                            .currentUser
+                            .notifications
+                            .length,
+                      ),
                     ),
                   ),
                 ),

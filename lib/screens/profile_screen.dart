@@ -27,18 +27,18 @@ class _Profile extends State<Profile> {
   @override
   Widget build(BuildContext context) {
     isLandScape = MediaQuery.of(context).orientation == Orientation.landscape;
-    File image;
+    // File image;
 
     return Scaffold(
       backgroundColor: Colors.white,
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          showChooseImageWindow(context);
-        },
-        child: const Icon(Icons.add),
-        backgroundColor: const Color(0xff60aad2),
-        tooltip: "Add Photos",
-      ),
+      // floatingActionButton: FloatingActionButton(
+      //   onPressed: () {
+      //     showChooseImageWindow(context);
+      //   },
+      //   child: const Icon(Icons.add),
+      //   backgroundColor: const Color(0xff60aad2),
+      //   tooltip: "Add Photos",
+      // ),
       body: Column(
         children: [
           Container(
@@ -91,10 +91,10 @@ class _Profile extends State<Profile> {
                 padding: EdgeInsets.only(top: 0.0),
                 children: [
                   separator("Relative Requests", context),
-                  RelativeRequests(),
+                  MainRelativeRequests(),
                   separator("Your Relatives", context),
                   YourRelatives(),
-                  separator("Your Photos", context),
+                  // separator("Your Photos", context),
                   // YourPhotos(),
                 ],
               ),

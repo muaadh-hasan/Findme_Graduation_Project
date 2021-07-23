@@ -65,29 +65,29 @@ class _Profile extends State<SignIn> {
                               padding:
                                   const EdgeInsets.only(left: 20.0, bottom: 10),
                               child: Text(
-                                "Welcome",
+                                "Welcome Back!",
                                 style: TextStyle(
                                   fontFamily: 'Europa',
-                                  fontSize: 35,
+                                  fontSize: 50,
                                   color: Colors.white,
                                   fontWeight: FontWeight.w600,
                                 ),
                               ),
                             ),
                           ]),
-                          Padding(
-                            padding:
-                                const EdgeInsets.only(left: 20.0, bottom: 10),
-                            child: Text(
-                              "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea.",
-                              style: TextStyle(
-                                fontFamily: 'Europa',
-                                fontSize: 10,
-                                color: Colors.white,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                          ),
+                          // Padding(
+                          //   padding:
+                          //       const EdgeInsets.only(left: 20.0, bottom: 10),
+                          //   child: Text(
+                          //     "to the application for missing people!",
+                          //     style: TextStyle(
+                          //       fontFamily: 'Europa',
+                          //       fontSize: 20,
+                          //       color: Colors.white,
+                          //       fontWeight: FontWeight.w600,
+                          //     ),
+                          //   ),
+                          // ),
                         ],
                       ),
                     ),
@@ -110,7 +110,7 @@ class _Profile extends State<SignIn> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 Padding(
-                  padding: const EdgeInsets.only(top: 250),
+                  padding: const EdgeInsets.only(top: 200),
                   child: Container(
                     height: MediaQuery.of(context).size.height * 0.5,
                     width: MediaQuery.of(context).size.width * 0.9,
@@ -263,6 +263,11 @@ class _Profile extends State<SignIn> {
                     .showSnackBar(SnackBar(content: Text("Enter Valid Email")));
                 return;
               }
+              if (_passwordController.text.isEmpty) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text("Password should not be empty!")));
+                return;
+              }
 
               bool check = await context.read<UserProvider>().signIn(
                     _authData['email'],
@@ -277,8 +282,8 @@ class _Profile extends State<SignIn> {
                 Navigator.of(context).pushReplacement(new MaterialPageRoute(
                     builder: (BuildContext context) => TabsScreen()));
               } else {
-                ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text("Failed!!!, try again.")));
+                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                    content: Text(context.read<UserProvider>().message)));
               }
             },
             child: Text(
