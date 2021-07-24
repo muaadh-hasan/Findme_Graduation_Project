@@ -85,19 +85,17 @@ class _Profile extends State<Profile> {
             ),
           ),
           Expanded(
-            child: Container(
-              // height: double.infinity,
-              child: ListView(
-                padding: EdgeInsets.only(top: 0.0),
-                children: [
-                  separator("Relative Requests", context),
-                  MainRelativeRequests(),
-                  separator("Your Relatives", context),
-                  YourRelatives(),
-                  // separator("Your Photos", context),
-                  // YourPhotos(),
-                ],
-              ),
+            // height: double.infinity,
+            child: ListView(
+              // padding: EdgeInsets.only(top: 0.0),
+              children: [
+                separator("Relative Requests", context),
+                MainRelativeRequests(),
+                separator("Your Relatives", context),
+                YourRelatives(),
+                // separator("Your Photos", context),
+                // YourPhotos(),
+              ],
             ),
           ),
         ],

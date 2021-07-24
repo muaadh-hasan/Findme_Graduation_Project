@@ -71,6 +71,7 @@ class User {
     }
 
     return User(
+      userId: json['user_id'],
       username: json['user_name'],
       password: json['password'],
       phone: json['phone'],

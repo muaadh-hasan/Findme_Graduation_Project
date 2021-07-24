@@ -23,43 +23,12 @@ class UserProvider with ChangeNotifier {
   File imagePost;
   File image;
 
-  List<User> UsersSearch;
+  List<User> usersSearchList;
 
   User currentUser;
 
   Future<bool> logout() async {
-    // currentUser = null;
-
-    try {
-      final responce = await http.get(Uri.parse(mainUrl + "/myapp/view/"));
-
-      print(responce.body);
-
-      if (responce.statusCode == 200) {
-        if (jsonDecode(responce.body)['error'] == false) {
-          // message = jsonDecode(responce.body)['msg'];
-          print(responce.body);
-          print(jsonDecode(responce.body)['error']);
-          return false;
-        } else {
-          // If the server did return a 200 OK response,
-          // then parse the JSON.
-          print(responce.body);
-          print(jsonDecode(responce.body)['error']);
-
-          // responceData = User.fromJson(jsonDecode(responce.body));
-
-          // currentUser = responceData;
-        }
-      } else {
-        throw Exception('Errrooooorrr!!!!!!');
-      }
-      notifyListeners();
-    } catch (e) {
-      return false;
-    }
-
-    return true;
+    currentUser = null;
   }
 
   Future<bool> signUp(
@@ -232,41 +201,61 @@ class UserProvider with ChangeNotifier {
     }
   }
 
-  void searchUser(String searchWord) async {
-    final responce = await http.post(Uri.parse(mainUrl + 'myapp/SearchUser'),
-        body: json.encode({"username": searchWord}));
+  Future<bool> searchUser(String searchWord) async {
+    var map = new Map<String, dynamic>();
+
+    map['user_id'] = currentUser.userId.toString();
+    map['username'] = searchWord;
+
+    final responce =
+        await http.post(Uri.parse(mainUrl + '/myapp/SearchUser/'), body: map);
     var responceData;
 
     if (responce.statusCode == 200) {
-      // If the server did return a 200 OK response,
-      // then parse the JSON.
-      responceData = User.fromJsonForSearch(jsonDecode(responce.body));
+      if (jsonDecode(responce.body)['error'] == true) {
+        // message = jsonDecode(responce.body)['msg'];
+        return false;
+      } else {
+        // If the server did return a 200 OK response,
+        // then parse the JSON.
+        print(responce.body);
+        print(jsonDecode(responce.body)['error']);
+
+        usersSearchList =
+            User.fromJsonForSearch(jsonDecode(responce.body)) as List<User>;
+        print("**********-------");
+        print(responceData.email);
+
+        currentUser = responceData;
+      }
     } else {
       // If the server did not return a 200 OK response,
       // then throw an exception.
       throw Exception('Errrooooorrr!!!!!!');
     }
     notifyListeners();
-    UsersSearch = responceData;
+    usersSearchList = responceData;
   }
 
-  Future<String> editSettings(
+  Future<bool> editSettings(
       {String email,
       String userName,
       String password,
       String location,
       String phone,
       String image}) async {
+    var map = new Map<String, dynamic>();
+
+    map['user_id'] = currentUser.userId.toString();
+    map['user_name'] = userName;
+    map['password'] = password;
+    map['location'] = location;
+    map['phone'] = phone;
+    map['image_profile'] = 'No yett';
+
     try {
-      final responce = await http.post(Uri.parse(mainUrl),
-          body: json.encode({
-            'email': email,
-            'password': password,
-            'user_name': userName,
-            'location': location,
-            'phone': phone,
-            'image': image
-          }));
+      final responce = await http
+          .post(Uri.parse(mainUrl + '/myapp/EditProfile/'), body: map);
 
       var responceData;
 
@@ -274,7 +263,7 @@ class UserProvider with ChangeNotifier {
         // If the server did return a 200 OK response,
         // then parse the JSON.
         responceData = responce.body;
-        if (responceData == "true") {}
+        // if (responceData == "true") {}
       } else {
         // If the server did not return a 200 OK response,
         // then throw an exception.
@@ -283,21 +272,88 @@ class UserProvider with ChangeNotifier {
 
       notifyListeners();
     } catch (e) {
-      return "false";
+      print(e);
+      return false;
     }
-    return "true";
+    return true;
   }
 
-  // void addRelative(User relative) {
-  //   relatives.add(relative);
-  // }
+  Future<bool> confirmRequest(int relativeId) async {
+    var map = new Map<String, dynamic>();
 
-  // void addRequest(Request request) {
-  //   requests.add(request);
-  // }
+    map['user_id'] = currentUser.userId.toString();
+    map['sender_id'] = relativeId.toString();
 
-  // void addNotification(NotificationUser notificationUser) {
-  //   notifications.add(notificationUser);
-  // }
+    try {
+      final responce = await http
+          .post(Uri.parse(mainUrl + '/myapp/ConfirmRequest/'), body: map);
 
-}
+      if (responce.statusCode == 200) {
+        message = jsonDecode(responce.body)['msg'];
+      } else {
+        // If the server did not return a 200 OK response,
+        // then throw an exception.
+        throw Exception('Failed to confirm this user, try again');
+      }
+
+      notifyListeners();
+    } catch (e) {
+      print(e);
+      return false;
+    }
+    return true;
+  }
+
+  Future<bool> deleteRequest(int relativeId) async {
+    var map = new Map<String, dynamic>();
+
+    map['user_id'] = currentUser.userId.toString();
+    map['sender_id'] = relativeId.toString();
+
+    try {
+      final responce = await http
+          .post(Uri.parse(mainUrl + '/myapp/DeleteRequest/'), body: map);
+
+      if (responce.statusCode == 200) {
+        message = jsonDecode(responce.body)['msg'];
+      } else {
+        // If the server did not return a 200 OK response,
+        // then throw an exception.
+        throw Exception('error!!!!');
+      }
+
+      notifyListeners();
+    } catch (e) {
+      print(e);
+      return false;
+    }
+    return true;
+  }
+
+  Future<bool> deleteRelative(int relativeId) async {
+    var map = new Map<String, dynamic>();
+
+    map['user_id'] = currentUser.userId.toString();
+    map['relative_id'] = relativeId.toString();
+
+    try {
+      final responce = await http
+          .post(Uri.parse(mainUrl + '/myapp/DeleteRelative/'), body: map);
+
+      if (responce.statusCode == 200) {
+        message = jsonDecode(responce.body)['msg'];
+      } else {
+        // If the server did not return a 200 OK response,
+        // then throw an exception.
+        throw Exception('error!!!!');
+      }
+
+      notifyListeners();
+    } catch (e) {
+      print(e);
+      return false;
+    }
+    return true;
+  }
+}//end class
+

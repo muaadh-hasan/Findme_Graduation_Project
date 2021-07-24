@@ -81,21 +81,35 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   ),
                 ),
-                Container(
-                  width: double.infinity,
-                  height: 653,
-                  child: ListView.builder(
-                    itemBuilder: (context, index) {
-                      return PostItem(context
-                          .read<UserProvider>()
-                          .currentUser
-                          .posts[index]);
-                    },
-                    itemCount:
-                        context.read<UserProvider>().currentUser.posts.length,
-                    shrinkWrap: true,
-                  ),
-                ),
+                context.read<UserProvider>().currentUser.posts.length == 0
+                    ? Container(
+                        color: Colors.white,
+                        height: MediaQuery.of(context).size.height,
+                        child: Center(
+                          child: Text(
+                            "There is no Posts yet!",
+                            style: TextStyle(fontSize: 20),
+                          ),
+                        ),
+                      )
+                    : Container(
+                        width: double.infinity,
+                        height: 653,
+                        child: ListView.builder(
+                          itemBuilder: (context, index) {
+                            return PostItem(context
+                                .read<UserProvider>()
+                                .currentUser
+                                .posts[index]);
+                          },
+                          itemCount: context
+                              .read<UserProvider>()
+                              .currentUser
+                              .posts
+                              .length,
+                          shrinkWrap: true,
+                        ),
+                      ),
               ],
             ),
           ),

@@ -107,11 +107,9 @@ Widget headerContents(BuildContext context) {
                   : Image(
                       width: MediaQuery.of(context).size.width * 0.3,
                       height: MediaQuery.of(context).size.height * 0.2,
-                      image: NetworkImage(context
-                          .read<UserProvider>()
-                          .currentUser
-                          .profilePicture),
-                      fit: BoxFit.fill,
+                      image: NetworkImage(
+                          'https://avatars.githubusercontent.com/u/36192122?s=400&u=1dfc7f24e3963182b2f70df53209d4d9b086479c&v=4'),
+                      // fit: BoxFit.fill,
                     ),
             ),
           ),
@@ -328,31 +326,73 @@ Widget relativeRequest(BuildContext context, Relative relative) {
     margin: EdgeInsets.only(
       //  top: !isLandScape ? MediaQuery.of(context).size.height* .28
       // : MediaQuery.of(context).size.height* .55,
-      left: MediaQuery.of(context).devicePixelRatio * 5,
+      left: MediaQuery.of(context).devicePixelRatio * 2,
     ),
     child: Row(
       //crossAxisAlignment: CrossAxisAlignment.start,
       //mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        profileImage(context, relative.profilePicture),
-        Padding(
-          padding: EdgeInsets.only(left: 4),
-          child: Text(
-            relative.username,
-            style: TextStyle(
-              fontFamily: 'Roboto',
-              fontSize: 15.5,
-              color: Colors.grey[700],
-              //letterSpacing: 1.05,
-              //  height: 1.542857142857143,
-            ),
+        // profileImage(context, relative.profilePicture),
+        Expanded(
+          child: Row(
+            children: [
+              profileImage(context,
+                  'https://avatars.githubusercontent.com/u/36192122?s=400&u=1dfc7f24e3963182b2f70df53209d4d9b086479c&v=4'),
+              SizedBox(width: 10),
+              Padding(
+                padding: EdgeInsets.only(left: 4),
+                child: Text(
+                  relative.username,
+                  style: TextStyle(
+                    fontFamily: 'Roboto',
+                    fontSize: 15.5,
+                    color: Colors.grey[700],
+                    //letterSpacing: 1.05,
+                    //  height: 1.542857142857143,
+                  ),
 
-            //textAlign: TextAlign.left,
+                  //textAlign: TextAlign.left,
+                ),
+              ),
+            ],
           ),
         ),
+
         SizedBox(width: 15),
-        button(Colors.green, "Confirm", context),
-        button(Colors.red, "Delete", context),
+        Expanded(
+          child: Row(
+            children: [
+              InkWell(
+                child: button(Colors.green, "Confirm", context),
+                onTap: () async {
+                  bool check = await context
+                      .read<UserProvider>()
+                      .confirmRequest(relative.userId);
+
+                  print("check ****************");
+                  print(check);
+
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                      content: Text(context.read<UserProvider>().message)));
+                },
+              ),
+              InkWell(
+                child: button(Colors.red, "Delete", context),
+                onTap: () async {
+                  bool check = await context
+                      .read<UserProvider>()
+                      .deleteRequest(relative.userId);
+
+                  print("check ****************");
+                  print(check);
+
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                      content: Text(context.read<UserProvider>().message)));
+                },
+              ),
+            ],
+          ),
+        ),
       ],
     ),
   );

@@ -6,6 +6,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../constants.dart';
 import '../data.dart';
 
 class Search extends StatefulWidget {
@@ -17,38 +18,52 @@ class _SearchState extends State<Search> {
   List<User> _usersForDisplay;
   final GlobalKey<FormState> _formKey = GlobalKey();
 
-  TextEditingController _SearchController = new TextEditingController();
-
-  @override
-  void initState() {
-    _usersForDisplay = context.watch<UserProvider>().UsersSearch;
-    super.initState();
-  }
+  TextEditingController _searchController = new TextEditingController();
 
   @override
   Widget build(BuildContext context) {
+    _usersForDisplay = context.read<UserProvider>().usersSearchList;
     // for (var item in _usersForDisplay) {
     //   print(item.name);
     //   // print("*****\n");
     // }
-    return Scaffold(
-      body: ListView.builder(
-        itemCount: _usersForDisplay.length + 1,
-        itemBuilder: (context, index) {
-          return index == 0
-              ? searchBar()
-              : Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: relativeRequest(context, index - 1),
-                );
-        },
+    return SafeArea(
+      child: Scaffold(
+        body: Column(
+          children: [
+            searchBar(),
+            SizedBox(
+              height: 15,
+            ),
+            InkWell(
+              child: button(mainColor, "Search", context),
+              onTap: () {
+                context.read<UserProvider>().searchUser(_searchController.text);
+              },
+            ),
+            _usersForDisplay == null
+                ? Padding(
+                    padding: const EdgeInsets.only(top: 50.0),
+                    child: Center(child: Text("No name of user to search!")),
+                  )
+                : ListView.builder(
+                    itemCount: _usersForDisplay.length,
+                    itemBuilder: (context, index) {
+                      return Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: relativeRequest(context, index),
+                      );
+                    },
+                  ),
+          ],
+        ),
       ),
     );
   }
 
   searchBar() {
     return Padding(
-      padding: const EdgeInsets.all(8.0),
+      padding: const EdgeInsets.only(top: 20.0),
       child: Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(7.0),
@@ -70,7 +85,7 @@ class _SearchState extends State<Search> {
             child: Form(
               key: _formKey,
               child: TextFormField(
-                controller: _SearchController,
+                controller: _searchController,
                 decoration: InputDecoration(
                   hintText: "Search...",
                   enabledBorder: UnderlineInputBorder(
@@ -91,7 +106,6 @@ class _SearchState extends State<Search> {
                     //   var userItem = user.email.toLowerCase();
                     //   return userItem.startsWith(text);
                     // }).toList();
-                    context.read<UserProvider>().searchUser(text);
                   });
                 },
               ),

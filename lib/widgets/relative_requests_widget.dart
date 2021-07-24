@@ -11,20 +11,18 @@ class MainRelativeRequests extends StatefulWidget {
 }
 
 class _MainRelativeRequestsState extends State<MainRelativeRequests> {
-  List<Relative> relatives;
-
-  @override
-  void initState() async {
-    relatives = context.watch<UserProvider>().currentUser.requests;
-    super.initState();
-  }
+  List<Relative> relativesRequests;
 
   @override
   Widget build(BuildContext context) {
+    relativesRequests = context.watch<UserProvider>().currentUser.requests;
+    print('Bethenjan*********************');
+    print(relativesRequests.length);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Container(
+          width: MediaQuery.of(context).size.width,
           height: 175,
           margin: EdgeInsets.all(15),
           decoration: BoxDecoration(
@@ -40,13 +38,16 @@ class _MainRelativeRequestsState extends State<MainRelativeRequests> {
           ),
 
           // width: 300,
-          child: ListView.builder(
-            padding: EdgeInsets.symmetric(vertical: 10),
-            itemCount: relatives.length,
-            itemBuilder: (context, index) => Container(
-                margin: EdgeInsets.only(bottom: 5),
-                child: relativeRequest(context, relatives[index])),
-          ),
+          child: relativesRequests.length == 0
+              ? Center(child: Text("No Relative Requests yet !!"))
+              : ListView.builder(
+                  padding: EdgeInsets.symmetric(vertical: 10),
+                  itemCount: relativesRequests.length,
+                  itemBuilder: (context, index) => Container(
+                      margin: EdgeInsets.only(bottom: 5),
+                      child:
+                          relativeRequest(context, relativesRequests[index])),
+                ),
         ),
       ],
     );

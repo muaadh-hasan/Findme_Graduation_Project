@@ -3,6 +3,7 @@ import 'package:findme_gp_project/providers/user_provider.dart';
 import 'package:findme_gp_project/screens/profile_screen.dart';
 import 'package:findme_gp_project/widgets/chats_widgets.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 
 // import '../constants.dart';
@@ -20,19 +21,27 @@ class _SettingsState extends State<Settings> {
   String email, userName, password, phone, location;
   final GlobalKey<FormState> _formKey = GlobalKey();
   TextEditingController _userNameController = new TextEditingController();
+
   TextEditingController _emailController = new TextEditingController();
   TextEditingController _passwordController = new TextEditingController();
   TextEditingController _phoneController = new TextEditingController();
   TextEditingController _locationController = new TextEditingController();
 
-  Map<String, dynamic> _editedData = {
-    'email': '',
-    'user_name': '',
-    'password': '',
-    'phone': '',
-    'location': '',
-    'image_profile': ''
-  };
+  Map<String, dynamic> _editedData;
+
+  @override
+  void initState() {
+    _editedData = {
+      'email': context.read<UserProvider>().currentUser.email,
+      'user_name': context.read<UserProvider>().currentUser.username,
+      'password': context.read<UserProvider>().currentUser.password,
+      'phone': context.read<UserProvider>().currentUser.phone,
+      'location': context.read<UserProvider>().currentUser.location,
+      'image_profile': context.read<UserProvider>().currentUser.profilePicture
+    };
+
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -111,10 +120,45 @@ class _SettingsState extends State<Settings> {
                             padding: const EdgeInsets.only(
                               top: 20,
                             ),
-                            child: CircleAvatar(
-                              radius: 50.0,
-                              backgroundImage:
-                                  AssetImage("assets/images/pic4.jpg"),
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                context
+                                            .read<UserProvider>()
+                                            .currentUser
+                                            .profilePicture ==
+                                        null
+                                    ? Padding(
+                                        padding:
+                                            const EdgeInsets.only(bottom: 25.0),
+                                        child: Icon(
+                                          FontAwesomeIcons.userCircle,
+                                          size: 100,
+                                          color: mainColor,
+                                        ))
+                                    : CircleAvatar(
+                                        radius: 50.0,
+                                        backgroundImage: NetworkImage(
+                                            'https://avatars.githubusercontent.com/u/36192122?s=400&u=1dfc7f24e3963182b2f70df53209d4d9b086479c&v=4')
+                                        //  AssetImage(
+                                        //   context
+                                        //       .read<UserProvider>()
+                                        //       .currentUser
+                                        //       .profilePicture,
+                                        // ),
+                                        ),
+                                GestureDetector(
+                                  onTap: () {
+                                    showChooseImageWindow(context);
+                                  },
+                                  child: Icon(
+                                    Icons.edit,
+                                    color: mainColor,
+                                    size: 30.0,
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
                           _infoBox(context),
@@ -147,10 +191,10 @@ class _SettingsState extends State<Settings> {
         child: ListView(
           children: [
             _buildUserNameRow(),
-            _buildEmailRow(),
             _buildPasswordRow(),
             _buildPhoneRow(),
             _buildLocationRow(),
+            _buildEmailRow(),
             _buildSaveButton(context),
           ],
         ));
@@ -171,17 +215,20 @@ class _SettingsState extends State<Settings> {
           ),
         ),
         child: TextFormField(
+          enabled: false,
+          // controller: _emailController,
           initialValue: context.read<UserProvider>().currentUser.email,
+          style: TextStyle(color: Colors.grey),
           keyboardType: TextInputType.emailAddress,
           onChanged: (value) {
-            setState(() {
-              email = value;
-            });
+            // setState(() {
+            //   _editedData['email'] = value;
+            // });
           },
           decoration: InputDecoration(
               prefixIcon: Icon(
                 Icons.email,
-                color: mainColor,
+                color: Colors.grey,
               ),
               border: InputBorder.none,
               labelText: 'E-mail'),
@@ -206,11 +253,11 @@ class _SettingsState extends State<Settings> {
         ),
         child: TextFormField(
           initialValue: context.read<UserProvider>().currentUser.username,
-          controller: _emailController,
+          //  controller: _userNameController,
           keyboardType: TextInputType.emailAddress,
           onChanged: (value) {
             setState(() {
-              _editedData['email'] = value;
+              _editedData['user_name'] = value;
             });
           },
           decoration: InputDecoration(
@@ -241,9 +288,9 @@ class _SettingsState extends State<Settings> {
         ),
         child: TextFormField(
           initialValue: context.read<UserProvider>().currentUser.password,
-          controller: _passwordController,
-          keyboardType: TextInputType.visiblePassword,
-          obscureText: true,
+          //  controller: _passwordController,
+          //keyboardType: TextInputType.visiblePassword,
+          //  obscureText: true,
           onChanged: (value) {
             setState(() {
               _editedData['password'] = value;
@@ -278,7 +325,7 @@ class _SettingsState extends State<Settings> {
         ),
         child: TextFormField(
           initialValue: context.read<UserProvider>().currentUser.phone,
-          controller: _phoneController,
+          // controller: _phoneController,
           keyboardType: TextInputType.phone,
           onTap: () {},
           onChanged: (value) {
@@ -314,7 +361,7 @@ class _SettingsState extends State<Settings> {
         ),
         child: TextFormField(
           initialValue: context.read<UserProvider>().currentUser.location,
-          controller: _locationController,
+          // controller: _locationController,
           keyboardType: TextInputType.text,
           onChanged: (value) {
             setState(() {
@@ -348,31 +395,27 @@ class _SettingsState extends State<Settings> {
               borderRadius: BorderRadius.circular(30.0),
             ),
             onPressed: () async {
-              if (!reg.hasMatch(_emailController.text)) {
-                ScaffoldMessenger.of(context)
-                    .showSnackBar(SnackBar(content: Text("Enter Valid Email")));
-                return;
-              }
-
-              String check = await context.read<UserProvider>().editSettings(
-                    email: _emailController.text,
-                    userName: _userNameController.text,
-                    password: _passwordController.text,
-                    phone: _phoneController.text,
-                    location: _locationController.text,
+              bool check = await context.read<UserProvider>().editSettings(
+                    email: _editedData['email'],
+                    userName: _editedData['user_name'],
+                    password: _editedData['password'],
+                    phone: _editedData['phone'],
+                    location: _editedData['location'],
                     image:
-                        context.watch<UserProvider>().imageProfile.toString(),
+                        context.read<UserProvider>().currentUser.profilePicture,
                   );
 
               print("Data ***********************");
-              print(_emailController.text);
-              print(_userNameController.text);
-              print(_passwordController.text);
-              print(context.watch<UserProvider>().imageProfile.toString());
+              print(_editedData['email']);
+              print(_editedData['user_name']);
+              print(_editedData['password']);
+              print(_editedData['location']);
+              print(_editedData['phone']);
+              print(_editedData['image_profile']);
 
               print("check ***********************");
               print(check);
-              if (check == "true") {
+              if (check == true) {
                 ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(content: Text("Data updated successfully!")));
               } else {
@@ -410,34 +453,34 @@ class _SettingsState extends State<Settings> {
                   ),
                   child: Image(
                     height: MediaQuery.of(context).size.height * .08,
-                    image: const AssetImage('assets/images/new_logo.png'),
+                    image: AssetImage('assets/images/new_logo.png'),
                   ),
                 ),
               ],
               crossAxisAlignment: CrossAxisAlignment.start,
             ),
           ),
-          Expanded(
-            flex: 1,
-            child: Column(
-              children: [
-                Container(
-                  child: GestureDetector(
-                      child: largeProfileImage(context),
-                      onTap: () {
-                        Navigator.pop(context);
-                        Navigator.of(context).pushReplacement(
-                            new MaterialPageRoute(
-                                builder: (BuildContext context) => Profile()));
-                      }),
-                  margin: EdgeInsets.only(
-                      top: MediaQuery.of(context).size.height * .073,
-                      right: MediaQuery.of(context).size.width * .015),
-                ),
-              ],
-              crossAxisAlignment: CrossAxisAlignment.end,
-            ),
-          ),
+          // Expanded(
+          //   flex: 1,
+          //   child: Column(
+          //     children: [
+          //       Container(
+          //         child: GestureDetector(
+          //             child: largeProfileImage(context),
+          //             onTap: () {
+          //               Navigator.pop(context);
+          //               Navigator.of(context).pushReplacement(
+          //                   new MaterialPageRoute(
+          //                       builder: (BuildContext context) => Profile()));
+          //             }),
+          //         margin: EdgeInsets.only(
+          //             top: MediaQuery.of(context).size.height * .073,
+          //             right: MediaQuery.of(context).size.width * .015),
+          //       ),
+          //     ],
+          //     crossAxisAlignment: CrossAxisAlignment.end,
+          //   ),
+          // ),
         ],
       ),
     );

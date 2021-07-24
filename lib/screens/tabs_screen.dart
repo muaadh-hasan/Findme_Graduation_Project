@@ -74,19 +74,17 @@ class _TabsScreenState extends State<TabsScreen> {
             },
           ),
           IconButton(
-            icon: Icon(FontAwesomeIcons.signOutAlt),
-            iconSize: 30,
-            color: Colors.white,
-            tooltip: "Logout",
-            onPressed: () async {
-              bool check = await context.read<UserProvider>().logout();
-              if (check == true) {
+              icon: Icon(FontAwesomeIcons.signOutAlt),
+              iconSize: 30,
+              color: Colors.white,
+              tooltip: "Logout",
+              onPressed: () async {
+                await context.read<UserProvider>().logout();
+
                 Navigator.push(context, MaterialPageRoute(builder: (context) {
                   return SignIn();
                 }));
-              }
-            },
-          ),
+              }),
         ],
       ),
       body: _pages[_selectedPageIndex]['page'],

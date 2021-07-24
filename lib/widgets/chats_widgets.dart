@@ -12,7 +12,8 @@ Widget largeProfileImage(BuildContext context) {
     decoration: BoxDecoration(
       borderRadius: BorderRadius.circular(50.0),
       image: DecorationImage(
-        image: const AssetImage('assets/images/profile_image.jpg'),
+        image: NetworkImage(
+            'https://avatars.githubusercontent.com/u/36192122?s=400&u=1dfc7f24e3963182b2f70df53209d4d9b086479c&v=4'),
         fit: BoxFit.cover,
       ),
     ),
