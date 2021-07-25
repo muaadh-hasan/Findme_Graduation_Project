@@ -87,6 +87,7 @@ class User {
 
   factory User.fromJsonForSearch(Map<String, dynamic> json) {
     return User(
+      userId: json['user_id'],
       username: json['user_name'],
       email: json['email'],
       profilePicture: json['profile_picture'],
@@ -94,4 +95,18 @@ class User {
       phone: json['phone'],
     );
   }
+
+  // factory User.fromJsonForSearchList(Map<String, dynamic> json) {
+  //   List<User> usersList;
+
+  //   if (json['users'] != null) {
+  //     var objsJson = json['users'] as List;
+  //     usersList =
+  //         objsJson.map((objsJson) => User.fromJsonForSearch(objsJson)).toList();
+  //   } else {
+  //     usersList = [];
+  //   }
+
+  //   return usersList;
+  // }
 }

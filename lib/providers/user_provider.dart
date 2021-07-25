@@ -10,6 +10,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 // import 'package:rest_api_login/utils/http_exception.dart';
 
 class UserProvider with ChangeNotifier {
@@ -86,6 +89,7 @@ class UserProvider with ChangeNotifier {
   }
 
   Future<bool> signIn(String email, String password) async {
+    // currentUser = null;
     try {
       print("***** Logic Login");
       print(email);
@@ -147,6 +151,7 @@ class UserProvider with ChangeNotifier {
 
   void addImagePost(File image) {
     this.imagePost = image;
+    uploadPic(image, currentUser.username);
     notifyListeners();
   }
 
@@ -173,17 +178,33 @@ class UserProvider with ChangeNotifier {
     image = null;
   }
 
-  Future<bool> deletePost(String id) async {
-    final responce = await http.post(Uri.parse(mainUrl + '/deletePost'),
-        body: json.encode({'id': id}));
+  Future<bool> deletePost(int id) async {
+    var map = new Map<String, dynamic>();
+
+    map['user_id'] = currentUser.userId.toString();
+    map['post_id'] = id.toString();
+
+    final responce =
+        await http.post(Uri.parse(mainUrl + '/myapp/DeletePost/'), body: map);
 
     notifyListeners();
 
     if (responce.statusCode == 200) {
-      return true;
+      if (jsonDecode(responce.body)['error'] == false) {
+        message = jsonDecode(responce.body)['msg'];
+        return false;
+      } else {
+        // If the server did return a 200 OK response,
+        // then parse the JSON.
+        print(responce.body);
+        print(jsonDecode(responce.body)['error']);
+      }
     } else {
-      return false;
+      // If the server did not return a 200 OK response,
+      // then throw an exception.
+      throw Exception('Errrooooorrr!!!!!!');
     }
+    return true;
   }
 
   Future<bool> addPost(Post post) async {
@@ -221,12 +242,20 @@ class UserProvider with ChangeNotifier {
         print(responce.body);
         print(jsonDecode(responce.body)['error']);
 
-        usersSearchList =
-            User.fromJsonForSearch(jsonDecode(responce.body)) as List<User>;
-        print("**********-------");
-        print(responceData.email);
+        responceData = jsonDecode(responce.body);
 
-        currentUser = responceData;
+        // List<User> usersList;
+
+        if (responceData['users'] != null) {
+          var objsJson = responceData['users'] as List;
+          usersSearchList = objsJson
+              .map((objsJson) => User.fromJsonForSearch(objsJson))
+              .toList();
+        } else {
+          usersSearchList = [];
+        }
+        print("usersSearchList.length ******");
+        print(usersSearchList.length);
       }
     } else {
       // If the server did not return a 200 OK response,
@@ -234,7 +263,7 @@ class UserProvider with ChangeNotifier {
       throw Exception('Errrooooorrr!!!!!!');
     }
     notifyListeners();
-    usersSearchList = responceData;
+    return true;
   }
 
   Future<bool> editSettings(
@@ -354,6 +383,55 @@ class UserProvider with ChangeNotifier {
       return false;
     }
     return true;
+  }
+
+  Future<bool> addRelative(int relativeId) async {
+    var map = new Map<String, dynamic>();
+
+    map['user_id'] = currentUser.userId.toString();
+    map['add_user_id'] = relativeId.toString();
+
+    print('add_user_id');
+    print(relativeId);
+
+    try {
+      final responce =
+          await http.post(Uri.parse(mainUrl + '/myapp/AddUser/'), body: map);
+
+      if (responce.statusCode == 200) {
+        message = jsonDecode(responce.body)['msg'];
+      } else {
+        // If the server did not return a 200 OK response,
+        // then throw an exception.
+        throw Exception('Failed to confirm this user, try again');
+      }
+
+      notifyListeners();
+    } catch (e) {
+      print(e);
+      return false;
+    }
+    return true;
+  }
+
+  uploadPic(File _image1, String name) async {
+    // Firebase.initializeApp();
+    // FirebaseStorage storage = FirebaseStorage.instance;
+    // String url;
+    // String imageName = name + "_" + DateTime.now().toString();
+    // Reference ref = storage.ref().child(imageName);
+    // UploadTask uploadTask = ref.putFile(_image1);
+    // uploadTask.whenComplete(() {
+    //   url = ref.getDownloadURL() as String;
+    // }).catchError((onError) {
+    //   print(onError);
+    // });
+
+    // print("-*-*-*-*-*-*-*-*-*-*-*");
+    // print(url);
+    // print(imageName);
+
+    // return url;
   }
 }//end class
 

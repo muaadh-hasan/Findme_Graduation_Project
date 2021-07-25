@@ -21,8 +21,17 @@ class _PostItemState extends State<PostItem> {
 
   // _PostItemState(this.deleteImage);
 
+  bool flag = false;
+
+  List<String> listImage = [
+    'https://i.pinimg.com/originals/a4/29/43/a429434677cef377bb62384a47fc83be.jpg',
+    'https://i2-prod.chroniclelive.co.uk/incoming/article13136591.ece/ALTERNATES/s810/fake-twitter-image-london-attack.jpg'
+  ];
+
   @override
   Widget build(BuildContext context) {
+    print("IMMMMAAAAGGGGEEEEE!!!!");
+    print(widget.post.image);
     String name = context.read<UserProvider>().currentUser.username;
     return Card(
       child: Column(
@@ -46,8 +55,7 @@ class _PostItemState extends State<PostItem> {
           Container(
               height: 150,
               child: Image(
-                image: NetworkImage(
-                    'https://th.bing.com/th/id/R9516c9859ea32406e2ff8560bb085919?rik=BtsEc5%2b79tQiBA&riu=http%3a%2f%2fwww.hdwallpapers.in%2fdownload%2fcute_kittens-2560x1600.jpg&ehk=qEj3I0ukvZ4d90k7AAKkeWPegTTHeCHNGkeixT7JbHY%3d&risl=&pid=ImgRaw'),
+                image: NetworkImage(widget.post.image),
               )),
           Divider(),
           Container(
@@ -70,13 +78,23 @@ class _PostItemState extends State<PostItem> {
               child: Container(
                 padding: const EdgeInsets.symmetric(horizontal: 12.0),
                 height: 25.0,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(FontAwesomeIcons.trash, color: Colors.blue),
-                    const SizedBox(width: 4.0),
-                    Text("Delete Post"),
-                  ],
+                child: InkWell(
+                  onTap: () async {
+                    await context
+                        .read<UserProvider>()
+                        .deletePost(widget.post.postId);
+
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                        content: Text(context.read<UserProvider>().message)));
+                  },
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(FontAwesomeIcons.trash, color: Colors.blue),
+                      const SizedBox(width: 4.0),
+                      Text("Delete Post"),
+                    ],
+                  ),
                 ),
               ),
             ),

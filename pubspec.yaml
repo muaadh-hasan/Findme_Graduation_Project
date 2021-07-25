@@ -38,6 +38,10 @@ dependencies:
   font_awesome_flutter: ^9.0.0
   intl: ^0.17.0
 
+  firebase_storage:
+  firebase_core:
+  firebase_analytics:
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

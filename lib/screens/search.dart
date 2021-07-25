@@ -46,14 +46,19 @@ class _SearchState extends State<Search> {
                     padding: const EdgeInsets.only(top: 50.0),
                     child: Center(child: Text("No name of user to search!")),
                   )
-                : ListView.builder(
-                    itemCount: _usersForDisplay.length,
-                    itemBuilder: (context, index) {
-                      return Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: relativeRequest(context, index),
-                      );
-                    },
+                : Expanded(
+                    child: Container(
+                      height: 600,
+                      child: ListView.builder(
+                        itemCount: _usersForDisplay.length,
+                        itemBuilder: (context, index) {
+                          return Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: relativeRequest(context, index),
+                          );
+                        },
+                      ),
+                    ),
                   ),
           ],
         ),
@@ -99,15 +104,6 @@ class _SearchState extends State<Search> {
                   letterSpacing: 1.05,
                   //  height: 1.542857142857143,
                 ),
-                onChanged: (text) {
-                  text = text.toLowerCase();
-                  setState(() {
-                    // _usersForDisplay = users.where((user) {
-                    //   var userItem = user.email.toLowerCase();
-                    //   return userItem.startsWith(text);
-                    // }).toList();
-                  });
-                },
               ),
             ),
           ),
@@ -133,24 +129,50 @@ class _SearchState extends State<Search> {
         //crossAxisAlignment: CrossAxisAlignment.start,
         //mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          profileImage(context, /*_usersForDisplay.profilePicture*/ ""),
-          Padding(
-            padding: EdgeInsets.only(left: 4),
-            child: Text(
-              _usersForDisplay[index].username,
-              style: TextStyle(
-                fontFamily: 'Roboto',
-                fontSize: 15.5,
-                color: Colors.grey[700],
-                //letterSpacing: 1.05,
-                //  height: 1.542857142857143,
-              ),
+          Expanded(
+            flex: 3,
+            child: Row(
+              children: [
+                profileImage(context, _usersForDisplay[index].profilePicture),
+                SizedBox(width: 10),
+                Padding(
+                  padding: EdgeInsets.only(left: 4),
+                  child: Text(
+                    _usersForDisplay[index].username,
+                    style: TextStyle(
+                      fontFamily: 'Roboto',
+                      fontSize: 15.5,
+                      color: Colors.grey[700],
+                      //letterSpacing: 1.05,
+                      //  height: 1.542857142857143,
+                    ),
 
-              //textAlign: TextAlign.left,
+                    //textAlign: TextAlign.left,
+                  ),
+                ),
+              ],
             ),
           ),
           SizedBox(width: 2),
-          button(Colors.green, "Add", context),
+          Expanded(
+              flex: 1,
+              child: Padding(
+                padding: const EdgeInsets.only(right: 10.0),
+                child: InkWell(
+                  child: button(Colors.green, "Add", context),
+                  onTap: () async {
+                    bool check = await context
+                        .read<UserProvider>()
+                        .addRelative(_usersForDisplay[index].userId);
+
+                    print("****** Add Relative");
+                    print(check);
+
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                        content: Text(context.read<UserProvider>().message)));
+                  },
+                ),
+              )),
         ],
       ),
     );

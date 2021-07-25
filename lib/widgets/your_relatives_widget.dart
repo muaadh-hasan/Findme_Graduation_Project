@@ -72,8 +72,7 @@ class YourRelatives extends StatelessWidget {
                 flex: 3,
                 child: Row(
                   children: [
-                    profileImage(context,
-                        'https://avatars.githubusercontent.com/u/36192122?s=400&u=1dfc7f24e3963182b2f70df53209d4d9b086479c&v=4'),
+                    profileImage(context, relative.profilePicture),
                     SizedBox(
                       width: 10,
                     ),

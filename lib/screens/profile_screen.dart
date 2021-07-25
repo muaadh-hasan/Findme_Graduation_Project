@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:findme_gp_project/models/user.dart';
 import 'package:findme_gp_project/providers/location_provider.dart';
 import 'package:findme_gp_project/providers/user_provider.dart';
+import 'package:findme_gp_project/widgets/refresh_widget.dart';
 import 'package:findme_gp_project/widgets/relative_requests_widget.dart';
 import 'package:findme_gp_project/widgets/your_photos_widget.dart';
 import 'package:findme_gp_project/widgets/your_relatives_widget.dart';
@@ -26,81 +27,117 @@ class _Profile extends State<Profile> {
 
   @override
   Widget build(BuildContext context) {
+    final keyRefresh = GlobalKey<RefreshIndicatorState>();
+
     isLandScape = MediaQuery.of(context).orientation == Orientation.landscape;
     // File image;
 
+    Future loadPage() async {
+      keyRefresh.currentState?.show();
+      await Future.delayed(Duration(milliseconds: 4000));
+
+      var email = context.read<UserProvider>().currentUser.email;
+      var password = context.read<UserProvider>().currentUser.password;
+
+      // bool check = await context.read<UserProvider>().signIn(email, password);
+      // print("check refresh");
+      // print(check);
+      // ScaffoldMessenger.of(context)
+      //     .showSnackBar(SnackBar(content: Text("Refreshed successfully!")));
+
+      setState(() {
+        context.read<UserProvider>().signIn(email, password);
+        // print("check refresh");
+        // print(check);
+        ScaffoldMessenger.of(context)
+            .showSnackBar(SnackBar(content: Text("Refreshed successfully!")));
+      });
+    }
+
+    @override
+    void initState() {
+      super.initState();
+      loadPage();
+    }
+
     return Scaffold(
-      backgroundColor: Colors.white,
-      // floatingActionButton: FloatingActionButton(
-      //   onPressed: () {
-      //     showChooseImageWindow(context);
-      //   },
-      //   child: const Icon(Icons.add),
-      //   backgroundColor: const Color(0xff60aad2),
-      //   tooltip: "Add Photos",
-      // ),
-      body: Column(
-        children: [
-          Container(
-            // width: MediaQuery.of(context).devicePixelRatio * 700,
-            decoration: BoxDecoration(
-                color: const Color(0xff60aad2),
-                borderRadius: BorderRadius.only(
-                  bottomLeft: Radius.circular(40),
-                  bottomRight: Radius.circular(40),
-                )),
-            child: Column(
-              children: [
-                customProfileAppBar(context),
-                headerContents(context),
-                Row(
+        backgroundColor: Colors.white,
+        // floatingActionButton: FloatingActionButton(
+        //   onPressed: () {
+        //     showChooseImageWindow(context);
+        //   },
+        //   child: const Icon(Icons.add),
+        //   backgroundColor: const Color(0xff60aad2),
+        //   tooltip: "Add Photos",
+        // ),
+        body: context.read<UserProvider>().currentUser == null
+            ? Center(child: CircularProgressIndicator())
+            : RefreshWidget(
+                keyRefresh: keyRefresh,
+                onRefresh: loadPage,
+                child: Column(
                   children: [
-                    Expanded(
-                        flex: 9,
-                        child: Padding(
-                          padding: const EdgeInsets.only(left: 14),
-                          child: GestureDetector(
-                            onTap: () {},
-                            child:
-                                searchContainer("Search peaople...", context),
-                          ),
-                        )),
-                    Expanded(
-                      flex: 2,
-                      child: Padding(
-                          padding: const EdgeInsets.only(right: 2),
-                          child: GestureDetector(
-                            onTap: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => MapScreen()));
-                            },
-                            child: locationIcon(context),
+                    Container(
+                      // width: MediaQuery.of(context).devicePixelRatio * 700,
+                      decoration: BoxDecoration(
+                          color: const Color(0xff60aad2),
+                          borderRadius: BorderRadius.only(
+                            bottomLeft: Radius.circular(40),
+                            bottomRight: Radius.circular(40),
                           )),
+                      child: Column(
+                        children: [
+                          customProfileAppBar(context),
+                          headerContents(context),
+                          Row(
+                            children: [
+                              Expanded(
+                                  flex: 9,
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(left: 14),
+                                    child: GestureDetector(
+                                      onTap: () {},
+                                      child: searchContainer(
+                                          "Search peaople...", context),
+                                    ),
+                                  )),
+                              Expanded(
+                                flex: 2,
+                                child: Padding(
+                                    padding: const EdgeInsets.only(right: 2),
+                                    child: GestureDetector(
+                                      onTap: () {
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    MapScreen()));
+                                      },
+                                      child: locationIcon(context),
+                                    )),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                    Expanded(
+                      // height: double.infinity,
+                      child: ListView(
+                        // padding: EdgeInsets.only(top: 0.0),
+                        children: [
+                          separator("Relative Requests", context),
+                          MainRelativeRequests(),
+                          separator("Your Relatives", context),
+                          YourRelatives(),
+                          // separator("Your Photos", context),
+                          // YourPhotos(),
+                        ],
+                      ),
                     ),
                   ],
                 ),
-              ],
-            ),
-          ),
-          Expanded(
-            // height: double.infinity,
-            child: ListView(
-              // padding: EdgeInsets.only(top: 0.0),
-              children: [
-                separator("Relative Requests", context),
-                MainRelativeRequests(),
-                separator("Your Relatives", context),
-                YourRelatives(),
-                // separator("Your Photos", context),
-                // YourPhotos(),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
+              ));
   }
 }
 

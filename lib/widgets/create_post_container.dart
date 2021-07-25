@@ -18,7 +18,7 @@ class CreatePostContainer extends StatefulWidget {
 }
 
 class _CreatePostContainerState extends State<CreatePostContainer> {
-  List<String> postTypes = ["Choose!", "Seeker", "Finder"];
+  List<String> postTypes = ["Choose!", "Seeker", "Founder"];
   List<String> statesFinder = ["Choose!", "In hand", "Kidnapped"];
   var postTypeSelected;
   var stateFinderSelected;
@@ -202,7 +202,7 @@ class _CreatePostContainerState extends State<CreatePostContainer> {
       }).toList(),
       style: TextStyle(fontFamily: "Caveat", fontSize: 20),
       value: selected,
-      onChanged: (T_S == 'state' && postTypeSelected == 'Finder')
+      onChanged: (T_S == 'state' && postTypeSelected == 'Seeker')
           ? null
           : (String select) {
               setState(() {
