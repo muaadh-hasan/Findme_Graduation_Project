@@ -1,9 +1,24 @@
-import 'package:findme_gp_project/models/message.dart';
-import 'package:findme_gp_project/providers/profile_provider.dart';
+import 'dart:io';
+
+import 'package:findme_gp_project/models/relative.dart';
+import 'package:findme_gp_project/providers/location_provider.dart';
+import 'package:findme_gp_project/screens/map_screen.dart';
+
+import 'package:findme_gp_project/providers/user_provider.dart';
 import 'package:findme_gp_project/screens/profile_screen.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:findme_gp_project/screens/search.dart';
+import 'package:findme_gp_project/screens/settings.dart';
+import 'package:findme_gp_project/widgets/relative_requests_widget.dart';
+import 'package:findme_gp_project/widgets/your_photos_widget.dart';
+import 'package:findme_gp_project/widgets/your_relatives_widget.dart';
+import 'package:findme_gp_project/widgets/profile_widgets.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:provider/provider.dart';
+
+import '../data.dart';
 
 Widget customProfileAppBar(BuildContext context) {
   return Container(
@@ -19,9 +34,14 @@ Widget customProfileAppBar(BuildContext context) {
                   top: MediaQuery.of(context).size.height * .060,
                   left: MediaQuery.of(context).size.width * .030,
                 ),
-                child: Icon(
-                  Icons.arrow_back,
-                  color: Colors.white,
+                child: GestureDetector(
+                  onTap: () {
+                    Navigator.pop(context);
+                  },
+                  child: Icon(
+                    Icons.arrow_back,
+                    color: Colors.white,
+                  ),
                 ),
               ),
             ],
@@ -33,9 +53,17 @@ Widget customProfileAppBar(BuildContext context) {
           child: Column(
             children: [
               Container(
-                child: Icon(
-                  Icons.settings,
-                  color: Colors.white,
+                child: GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => Settings()),
+                    );
+                  },
+                  child: Icon(
+                    Icons.settings,
+                    color: Colors.white,
+                  ),
                 ),
                 margin: EdgeInsets.only(
                   top: MediaQuery.of(context).size.height * .060,
@@ -60,18 +88,31 @@ Widget headerContents(BuildContext context) {
           flex: 3,
           child: Container(
             margin: EdgeInsets.only(
-              top: MediaQuery.of(context).devicePixelRatio * 9.5,
-              left: MediaQuery.of(context).devicePixelRatio * 10,
+              top: 20,
+              left: 20,
               // bottom: MediaQuery.of(context).devicePixelRatio * 20,
             ),
             child: ClipRRect(
               borderRadius: BorderRadius.circular(20.0),
-              child: Image(
-                width: MediaQuery.of(context).size.width * 0.3,
-                height: MediaQuery.of(context).size.height * 0.2,
-                image: const AssetImage('assets/images/pic11.jpg'),
-                fit: BoxFit.fill,
-              ),
+              child: context.read<UserProvider>().currentUser.profilePicture ==
+                      null
+                  ? Padding(
+                      padding: const EdgeInsets.only(bottom: 25.0),
+                      child: Icon(
+                        FontAwesomeIcons.userCircle,
+                        size: 100,
+                        color: Colors.white,
+                      ),
+                    )
+                  : Image(
+                      width: MediaQuery.of(context).size.width * 0.3,
+                      height: MediaQuery.of(context).size.height * 0.2,
+                      image: NetworkImage(context
+                          .read<UserProvider>()
+                          .currentUser
+                          .profilePicture),
+                      // fit: BoxFit.fill,
+                    ),
             ),
           ),
         ),
@@ -84,10 +125,9 @@ Widget headerContents(BuildContext context) {
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              //mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  users[0].account.name,
+                  context.read<UserProvider>().currentUser.username,
                   style: TextStyle(
                     fontFamily: 'Europa',
                     fontSize: 29,
@@ -104,7 +144,7 @@ Widget headerContents(BuildContext context) {
                     ),
                     SizedBox(width: 10),
                     Text(
-                      users[0].account.email,
+                      context.read<UserProvider>().currentUser.email,
                       style: TextStyle(
                         fontFamily: 'Europa',
                         fontSize: 11,
@@ -144,16 +184,22 @@ Widget headerContents(BuildContext context) {
 
 Widget locationIcon(BuildContext context) {
   return Container(
-    child: Row(
-      mainAxisAlignment: MainAxisAlignment.end,
-      children: [
-        Image(
-          image: const AssetImage(
-            'assets/images/location_icon.png',
-          ),
-          fit: BoxFit.cover,
-        ),
-      ],
+    child: Padding(
+      padding: EdgeInsets.only(left: 10),
+      // mainAxisAlignment: MainAxisAlignment.end,
+      // children: [
+      child: Icon(
+        FontAwesomeIcons.mapMarkerAlt,
+        color: Colors.white,
+        size: 35,
+      ),
+      // Image(
+      //   image: const AssetImage(
+      //     'assets/images/location_icon.png',
+      //   ),
+      //   fit: BoxFit.cover,
+      // ),
+      // ],
     ),
   );
 }
@@ -195,75 +241,83 @@ Widget separator(String str, BuildContext context) {
 }
 
 Widget searchContainer(String str, BuildContext context) {
-  return Container(
-    decoration: BoxDecoration(
-      borderRadius: BorderRadius.circular(7.0),
-      color: Colors.white,
-      boxShadow: [
-        BoxShadow(
-          color: Color(0xff60aad2),
-          offset: Offset(0.0, 3.0), //(x,y)
-          blurRadius: 6.0,
-        ),
-      ],
-    ),
-    width: MediaQuery.of(context).size.width * .80,
-    height: MediaQuery.of(context).size.height * .060,
-    // margin: EdgeInsets.only(
-    //   top: !isLandScape
-    //       ? MediaQuery.of(context).size.height * .28
-    //       : MediaQuery.of(context).size.height * .55,
-    //   left: MediaQuery.of(context).devicePixelRatio * 10,
-    // ),
-    child: Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      //crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Row(
-          children: [
-            Padding(
-              padding: EdgeInsets.only(
-                left: 10,
-              ),
-              child: Align(
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  str,
-                  style: TextStyle(
-                    fontFamily: 'Roboto',
-                    fontSize: 17.5,
-                    color: const Color(0xff60aad2),
-                    letterSpacing: 1.05,
-                    //  height: 1.542857142857143,
-                  ),
+  return GestureDetector(
+    onTap: () {
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => Search()),
+      );
+    },
+    child: Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(7.0),
+        color: Colors.white,
+        boxShadow: [
+          BoxShadow(
+            color: Color(0xff60aad2),
+            offset: Offset(0.0, 3.0), //(x,y)
+            blurRadius: 6.0,
+          ),
+        ],
+      ),
+      width: MediaQuery.of(context).size.width * .80,
+      height: MediaQuery.of(context).size.height * .060,
+      // margin: EdgeInsets.only(
+      //   top: !isLandScape
+      //       ? MediaQuery.of(context).size.height * .28
+      //       : MediaQuery.of(context).size.height * .55,
+      //   left: MediaQuery.of(context).devicePixelRatio * 10,
+      // ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        //crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Padding(
+                padding: EdgeInsets.only(
+                  left: 10,
+                ),
+                child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    str,
+                    style: TextStyle(
+                      fontFamily: 'Roboto',
+                      fontSize: 17.5,
+                      color: const Color(0xff60aad2),
+                      letterSpacing: 1.05,
+                      //  height: 1.542857142857143,
+                    ),
 
-                  //textAlign: TextAlign.left,
+                    //textAlign: TextAlign.left,
+                  ),
                 ),
               ),
-            ),
-            Expanded(
-              child: Padding(
-                  padding: EdgeInsets.only(
-                    right: 10,
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      Icon(
-                        Icons.search,
-                        color: const Color(0xff60aad2),
-                      ),
-                    ],
-                  )),
-            ),
-          ],
-        ),
-      ],
+              Expanded(
+                child: Padding(
+                    padding: EdgeInsets.only(
+                      right: 10,
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        Icon(
+                          Icons.search,
+                          color: const Color(0xff60aad2),
+                        ),
+                      ],
+                    )),
+              ),
+            ],
+          ),
+        ],
+      ),
     ),
   );
 }
 
-Widget relativeRequest(BuildContext context) {
+Widget relativeRequest(BuildContext context, Relative relative) {
   return Container(
     decoration: BoxDecoration(
       borderRadius: BorderRadius.circular(50),
@@ -274,44 +328,85 @@ Widget relativeRequest(BuildContext context) {
     margin: EdgeInsets.only(
       //  top: !isLandScape ? MediaQuery.of(context).size.height* .28
       // : MediaQuery.of(context).size.height* .55,
-      left: MediaQuery.of(context).devicePixelRatio * 10,
+      left: MediaQuery.of(context).devicePixelRatio * 2,
     ),
     child: Row(
       //crossAxisAlignment: CrossAxisAlignment.start,
       //mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        profileImage(context),
-        Padding(
-          padding: EdgeInsets.only(left: 4),
-          child: Text(
-            'Mariam Nasser',
-            style: TextStyle(
-              fontFamily: 'Roboto',
-              fontSize: 15.5,
-              color: Colors.grey[700],
-              //letterSpacing: 1.05,
-              //  height: 1.542857142857143,
-            ),
+        // profileImage(context, relative.profilePicture),
+        Expanded(
+          child: Row(
+            children: [
+              profileImage(context, relative.profilePicture),
+              SizedBox(width: 10),
+              Padding(
+                padding: EdgeInsets.only(left: 4),
+                child: Text(
+                  relative.username,
+                  style: TextStyle(
+                    fontFamily: 'Roboto',
+                    fontSize: 15.5,
+                    color: Colors.grey[700],
+                    //letterSpacing: 1.05,
+                    //  height: 1.542857142857143,
+                  ),
 
-            //textAlign: TextAlign.left,
+                  //textAlign: TextAlign.left,
+                ),
+              ),
+            ],
           ),
         ),
-        SizedBox(width: 2),
-        button(Colors.green, "Confirm", context),
-        button(Colors.red, "Delete", context),
+
+        SizedBox(width: 15),
+        Expanded(
+          child: Row(
+            children: [
+              InkWell(
+                child: button(Colors.green, "Confirm", context),
+                onTap: () async {
+                  bool check = await context
+                      .read<UserProvider>()
+                      .confirmRequest(relative.userId);
+
+                  print("check ****************");
+                  print(check);
+
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                      content: Text(context.read<UserProvider>().message)));
+                },
+              ),
+              InkWell(
+                child: button(Colors.red, "Delete", context),
+                onTap: () async {
+                  bool check = await context
+                      .read<UserProvider>()
+                      .deleteRequest(relative.userId);
+
+                  print("check ****************");
+                  print(check);
+
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                      content: Text(context.read<UserProvider>().message)));
+                },
+              ),
+            ],
+          ),
+        ),
       ],
     ),
   );
 }
 
-Widget profileImage(BuildContext context) {
+Widget profileImage(BuildContext context, String image) {
   return Container(
     width: MediaQuery.of(context).size.height * .060,
     height: MediaQuery.of(context).size.height * .060,
     decoration: BoxDecoration(
       borderRadius: BorderRadius.circular(50.0),
       image: DecorationImage(
-        image: const AssetImage('assets/images/profile_image.jpg'),
+        image: NetworkImage(image),
         fit: BoxFit.cover,
       ),
     ),

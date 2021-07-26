@@ -1,9 +1,14 @@
+import 'package:findme_gp_project/providers/user_provider.dart';
 import 'package:findme_gp_project/screens/home_screen.dart';
+import 'package:findme_gp_project/screens/sign_in.dart';
 import 'package:findme_gp_project/widgets/profile_avatar.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:provider/provider.dart';
 
+import 'chats_screen.dart';
 import 'notification_screen.dart';
+import 'profile_screen.dart';
 
 class TabsScreen extends StatefulWidget {
   // List<Meal> favoriteMeals;
@@ -26,7 +31,10 @@ class _TabsScreenState extends State<TabsScreen> {
   @override
   void initState() {
     _pages = [
-      {'page': HomeScreen(), 'title': 'Home'},
+      {
+        'page': HomeScreen(),
+        'title': 'Home',
+      },
       {
         'page': NotificationScreen(),
         'title': 'Notifications',
@@ -51,18 +59,32 @@ class _TabsScreenState extends State<TabsScreen> {
         ),
         elevation: 0,
         actions: <Widget>[
+          GestureDetector(
+            child: Container(
+              padding: EdgeInsets.all(7),
+              child: ProfileAvatar(
+                imageUrl:
+                    context.read<UserProvider>().currentUser.profilePicture,
+              ),
+            ),
+            onTap: () {
+              Navigator.push(context, MaterialPageRoute(builder: (context) {
+                return Profile();
+              }));
+            },
+          ),
           IconButton(
-              icon: Icon(FontAwesomeIcons.comment),
+              icon: Icon(FontAwesomeIcons.signOutAlt),
               iconSize: 30,
               color: Colors.white,
-              onPressed: () {}),
-          Container(
-            padding: EdgeInsets.all(7),
-            child: ProfileAvatar(
-              imageUrl:
-                  'https://avatars.githubusercontent.com/u/36192122?s=400&u=1dfc7f24e3963182b2f70df53209d4d9b086479c&v=4',
-            ),
-          ),
+              tooltip: "Logout",
+              onPressed: () async {
+                await context.read<UserProvider>().logout();
+
+                Navigator.push(context, MaterialPageRoute(builder: (context) {
+                  return SignIn();
+                }));
+              }),
         ],
       ),
       body: _pages[_selectedPageIndex]['page'],

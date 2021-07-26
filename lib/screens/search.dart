@@ -1,8 +1,13 @@
 import 'package:findme_gp_project/models/message.dart';
 import 'package:findme_gp_project/models/user.dart';
+import 'package:findme_gp_project/providers/user_provider.dart';
 import 'package:findme_gp_project/widgets/profile_widgets.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import '../constants.dart';
+import '../data.dart';
 
 class Search extends StatefulWidget {
   @override
@@ -10,48 +15,60 @@ class Search extends StatefulWidget {
 }
 
 class _SearchState extends State<Search> {
-  List<User> _users = [
-    mariam,
-    yasmeena,
-    yasmeena3,
-    yasmeena4,
-    yasmeena5,
-    yasmeena6,
-    yasmeena7,
-  ];
-
   List<User> _usersForDisplay;
+  final GlobalKey<FormState> _formKey = GlobalKey();
 
-  @override
-  void initState() {
-    _usersForDisplay = _users;
-    super.initState();
-  }
+  TextEditingController _searchController = new TextEditingController();
 
   @override
   Widget build(BuildContext context) {
-    for (var item in _usersForDisplay) {
-      print(item.account.name);
-      print("*****\n");
-    }
-    return Scaffold(
-      body: ListView.builder(
-        itemCount: _usersForDisplay.length + 1,
-        itemBuilder: (context, index) {
-          return index == 0
-              ? searchBar()
-              : Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: relativeRequest(context, index - 1),
-                );
-        },
+    _usersForDisplay = context.read<UserProvider>().usersSearchList;
+    // for (var item in _usersForDisplay) {
+    //   print(item.name);
+    //   // print("*****\n");
+    // }
+    return SafeArea(
+      child: Scaffold(
+        body: Column(
+          children: [
+            searchBar(),
+            SizedBox(
+              height: 15,
+            ),
+            InkWell(
+              child: button(mainColor, "Search", context),
+              onTap: () {
+                context.read<UserProvider>().searchUser(_searchController.text);
+              },
+            ),
+            _usersForDisplay == null
+                ? Padding(
+                    padding: const EdgeInsets.only(top: 50.0),
+                    child: Center(child: Text("No name of user to search!")),
+                  )
+                : Expanded(
+                    child: Container(
+                      height: 600,
+                      child: ListView.builder(
+                        itemCount: _usersForDisplay.length,
+                        itemBuilder: (context, index) {
+                          return Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: relativeRequest(context, index),
+                          );
+                        },
+                      ),
+                    ),
+                  ),
+          ],
+        ),
       ),
     );
   }
 
   searchBar() {
     return Padding(
-      padding: const EdgeInsets.all(8.0),
+      padding: const EdgeInsets.only(top: 20.0),
       child: Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(7.0),
@@ -70,29 +87,24 @@ class _SearchState extends State<Search> {
           padding: const EdgeInsets.all(0.8),
           child: Padding(
             padding: const EdgeInsets.all(8.0),
-            child: TextFormField(
-              decoration: InputDecoration(
-                hintText: "Search...",
-                enabledBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(color: Colors.white),
+            child: Form(
+              key: _formKey,
+              child: TextFormField(
+                controller: _searchController,
+                decoration: InputDecoration(
+                  hintText: "Search...",
+                  enabledBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(color: Colors.white),
+                  ),
+                ),
+                style: TextStyle(
+                  fontFamily: 'Roboto',
+                  fontSize: 17.5,
+                  color: const Color(0xff60aad2),
+                  letterSpacing: 1.05,
+                  //  height: 1.542857142857143,
                 ),
               ),
-              style: TextStyle(
-                fontFamily: 'Roboto',
-                fontSize: 17.5,
-                color: const Color(0xff60aad2),
-                letterSpacing: 1.05,
-                //  height: 1.542857142857143,
-              ),
-              onChanged: (text) {
-                text = text.toLowerCase();
-                setState(() {
-                  _usersForDisplay = _users.where((user) {
-                    var userItem = user.account.email.toLowerCase();
-                    return userItem.startsWith(text);
-                  }).toList();
-                });
-              },
             ),
           ),
         ),
@@ -100,7 +112,7 @@ class _SearchState extends State<Search> {
     );
   }
 
-  Widget relativeRequest(BuildContext context, index) {
+  Widget relativeRequest(BuildContext context, int index) {
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(50),
@@ -117,24 +129,50 @@ class _SearchState extends State<Search> {
         //crossAxisAlignment: CrossAxisAlignment.start,
         //mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          profileImage(context),
-          Padding(
-            padding: EdgeInsets.only(left: 4),
-            child: Text(
-              _usersForDisplay[index].account.name,
-              style: TextStyle(
-                fontFamily: 'Roboto',
-                fontSize: 15.5,
-                color: Colors.grey[700],
-                //letterSpacing: 1.05,
-                //  height: 1.542857142857143,
-              ),
+          Expanded(
+            flex: 3,
+            child: Row(
+              children: [
+                profileImage(context, _usersForDisplay[index].profilePicture),
+                SizedBox(width: 10),
+                Padding(
+                  padding: EdgeInsets.only(left: 4),
+                  child: Text(
+                    _usersForDisplay[index].username,
+                    style: TextStyle(
+                      fontFamily: 'Roboto',
+                      fontSize: 15.5,
+                      color: Colors.grey[700],
+                      //letterSpacing: 1.05,
+                      //  height: 1.542857142857143,
+                    ),
 
-              //textAlign: TextAlign.left,
+                    //textAlign: TextAlign.left,
+                  ),
+                ),
+              ],
             ),
           ),
           SizedBox(width: 2),
-          button(Colors.green, "Add", context),
+          Expanded(
+              flex: 1,
+              child: Padding(
+                padding: const EdgeInsets.only(right: 10.0),
+                child: InkWell(
+                  child: button(Colors.green, "Add", context),
+                  onTap: () async {
+                    bool check = await context
+                        .read<UserProvider>()
+                        .addRelative(_usersForDisplay[index].userId);
+
+                    print("****** Add Relative");
+                    print(check);
+
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                        content: Text(context.read<UserProvider>().message)));
+                  },
+                ),
+              )),
         ],
       ),
     );

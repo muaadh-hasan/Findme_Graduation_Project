@@ -1,13 +1,21 @@
-import 'package:findme_gp_project/providers/profile_provider.dart';
-import 'package:findme_gp_project/screens/tabs_Screen.dart';
+import 'package:findme_gp_project/providers/user_provider.dart';
+import 'package:findme_gp_project/screens/sign_in.dart';
+import 'package:firebase_core/firebase_core.dart' as firebase_core;
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'screens/search.dart';
+import 'providers/location_provider.dart';
 
-void main() {
+// email: findme.gp@gmail.com
+// pass: FindMe.GP2021
+
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
   runApp(MultiProvider(
     providers: [
-      ChangeNotifierProvider(create: (_) => ProfileProvider()),
+      ChangeNotifierProvider(create: (_) => UserProvider()),
+      ChangeNotifierProvider(create: (_) => LocationProvider())
     ],
     child: MyApp(),
   ));
@@ -20,6 +28,8 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+  // final Future<firebase_core.FirebaseApp> _initialization = firebase_core.Firebase.initializeApp();
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -29,11 +39,7 @@ class _MyAppState extends State<MyApp> {
         accentColor: Colors.deepPurple[50],
       ),
       title: 'Find Me',
-      home: Search(),
-      // IndividualChatScreen(),
-      // ChatsScreen(),
-      // Profile(),
-      //  TabsScreen(),
+      home: SignIn(),
     );
   }
 }

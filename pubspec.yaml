@@ -22,6 +22,8 @@ environment:
 
 dependencies:
   flutter_svg: ^0.19.3
+  google_maps_flutter:
+  geolocator:
   flutter:
     sdk: flutter
 
@@ -36,9 +38,15 @@ dependencies:
   font_awesome_flutter: ^9.0.0
   intl: ^0.17.0
 
+  firebase_storage:
+  firebase_core:
+  firebase_analytics:
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  http:
+  shared_preferences:
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

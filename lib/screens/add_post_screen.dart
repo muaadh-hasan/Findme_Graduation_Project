@@ -1,5 +1,10 @@
+import 'package:findme_gp_project/providers/user_provider.dart';
 import 'package:findme_gp_project/widgets/create_post_container.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 
 import '../data.dart';
 
@@ -85,7 +90,8 @@ class _AddPostScreen extends State<AddPostScreen> {
                         child: Container(
                           color: Colors.white,
                         )),
-                    CreatePostContainer(currentUser: currentUser),
+                    CreatePostContainer(
+                        currentUser: context.read<UserProvider>().currentUser),
                     SizedBox(
                         height: 250,
                         child: Container(

@@ -1,7 +1,9 @@
 import 'package:findme_gp_project/models/post.dart';
+import 'package:findme_gp_project/providers/user_provider.dart';
 import 'package:findme_gp_project/widgets/profile_avatar.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:provider/provider.dart';
 
 // ignore: must_be_immutable
 class PostItem extends StatefulWidget {
@@ -15,72 +17,65 @@ class PostItem extends StatefulWidget {
 class _PostItemState extends State<PostItem> {
   TextEditingController postInfo = TextEditingController();
 
+  // final Function deleteImage;
+
+  // _PostItemState(this.deleteImage);
+
+  bool flag = false;
+
   @override
   Widget build(BuildContext context) {
+    print("IMMMMAAAAGGGGEEEEE!!!!");
+    print(widget.post.image);
+    String name = context.read<UserProvider>().currentUser.username;
     return Card(
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
-          const ListTile(
+          ListTile(
             leading: ProfileAvatar(
-              imageUrl:
-                  'https://avatars.githubusercontent.com/u/36192122?s=400&u=1dfc7f24e3963182b2f70df53209d4d9b086479c&v=4',
+              imageUrl: context.read<UserProvider>().currentUser.profilePicture,
             ),
-            title: Text('Moaaz Hasan'),
-            subtitle: Text('4:12 pm'),
+            title: Text(name),
+            subtitle: Text(widget.post.date.split(' ')[0]),
           ),
           Divider(),
-          // _createTextFormFiled('Post', ' What Happen!', postInfo, 5),
           Text(widget.post.infoPost),
+          SizedBox(height: 10),
           Container(
-            height: 150,
-            child: GridView.count(
-              crossAxisCount: 2,
-              mainAxisSpacing: 0,
-              crossAxisSpacing: 5,
-              children: [
-                Image.network(
-                  'https://th.bing.com/th/id/R9516c9859ea32406e2ff8560bb085919?rik=BtsEc5%2b79tQiBA&riu=http%3a%2f%2fwww.hdwallpapers.in%2fdownload%2fcute_kittens-2560x1600.jpg&ehk=qEj3I0ukvZ4d90k7AAKkeWPegTTHeCHNGkeixT7JbHY%3d&risl=&pid=ImgRaw',
-                ),
-                Image.network(
-                  'https://th.bing.com/th/id/OIP.om0Mv8Vg7kDoMJvA3m7ILwHaEo?pid=ImgDet&w=600&h=375&rs=1',
-                ),
-              ],
-            ),
-          ),
+              height: 150,
+              child: Image(
+                image: NetworkImage(widget.post.image),
+              )),
           Divider(),
           Container(
             height: 45,
-            child: Row(
-              children: [
-                _PostButton(
-                  icon: Icon(
-                    FontAwesomeIcons.phoneAlt,
-                    color: Colors.blue[600],
-                    size: 20.0,
+            child: InkWell(
+              onTap: () async {
+                print(context.read<UserProvider>().currentUser.posts);
+              },
+              child: Container(
+                padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                height: 25.0,
+                child: InkWell(
+                  onTap: () async {
+                    await context
+                        .read<UserProvider>()
+                        .deletePost(widget.post.postId);
+
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                        content: Text(context.read<UserProvider>().message)));
+                  },
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(FontAwesomeIcons.trash, color: Colors.blue),
+                      const SizedBox(width: 4.0),
+                      Text("Delete Post"),
+                    ],
                   ),
-                  label: 'Call',
-                  onTap: () => print('Like'),
                 ),
-                _PostButton(
-                  icon: Icon(
-                    FontAwesomeIcons.comment,
-                    color: Colors.blue[600],
-                    size: 20.0,
-                  ),
-                  label: 'Message',
-                  onTap: () => print('Comment'),
-                ),
-                _PostButton(
-                  icon: Icon(
-                    FontAwesomeIcons.mapMarkerAlt,
-                    color: Colors.blue[600],
-                    size: 25.0,
-                  ),
-                  label: 'Location',
-                  onTap: () => print('Share'),
-                )
-              ],
+              ),
             ),
           ),
         ],
@@ -89,39 +84,39 @@ class _PostItemState extends State<PostItem> {
   }
 }
 
-class _PostButton extends StatelessWidget {
-  final Icon icon;
-  final String label;
-  final Function onTap;
+// class _PostButton extends StatelessWidget {
+//   final Icon icon;
+//   final String label;
+//   final Function onTap;
 
-  const _PostButton({
-    Key key,
-    @required this.icon,
-    @required this.label,
-    @required this.onTap,
-  }) : super(key: key);
+//   const _PostButton({
+//     Key key,
+//     @required this.icon,
+//     @required this.label,
+//     @required this.onTap,
+//   }) : super(key: key);
 
-  @override
-  Widget build(BuildContext context) {
-    return Expanded(
-      child: Material(
-        color: Colors.white,
-        child: InkWell(
-          onTap: onTap,
-          child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 12.0),
-            height: 25.0,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                icon,
-                const SizedBox(width: 4.0),
-                Text(label),
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-}
+//   @override
+//   Widget build(BuildContext context) {
+//     return Expanded(
+//       child: Material(
+//         color: Colors.white,
+//         child: InkWell(
+//           onTap: onTap,
+//           child: Container(
+//             padding: const EdgeInsets.symmetric(horizontal: 12.0),
+//             height: 25.0,
+//             child: Row(
+//               mainAxisAlignment: MainAxisAlignment.center,
+//               children: [
+//                 icon,
+//                 const SizedBox(width: 4.0),
+//                 Text(label),
+//               ],
+//             ),
+//           ),
+//         ),
+//       ),
+//     );
+//   }
+// }
