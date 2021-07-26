@@ -154,7 +154,9 @@ Builder buildDialogItem(
         title: Text(text),
         onTap: () async {
           File image = await context.read<UserProvider>().getImage(src);
-          context.read<UserProvider>().addImageProfile(image);
+          context
+              .read<UserProvider>()
+              .addImageProfile(image.toString()); // must to edit to file name
           Navigator.of(innerContext).pop();
         },
       ),

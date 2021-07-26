@@ -107,8 +107,10 @@ Widget headerContents(BuildContext context) {
                   : Image(
                       width: MediaQuery.of(context).size.width * 0.3,
                       height: MediaQuery.of(context).size.height * 0.2,
-                      image: NetworkImage(
-                          'https://avatars.githubusercontent.com/u/36192122?s=400&u=1dfc7f24e3963182b2f70df53209d4d9b086479c&v=4'),
+                      image: NetworkImage(context
+                          .read<UserProvider>()
+                          .currentUser
+                          .profilePicture),
                       // fit: BoxFit.fill,
                     ),
             ),

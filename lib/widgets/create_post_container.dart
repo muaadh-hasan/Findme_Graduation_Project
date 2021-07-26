@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:findme_gp_project/models/post.dart';
 import 'package:findme_gp_project/models/user.dart';
 import 'package:findme_gp_project/providers/user_provider.dart';
@@ -122,15 +124,35 @@ class _CreatePostContainerState extends State<CreatePostContainer> {
             Divider(),
             ElevatedButton.icon(
               onPressed: () async {
-                Post post = Post(
-                  infoPost: _infoPostController.text,
-                  // image: context.watch<UserProvider>().imagePost,
-                  // image: File(),
-                  state: stateFinderSelected,
-                  postType: postTypeSelected,
-                  // location:
-                );
-                await context.read<UserProvider>().addPost(post);
+                if (context.read<UserProvider>().tempImage != null) {
+                  bool check = await context
+                      .read<UserProvider>()
+                      .uploadImageToFirebase(
+                          context, context.read<UserProvider>().tempImage);
+
+                  if (check == true) {
+                    Post post = Post(
+                        infoPost: _infoPostController.text,
+                        // image: context.watch<UserProvider>().imagePost,
+                        state: stateFinderSelected,
+                        postType: postTypeSelected,
+                        location: "Cairo");
+                    bool checkPost =
+                        await context.read<UserProvider>().addPost(post);
+                    if (checkPost == true) {
+                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                          content: Text(context.read<UserProvider>().message)));
+                    }
+                    print('checkPost');
+                    print(checkPost);
+                  } else {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text("please upload photo first!")));
+                  }
+                } else {
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                      content: Text("Error in uploading photo!, try again.")));
+                }
               },
               icon: Icon(Icons.add_circle_outline_sharp, size: 30),
               label: Text("Post", style: TextStyle(fontSize: 25)),
@@ -157,10 +179,8 @@ class _CreatePostContainerState extends State<CreatePostContainer> {
           leading: Icon(icon, color: Colors.white),
           title: Text(text),
           onTap: () async {
-            // File image = (await context.read<UserProvider>().getImage(src)) as File;
-            context
-                .read<UserProvider>()
-                .addImagePost(await context.read<UserProvider>().getImage(src));
+            File image = await context.read<UserProvider>().getImage(src);
+            context.read<UserProvider>().tempImage = image;
             Navigator.of(innerContext).pop();
           },
         ),

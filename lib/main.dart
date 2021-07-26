@@ -1,16 +1,15 @@
 import 'package:findme_gp_project/providers/user_provider.dart';
 import 'package:findme_gp_project/screens/sign_in.dart';
+import 'package:firebase_core/firebase_core.dart' as firebase_core;
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'providers/location_provider.dart';
-import 'package:firebase_core/firebase_core.dart';
 
 // email: findme.gp@gmail.com
 // pass: FindMe.GP2021
 
 Future<void> main() async {
-  // await Firebase.initializeApp();
   WidgetsFlutterBinding.ensureInitialized();
 
   runApp(MultiProvider(
@@ -29,7 +28,7 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  final Future<FirebaseApp> _initialization = Firebase.initializeApp();
+  // final Future<firebase_core.FirebaseApp> _initialization = firebase_core.Firebase.initializeApp();
 
   @override
   Widget build(BuildContext context) {

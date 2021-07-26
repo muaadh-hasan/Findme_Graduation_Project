@@ -14,25 +14,23 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 // import 'package:rest_api_login/utils/http_exception.dart';
+import 'package:path/path.dart';
 
 class UserProvider with ChangeNotifier {
   var mainUrl = Api.authUrl;
-  var authKey = Api.authKey;
 
   String message = "";
 
-  // List<File> imagesList = [];
-  File imageProfile;
-  File imagePost;
+  String imageProfile;
+  String imagePost;
   File image;
+  File tempImage;
 
   List<User> usersSearchList;
 
   User currentUser;
 
-  Future<bool> logout() async {
-    currentUser = null;
-  }
+  Future<void> logout() async => currentUser = null;
 
   Future<bool> signUp(
       String email, String password, String name, String phone) async {
@@ -54,8 +52,6 @@ class UserProvider with ChangeNotifier {
           message = jsonDecode(responce.body)['msg'];
           return false;
         } else {
-          // If the server did return a 200 OK response,
-          // then parse the JSON.
           print(responce.body);
           print(jsonDecode(responce.body)['error']);
 
@@ -66,29 +62,18 @@ class UserProvider with ChangeNotifier {
           currentUser = responceData;
         }
       } else {
-        // If the server did not return a 200 OK response,
-        // then throw an exception.
         throw Exception('Failed to load album');
       }
       notifyListeners();
-
-      // final prefs = await SharedPreferences.getInstance();
-
-      // final userData = json.encode({
-      //   'currentUser': currentUser,
-      // });
-
-      // prefs.setString('userData', userData);
-
-      // print('check' + userData.toString());
     } catch (e) {
       return false;
     }
-
     return true;
   }
 
   Future<bool> signIn(String email, String password) async {
+    getImageFromFirebase('Moaaz.jpeg');
+
     // currentUser = null;
     try {
       print("***** Logic Login");
@@ -114,8 +99,6 @@ class UserProvider with ChangeNotifier {
           message = jsonDecode(responce.body)['msg'];
           return false;
         } else {
-          // If the server did return a 200 OK response,
-          // then parse the JSON.
           print(responce.body);
           print(jsonDecode(responce.body)['error']);
 
@@ -126,22 +109,10 @@ class UserProvider with ChangeNotifier {
           currentUser = responceData;
         }
       } else {
-        // If the server did not return a 200 OK response,
-        // then throw an exception.
         throw Exception('Errrooooorrr!!!!!!');
       }
 
       notifyListeners();
-
-      // final prefs = await SharedPreferences.getInstance();
-
-      // final userData = json.encode({
-      //   'currentUser': currentUser,
-      // });
-
-      // prefs.setString('userData', userData);
-
-      // print('check' + userData.toString());
     } catch (e) {
       print(e);
       return false;
@@ -149,13 +120,7 @@ class UserProvider with ChangeNotifier {
     return true;
   }
 
-  void addImagePost(File image) {
-    this.imagePost = image;
-    uploadPic(image, currentUser.username);
-    notifyListeners();
-  }
-
-  void addImageProfile(File image) {
+  void addImageProfile(String image) {
     this.imageProfile = image;
     notifyListeners();
   }
@@ -194,32 +159,46 @@ class UserProvider with ChangeNotifier {
         message = jsonDecode(responce.body)['msg'];
         return false;
       } else {
-        // If the server did return a 200 OK response,
-        // then parse the JSON.
         print(responce.body);
         print(jsonDecode(responce.body)['error']);
       }
     } else {
-      // If the server did not return a 200 OK response,
-      // then throw an exception.
       throw Exception('Errrooooorrr!!!!!!');
     }
     return true;
   }
 
   Future<bool> addPost(Post post) async {
-    final responce = await http.post(Uri.parse(mainUrl + '/addPost'),
-        body: json.encode({
-          'infoPost': post.infoPost,
-          'postType': post.postType,
-          'state': post.state,
-          'image': post.image,
-        }));
-    if (responce.statusCode == 200) {
-      return true;
-    } else {
+    var map = new Map<String, dynamic>();
+
+    print('AddPost ****************************');
+
+    map['user_id'] = currentUser.userId.toString();
+    map['description'] = post.infoPost;
+    map['type'] = post.postType;
+    map['case'] = post.state;
+    map['image'] = imagePost;
+    map['location'] = post.location;
+
+    print(post);
+
+    try {
+      final responce =
+          await http.post(Uri.parse(mainUrl + '/myapp/AddPost/'), body: map);
+
+      if (responce.statusCode == 200) {
+        message = jsonDecode(responce.body)['msg'];
+        print(message);
+      } else {
+        throw Exception('Failed to add post, try again');
+      }
+
+      notifyListeners();
+    } catch (e) {
+      print(e);
       return false;
     }
+    return true;
   }
 
   Future<bool> searchUser(String searchWord) async {
@@ -432,6 +411,48 @@ class UserProvider with ChangeNotifier {
     // print(imageName);
 
     // return url;
+  }
+
+  Future<bool> uploadImageToFirebase(
+      BuildContext context, File imageFile) async {
+    try {
+      String fileName = basename(imageFile.path);
+      print("FileName: **********");
+      print(fileName);
+      StorageReference firebaseStorageRef =
+          FirebaseStorage.instance.ref().child('$fileName');
+      StorageUploadTask uploadTask = firebaseStorageRef.putFile(imageFile);
+      StorageTaskSnapshot taskSnapshot = await uploadTask.onComplete;
+      taskSnapshot.ref.getDownloadURL().then(
+            (value) => print("Done: $value"),
+          );
+
+      imagePost = fileName;
+    } catch (e) {
+      print(e);
+      return false;
+    }
+    return true;
+  }
+
+  Future<dynamic> getImageFromFirebase(String imageName) async {
+//     final ref = FirebaseStorage.instance.ref().child("Moaaz");
+// // no need of the file extension, the name will do fine.
+//     var url = await ref.getDownloadURL();
+//     print(url);
+//     return url;
+
+    try {
+      // StorageReference ref = FirebaseStorage().ref().child('/missing (1).jpg');
+      // String url = (await ref.getDownloadURL()).toString();
+
+      StorageReference ref = FirebaseStorage.instance.ref().child("Moaaz.png");
+      String url = (await ref.getDownloadURL()).toString();
+      print(url);
+      return url;
+    } catch (e) {
+      print(e);
+    }
   }
 }//end class
 

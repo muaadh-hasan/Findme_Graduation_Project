@@ -64,7 +64,7 @@ class _TabsScreenState extends State<TabsScreen> {
               padding: EdgeInsets.all(7),
               child: ProfileAvatar(
                 imageUrl:
-                    'https://avatars.githubusercontent.com/u/36192122?s=400&u=1dfc7f24e3963182b2f70df53209d4d9b086479c&v=4',
+                    context.read<UserProvider>().currentUser.profilePicture,
               ),
             ),
             onTap: () {

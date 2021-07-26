@@ -23,11 +23,6 @@ class _PostItemState extends State<PostItem> {
 
   bool flag = false;
 
-  List<String> listImage = [
-    'https://i.pinimg.com/originals/a4/29/43/a429434677cef377bb62384a47fc83be.jpg',
-    'https://i2-prod.chroniclelive.co.uk/incoming/article13136591.ece/ALTERNATES/s810/fake-twitter-image-london-attack.jpg'
-  ];
-
   @override
   Widget build(BuildContext context) {
     print("IMMMMAAAAGGGGEEEEE!!!!");
@@ -39,15 +34,10 @@ class _PostItemState extends State<PostItem> {
         children: <Widget>[
           ListTile(
             leading: ProfileAvatar(
-              imageUrl:
-                  'https://avatars.githubusercontent.com/u/36192122?s=400&u=1dfc7f24e3963182b2f70df53209d4d9b086479c&v=4',
+              imageUrl: context.read<UserProvider>().currentUser.profilePicture,
             ),
             title: Text(name),
             subtitle: Text(widget.post.date.split(' ')[0]),
-            // trailing: InkWell(
-            //   child: Icon(Icons.delete_outline, color: Colors.blue),
-            //   onTap: deleteImage,
-            // ),
           ),
           Divider(),
           Text(widget.post.infoPost),
@@ -63,17 +53,6 @@ class _PostItemState extends State<PostItem> {
             child: InkWell(
               onTap: () async {
                 print(context.read<UserProvider>().currentUser.posts);
-                // bool check = await context
-                //     .read<UserProvider>()
-                //     .deletePost(widget.post.infoPost);
-
-                // if (check == true) {
-                //   ScaffoldMessenger.of(context).showSnackBar(
-                //       SnackBar(content: Text("Delete successfully!")));
-                // } else {
-                //   ScaffoldMessenger.of(context).showSnackBar(
-                //       SnackBar(content: Text("Error!!!, Try again.")));
-                // }
               },
               child: Container(
                 padding: const EdgeInsets.symmetric(horizontal: 12.0),
