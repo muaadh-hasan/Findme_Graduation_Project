@@ -1,10 +1,8 @@
 {
-
   "C_Cpp_Runner.cCompilerPath": "C:\\Program Files\\CodeBlocks\\MinGW\\bin\\gcc.exe",
   "C_Cpp_Runner.cppCompilerPath": "C:\\Program Files\\CodeBlocks\\MinGW\\bin\\g++.exe",
   "C_Cpp_Runner.debuggerPath": "C:\\Program Files\\CodeBlocks\\MinGW\\bin\\gdb.exe",
   "C_Cpp_Runner.makePath": "C:\\Program Files\\CodeBlocks\\MinGW\\bin\\make.exe",
-
   "C_Cpp_Runner.warnings": [
     "-Wall",
     "-Wextra",
