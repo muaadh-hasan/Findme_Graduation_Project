@@ -139,8 +139,10 @@ class _SettingsState extends State<Settings> {
                                         ))
                                     : CircleAvatar(
                                         radius: 50.0,
-                                        backgroundImage: NetworkImage(
-                                            'https://avatars.githubusercontent.com/u/36192122?s=400&u=1dfc7f24e3963182b2f70df53209d4d9b086479c&v=4')
+                                        backgroundImage: NetworkImage(context
+                                            .read<UserProvider>()
+                                            .currentUser
+                                            .profilePicture)
                                         //  AssetImage(
                                         //   context
                                         //       .read<UserProvider>()

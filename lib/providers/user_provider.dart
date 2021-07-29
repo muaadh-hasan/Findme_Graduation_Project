@@ -19,6 +19,8 @@ import 'package:path/path.dart';
 class UserProvider with ChangeNotifier {
   var mainUrl = Api.authUrl;
 
+  var postURL;
+
   String message = "";
 
   String imageProfile;
@@ -50,6 +52,7 @@ class UserProvider with ChangeNotifier {
       if (responce.statusCode == 200) {
         if (jsonDecode(responce.body)['error'] == true) {
           message = jsonDecode(responce.body)['msg'];
+
           return false;
         } else {
           print(responce.body);
@@ -179,6 +182,7 @@ class UserProvider with ChangeNotifier {
     map['case'] = post.state;
     map['image'] = imagePost;
     map['location'] = post.location;
+    map['image_url'] = postURL;
 
     print(post);
 
@@ -188,6 +192,7 @@ class UserProvider with ChangeNotifier {
 
       if (responce.statusCode == 200) {
         message = jsonDecode(responce.body)['msg'];
+        print('Post message');
         print(message);
       } else {
         throw Exception('Failed to add post, try again');
@@ -195,6 +200,7 @@ class UserProvider with ChangeNotifier {
 
       notifyListeners();
     } catch (e) {
+      print('Failed in catch');
       print(e);
       return false;
     }
@@ -259,7 +265,7 @@ class UserProvider with ChangeNotifier {
     map['password'] = password;
     map['location'] = location;
     map['phone'] = phone;
-    map['image_profile'] = 'No yett';
+    map['image_profile'] = image;
 
     try {
       final responce = await http
@@ -423,9 +429,10 @@ class UserProvider with ChangeNotifier {
           FirebaseStorage.instance.ref().child('$fileName');
       StorageUploadTask uploadTask = firebaseStorageRef.putFile(imageFile);
       StorageTaskSnapshot taskSnapshot = await uploadTask.onComplete;
-      taskSnapshot.ref.getDownloadURL().then(
-            (value) => print("Done: $value"),
-          );
+      taskSnapshot.ref.getDownloadURL().then((value) {
+        print("Done: $value");
+        postURL = value.toString();
+      });
 
       imagePost = fileName;
     } catch (e) {

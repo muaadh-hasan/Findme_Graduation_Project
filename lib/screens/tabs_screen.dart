@@ -62,10 +62,22 @@ class _TabsScreenState extends State<TabsScreen> {
           GestureDetector(
             child: Container(
               padding: EdgeInsets.all(7),
-              child: ProfileAvatar(
-                imageUrl:
-                    context.read<UserProvider>().currentUser.profilePicture,
-              ),
+              child: context.read<UserProvider>().currentUser.profilePicture ==
+                      null
+                  ? Padding(
+                      padding: const EdgeInsets.only(bottom: 25.0),
+                      child: Icon(
+                        FontAwesomeIcons.userCircle,
+                        size: 40,
+                        color: Colors.white,
+                      ),
+                    )
+                  : ProfileAvatar(
+                      imageUrl: context
+                          .read<UserProvider>()
+                          .currentUser
+                          .profilePicture,
+                    ),
             ),
             onTap: () {
               Navigator.push(context, MaterialPageRoute(builder: (context) {

@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:findme_gp_project/models/post.dart';
 import 'package:findme_gp_project/models/user.dart';
 import 'package:findme_gp_project/providers/user_provider.dart';
+import 'package:findme_gp_project/screens/tabs_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:image_picker/image_picker.dart';
@@ -142,6 +143,9 @@ class _CreatePostContainerState extends State<CreatePostContainer> {
                     if (checkPost == true) {
                       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                           content: Text(context.read<UserProvider>().message)));
+                      Navigator.of(context).pushReplacement(
+                          new MaterialPageRoute(
+                              builder: (BuildContext context) => TabsScreen()));
                     }
                     print('checkPost');
                     print(checkPost);
